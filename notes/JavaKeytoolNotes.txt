@@ -1,0 +1,99 @@
+https://www.digitalocean.com/community/tutorials/java-keytool-essentials-working-with-java-keystores
+
+Generate keys in a new/existing keystore:
+-----------------------------------------
+keytool -genkeypair \
+        -alias domain \
+        -keyalg RSA \
+        -keystore keystore.jks
+        
+        
+Generate CSR For Existing Private Key
+-----------------------------------------
+Use this method if you want to generate an CSR that you 
+can send to a CA to request the issuance of a CA-signed SSL certificate
+
+keytool -certreq \
+        -alias domain \
+        -file domain.csr \
+        -keystore keystore.jks
+
+
+Import Signed/Root/Intermediate Certificate
+-----------------------------------------
+Use this method if you want to import a signed certificate, 
+e.g. a certificate signed by a CA, into your keystore
+
+keytool -importcert \
+        -trustcacerts -file domain.crt \
+        -alias domain \
+        -keystore keystore.jks
+
+
+Generate Self-Signed Certificate in New/Existing Keystore
+---------------------------------------------------------
+Use this command if you want to generate a self-signed certificate for your Java applications.
+
+keytool -genkey \
+        -alias domain \
+        -keyalg RSA \
+        -validity 365 \
+        -keystore keystore.jks
+        
+
+List Keystore Certificate Fingerprints
+---------------------------------------------------------
+
+keytool -list \
+        -keystore keystore.jks
+        
+        
+List Verbose Keystore Contents
+---------------------------------------------------------
+
+keytool -list -v \
+        -keystore keystore.jks
+        
+        
+Use Keytool to View Certificate Information
+---------------------------------------------------------
+
+keytool -printcert \
+        -file domain.crt
+
+
+Export Certificate
+---------------------------------------------------------
+      
+This command exports a binary DER-encoded certificate (domain.der), 
+that is associated with the alias (domain), in the keystore (keystore.jks):
+
+keytool -exportcert
+        -alias domain
+        -file domain.der
+        -keystore keystore.jks
+
+Change Keystore Password
+---------------------------------------------------------
+
+keytool -storepasswd \
+        -keystore keystore.jks
+
+
+Delete Alias
+---------------------------------------------------------
+
+keytool -delete \
+        -alias domain \
+        -keystore keystore.jks
+
+
+Rename Alias
+---------------------------------------------------------
+
+keytool -changealias \
+        -alias domain \
+        -destalias newdomain \
+        -keystore keystore.jks
+
+
