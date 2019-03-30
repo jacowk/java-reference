@@ -1,0 +1,10 @@
+Java classes:
+=============
+C:\Users\jacok\Documents\MyDocuments\Development\Java Docs\tutorial\networking\TOC.html
+
+The URL, URLConnection, Socket, and ServerSocket classes all use TCP to communicate over the network. 
+
+The DatagramPacket, DatagramSocket, and MulticastSocket classes are for use with UDP. 
+
+URL: (Uniform Resource Locator) A reference to a resource on the internet.
+

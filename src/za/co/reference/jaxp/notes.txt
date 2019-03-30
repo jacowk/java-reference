@@ -1,0 +1,48 @@
+http://java.sun.com/developer/technicalArticles/xml/JavaTechandXML/
+
+
+SAX: Process XML data and do something useful with it
+=====================================================
+SAXParserFactory: Generates a SAXParser instance.
+SAXParser: Object that does the parsing
+SAXReader
+DefaultHandler: Defines the class that will handle the SAX events that the parser generates
+	public class DefaultHandler implements ContentHandler, DTDHandler, EntityHandler, ErrorHandler{}
+ContentHandler: Implemented by DefaultHandler, so rather than implementing this interface directly, extend DefaultHandler.
+	Requires methods that the SAX parser invokes in response to various parsing events. 
+	Major eventhandling methods are: startDocument, endDocument, startElement, endElement.
+	All these methods must throw SAXException
+	The JAXP SAX API also allows you to handle the characters that the parser delivers to your application, 
+		using the ContentHandler.characters() method.
+ErrorHandler
+DTDHandler
+EntityResolver
+
+XMLReader: The XMLReader is used by the application to tell the SAX parser what processing it is to perform on 
+	the document in question.
+
+
+Check out w3c schema
+
+
+DOM: The Document Object Model provides APIs that let you create, modify, delete, and rearrange nodes.
+======================================================================================================
+DocumentBuilderFactory
+DocumentBuilder
+Document
+
+http://download.oracle.com/javase/tutorial/jaxp/dom/readingXML.html
+http://www.w3schools.com/dtd/dtd_intro.asp
+
+
+XSLT API
+========
+TransformerFactory
+Transformer
+
+
+StAX
+====
+XMLStreamReader
+XMLStreamWriter
+

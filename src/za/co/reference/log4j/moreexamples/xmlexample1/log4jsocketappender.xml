@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration debug="false">
+
+	<appender name="STDOUT" class="org.apache.log4j.SocketAppender"> <!-- Log to a remote entity by transmitting serialized LoggingEvent objects over the wire -->
+		<param name="LocationInfo" value="true"/> <!-- boolean 
+													true: Information sent to the remote host will include location information
+													false: default
+													-->
+		<param name="Port" value=""/> <!-- (int) Port number of the remote host -->
+		<param name="ReconnectionDelay" value=""/> <!-- (int) Number in milliseconds to wait between each failed connection attempt to the server -->
+		<param name="RemoteHost" value=""/> <!-- (String) Host name of the server -->
+		<param name="Threshold" value="WARN"/> <!-- DEBUG, INFO, WARN, ERROR, FATAL -->
+		
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%-5p [%t] %c - %m%n"/>
+		</layout>
+	</appender>
+	
+	<root>
+		<appender-ref ref="STDOUT"/>
+	</root>
+	
+</log4j:configuration>

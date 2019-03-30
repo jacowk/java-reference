@@ -1,0 +1,72 @@
+1. Creating the BusinessIdentity Annotation
+===========================================
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface BusinessIdentity{
+	
+	String bidProperty() default "";
+	NameProperty[] nameProperties() default {};
+	
+}
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface NameProperty{
+	
+	String property();
+	
+}
+
+
+2. Applying the BusinessIdentity Annotation
+===========================================
+@BusinessIdentity(bidProperty = "code", nameProperties = {
+		@NameProperty(property = "scheme"),
+		@NameProperty(property = "code")
+	}
+)
+@AssociationOverrides({
+	@AssociationOverride(name = "permittedGroups", joinColumns =
+		@JoinColumn(name = "policy"))
+	}
+)
+@Table(name = "policy")
+@javax.persistence.Entity
+public class Policy extends SecuredEntity implements NoteReferrer, CorrespondencePreferenceConfigurable,
+	ContentRequestReferrer{
+...
+
+
+3. Processing the BusinessIdentity Annotation
+=============================================
+/* This method is called when performing auditing */
+public String getBusinessIdentityBidProperty(){
+	BusinessIdentity businessIdentity = getClass().getAnnotation(BusinessIdentity.class);
+	if ((businessIdentity != null) && (ValidationUtilities.isNotNullAndNotEmpty(businessIdentity
+		.bidProperty()))){
+		if (!isValidProperty(businessIdentity.bidProperty())){
+			throw new InvalidArgumentException("The business identity BID property - " + businessIdentity
+				.bidProperty() + " is not a valid property for entity - " + getEntityName());
+		}
+		return businessIdentity.bidProperty();
+	}
+	return null;
+}
+
+public Collection<String> listBusinessIdentityNameProperties(){
+	Collection<String> businessIdentityNameProperties = new LinkedList<String>();
+	BusinessIdentity businessIdentity = getClass().getAnnotation(BusinessIdentity.class);
+	if (businessIdentity != null){
+		for (NameProperty nameProperty : businessIdentity.nameProperties()){
+	        if (!isValidProperty(nameProperty.property())){
+	        	throw new InvalidArgumentException("The business identity name property - " + nameProperty
+	        		.property() + " is not a valid property for entity - " + getEntityName());
+	        }
+	        businessIdentityNameProperties.add(nameProperty.property());
+        }
+	}
+	return businessIdentityNameProperties;
+}
+
+
+

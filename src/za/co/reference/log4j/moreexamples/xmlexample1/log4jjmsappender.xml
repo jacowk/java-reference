@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration debug="false">
+<!-- I first need to understand JMS -->
+	<appender name="STDOUT" class="org.apache.log4j.JMSAppender"> <!-- Same as SocketAppender, but relies on the JMS API. 
+																	JMS = Java Message Service, which provide an abstraction for
+																	Message-Oriented Middleware (MOM) products.
+																	JMS specification provides for two types of messaging models:
+																	1) publish-and-subscribe queuing
+																	2) point-to-point queuing
+																	log4j only supports the publish-and-subscribe model.
+																	JMSAppender = publisher to JMS Provider. Publish events to a topic specified.
+																	JMSSink = subscriber to JMS Provider. Consume these topics
+																	-->
+		<param name="LocationInfo" value="boolean"/>
+		<param name="InitialContextFactoryName" value="String"/>
+		<param name="ProviderURL" value="String"/>
+		<param name="URLPkgPrefixes" value="String"/>
+		<param name="SecurityPrincipalName" value="String"/>
+		<param name="SecurityCredentials" value="String"/>
+		<param name="TopicFactoryBindingName" value="String"/>
+		<param name="TopicBindingName" value="String"/>
+		<param name="UserName" value="String"/>
+		<param name="Password" value="String"/>
+		<param name="Threshold" value="WARN"/> <!-- DEBUG, INFO, WARN, ERROR, FATAL -->
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%-5p [%t] %c - %m%n"/>
+		</layout>
+	</appender>
+	
+	<root>
+		<appender-ref ref="STDOUT"/>
+	</root>
+	
+</log4j:configuration>
+
+
+LocationInfo
+InitialContextFactoryName
+ProviderURL
+URLPkgPrefixes
+SecurityPrincipalName
+SecurityCredentials
+TopicFactoryBindingName
+TopicBindingName
+UserName
+Password
+Threshold

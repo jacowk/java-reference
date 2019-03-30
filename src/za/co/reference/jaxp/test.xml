@@ -1,0 +1,10 @@
+<employees>
+	<person>
+		<firstname>John</firstname>
+		<surname>Doe</surname>
+	</person>
+	<person>
+		<firstname>Mike</firstname>
+		<surname>Dough</surname>
+	</person>
+</employees>

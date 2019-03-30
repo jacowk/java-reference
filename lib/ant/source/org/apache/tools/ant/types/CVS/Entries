@@ -1,0 +1,51 @@
+/AbstractFileSet.java/1.3/Tue Jun 29 11:27:02 2010//
+/AntFilterReader.java/1.3/Tue Jun 29 11:27:07 2010//
+/ArchiveFileSet.java/1.2/Tue Jun 29 11:27:06 2010//
+/ArchiveScanner.java/1.2/Tue Jun 29 11:27:07 2010//
+/Assertions.java/1.2/Mon Jun 29 10:56:18 2009//
+/Commandline.java/1.3/Tue Jun 29 11:26:57 2010//
+/CommandlineJava.java/1.3/Tue Jun 29 11:27:05 2010//
+/Comparison.java/1.1/Mon Jun 29 10:56:18 2009//
+/DTDLocation.java/1.2/Mon Jun 29 10:56:18 2009//
+/DataType.java/1.3/Tue Jun 29 11:26:58 2010//
+/Description.java/1.3/Tue Jun 29 11:26:58 2010//
+/DirSet.java/1.3/Tue Jun 29 11:26:57 2010//
+/EnumeratedAttribute.java/1.2/Mon Jun 29 10:56:18 2009//
+/Environment.java/1.2/Mon Jun 29 10:56:18 2009//
+/FileList.java/1.3/Tue Jun 29 11:27:00 2010//
+/FileSet.java/1.3/Tue Jun 29 11:26:57 2010//
+/FilterChain.java/1.3/Tue Jun 29 11:26:58 2010//
+/FilterSet.java/1.3/Tue Jun 29 11:27:01 2010//
+/FilterSetCollection.java/1.2/Mon Jun 29 10:56:18 2009//
+/FlexInteger.java/1.2/Mon Jun 29 10:56:18 2009//
+/LogLevel.java/1.1/Mon Jun 29 10:56:18 2009//
+/Mapper.java/1.3/Tue Jun 29 11:27:02 2010//
+/Parameter.java/1.2/Mon Jun 29 10:56:18 2009//
+/Parameterizable.java/1.2/Mon Jun 29 10:56:18 2009//
+/Path.java/1.3/Tue Jun 29 11:27:06 2010//
+/PatternSet.java/1.3/Tue Jun 29 11:27:01 2010//
+/Permissions.java/1.2/Mon Jun 29 10:56:18 2009//
+/PropertySet.java/1.3/Tue Jun 29 11:27:08 2010//
+/Quantifier.java/1.1/Mon Jun 29 10:56:18 2009//
+/RedirectorElement.java/1.3/Tue Jun 29 11:26:58 2010//
+/Reference.java/1.2/Mon Jun 29 10:56:18 2009//
+/RegularExpression.java/1.3/Tue Jun 29 11:27:00 2010//
+/Resource.java/1.3/Tue Jun 29 11:27:08 2010//
+/ResourceCollection.java/1.1/Mon Jun 29 10:56:18 2009//
+/ResourceFactory.java/1.2/Mon Jun 29 10:56:18 2009//
+/ResourceLocation.java/1.2/Mon Jun 29 10:56:18 2009//
+/Substitution.java/1.2/Mon Jun 29 10:56:18 2009//
+/TarFileSet.java/1.1/Mon Jun 29 10:56:18 2009//
+/TarScanner.java/1.1/Mon Jun 29 10:56:18 2009//
+/TimeComparison.java/1.1/Mon Jun 29 10:56:18 2009//
+/XMLCatalog.java/1.3/Tue Jun 29 11:27:00 2010//
+/ZipFileSet.java/1.2/Mon Jun 29 10:56:18 2009//
+/ZipScanner.java/1.3/Tue Jun 29 11:27:04 2010//
+D/conditions////
+/defaults.properties/1.3/Tue Jun 29 11:27:00 2010//
+D/mappers////
+D/optional////
+D/resolver////
+D/resources////
+D/selectors////
+D/spi////

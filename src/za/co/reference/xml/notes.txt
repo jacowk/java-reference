@@ -1,0 +1,36 @@
+https://jaxb.dev.java.net/nonav/2.0.2/docs/xjcTask.html
+http://ws.apache.org/jaxme/apidocs/org/apache/ws/jaxme/generator/XJCTask.html
+http://docs.rakeshv.org/java/jaxb/ant.html
+https://elandings.alaska.gov/confluence/display/tr/Java+Tutorial+-+Processing+XML+Using+Software+Libraries
+
+http://www.vogella.de/articles/JavaXML/article.html#javaxml_jaxb
+http://tutorials.jenkov.com/java-xml/index.html
+http://download.oracle.com/javaee/1.4/tutorial/doc/JAXPIntro.html
+
+SAX
+---
+Simple API for XML
+Sequential reading of XML files. Can not be used to create XML documents.
+
+SAX provides an Event-Driven XML Processing following the Push-Parsing Model. What this model means is that 
+in SAX, Applications will register Listeners in the form of Handlers to the Parser and will get notified 
+through Call-back methods. Here the SAX Parser takes the control over Application thread by Pushing Events to 
+the Application.
+
+
+Stax (Streaming API for XML)
+----
+Streaming API for XML, simply called StaX, is an API for reading and writing XML Documents. 
+Introduced in Java 6.0 and considered as superior to SAX and DOM
+
+JAXB
+----
+Java Architecture for XML Binding (JAXB)
+JAXB is a Java standard that defines how Java objects are converted to/from XML (specified using a standard 
+set of mappings. JAXB defines a programmer API for reading and writing Java objects to / from XML documents 
+and a service provider which / from from XML documents allows the selection of the JAXB implementation
+
+JAXB applies a lot of defaults thus making reading and writing of XML via Java very easy.
+
+
+

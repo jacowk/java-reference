@@ -1,0 +1,2 @@
+@set CLASSPATH=.;lib\antlr.jar;lib\checkstyle-5.1.jar;lib\checkstyle-all-5.1.jar;lib\commons-beanutils-core.jar;./lib/commons-cli-1.1.jar;lib\commons-logging.jar;lib\mychecks.jar
+java com.puppycrawl.tools.checkstyle.Main -c mystyle.xml JavaOne.java

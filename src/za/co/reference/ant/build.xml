@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="JavaOne" default="copyjar" basedir=".">
+
+	<property name="source.dir" value="${basedir}/source"/>
+	<property name="build.dir" value="${basedir}/build"/>
+	<property name="lib.dir" value="${basedir}/lib"/>
+	
+	<path id="build.path">
+		<fileset dir="${basedir}/lib">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+	
+	<target name="clean">
+		<delete dir="${build.dir}"/>
+		<mkdir dir="${build.dir}"/>
+	</target>
+
+	<target name="compile" depends="clean">
+		<javac srcdir="${source.dir}" destdir="${build.dir}" debug="true" includes="**">
+			<classpath refid="build.path"/>
+		</javac>
+	</target>
+	
+	<target name="createjar" depends="compile">
+		<jar file="${build.dir}/mychecks.jar">
+			<fileset dir="${build.dir}">
+				<include name="com/checkstyle/*.class"/>
+			</fileset>
+		</jar>
+	</target>
+	
+	<target name="copyjar" depends="createjar">
+		<copy todir= "${lib.dir}">
+			<filelist dir="${build.dir}" files="mychecks.jar"/>
+		</copy>
+	</target>
+	
+	<target name="checkstyle">
+		<description>Checkstyle test</description>
+		<taskdef resource="checkstyletask.properties" classpath="C:\checkstyle"/>
+ 		<checkstyle config="mystyle.xml" file="JavaOne.java"/>	
+        </target>
+</project>

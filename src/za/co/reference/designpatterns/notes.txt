@@ -1,0 +1,229 @@
+http://changingminds.org/techniques/conversation/conversation.htm
+
+http://www.allapplabs.com/java_design_patterns/adapter_pattern.htm
+http://www.fluffycat.com/Java-Design-Patterns/Adapter/
+
+The Gang of Four suggests a few strategies for creating good objectoriented designs:
+• Design to interfaces.
+• Favor composition over inheritance.
+• Find what varies and encapsulate it.
+
+Creational Patterns
+--------------------
+Abstract factory: Provide an interface for creating families of related or dependent objects without specifying their concrete classes.
+Factory method: Define an interface for creating an object, but let subclasses decide which class to instantiate. Factory Method lets a class defer instantiation to subclasses.
+Builder: Separate the construction of a complex object from its representation so that the same construction process can create different representations.
+Lazy initialization: Tactic of delaying the creation of an object, the calculation of a value, or some other expensive process until the first time it is needed.
+Object pool: Avoid expensive acquisition and release of resources by recycling objects that are no longer in use
+Prototype: Specify the kinds of objects to create using a prototypical instance, and create new objects by copying this prototype.
+Singleton: Ensure a class has only one instance, and provide a global point of access to it.
+Multiton: Ensure a class has only named instances, and provide global point of access to them.
+Resource acquisition is initialization: Ensure that resources are properly released by tying them to the lifespan of suitable objects. 	
+
+Structural patterns
+--------------------
+Adapter or Wrapper: Convert the interface of a class into another interface clients expect. Adapter lets classes work together that couldn't otherwise because of incompatible interfaces.
+Bridge: Decouple an abstraction from its implementation so that the two can vary independently.
+Composite: Compose objects into tree structures to represent part-whole hierarchies. Composite lets clients treat individual objects and compositions of objects uniformly.
+Decorator: Attach additional responsibilities to an object dynamically keeping the same interface. Decorators provide a flexible alternative to subclassing for extending functionality.
+Facade: Provide a unified interface to a set of interfaces in a subsystem. Facade defines a higher-level interface that makes the subsystem easier to use.
+Flyweight: Use sharing to support large numbers of fine-grained objects efficiently.
+Proxy: Provide a surrogate or placeholder for another object to control access to it.
+
+Behavioral patterns
+--------------------
+Chain of responsibility: Avoid coupling the sender of a request to its receiver by giving more than one object a chance to handle the request. Chain the receiving objects and pass the request along the chain until an object handles it.
+Command: Encapsulate a request as an object, thereby letting you parameterize clients with different requests, queue or log requests, and support undoable operations.
+Interpreter: Given a language, define a representation for its grammar along with an interpreter that uses the representation to interpret sentences in the language.
+Iterator: Provide a way to access the elements of an aggregate object sequentially without exposing its underlying representation.
+Mediator: Define an object that encapsulates how a set of objects interact. Mediator promotes loose coupling by keeping objects from referring to each other explicitly, and it lets you vary their interaction independently.
+Restorer: An alternative to the existing Memento pattern.
+Memento: Without violating encapsulation, capture and externalize an object's internal state so that the object can be restored to this state later.
+Null Object: designed to act as a default value of an object.
+Observer or Publish/subscribe: Define a one-to-many dependency between objects so that when one object changes state, all its dependents are notified and updated automatically.
+Blackboard: Generalized observer, which allows multiple readers and writers. Communicates information system-wide.
+State: Allow an object to alter its behavior when its internal state changes. The object will appear to change its class.
+Strategy: Define a family of algorithms, encapsulate each one, and make them interchangeable. Strategy lets the algorithm vary independently from clients that use it.
+Specification: Recombinable business logic in a boolean fashion
+Template method: Define the skeleton of an algorithm in an operation, deferring some steps to subclasses. Template Method lets subclasses redefine certain steps of an algorithm without changing the algorithm's structure.
+Visitor: Represent an operation to be performed on the elements of an object structure. Visitor lets you define a new operation without changing the classes of the elements on which it operates.
+
+Concurrency patterns
+--------------------
+Active Object: The Active Object design pattern decouples method execution from method invocation that reside in their own thread of control. The goal is to introduce concurrency, by using asynchronous method invocation and a scheduler for handling requests.
+Binding Properties: Combining multiple observers to force properties in different objects to be synchronized or coordinated in some way.
+Event-Based Asynchronous: The event-based asynchronous design pattern addresses problems with the Asynchronous Pattern that occur in multithreaded programs.
+Balking: The Balking pattern is a software design pattern that only executes an action on an object when the object is in a particular state.
+Guarded suspension: In concurrent programming, guarded suspension is a software design pattern for managing operations that require both a lock to be acquired and a precondition to be satisfied before the operation can be executed.
+Monitor object: A monitor is an approach to synchronize two or more computer tasks that use a shared resource, usually a hardware device or a set of variables.
+Scheduler: The scheduler pattern is a concurrency pattern used to explicitly control when threads may execute single-threaded code.
+Thread pool: In the thread pool pattern in programming, a number of threads are created to perform a number of tasks, which are usually organized in a queue. Typically, there are many more tasks than threads.
+Thread-specific storage: Thread-local storage (TLS) is a computer programming method that uses static or global memory local to a thread.
+Reactor: The reactor design pattern is a concurrent programming pattern for handling service requests delivered concurrently to a service handler by one or more inputs. The service handler then demultiplexes the incoming requests and dispatches them synchronously to the associated request handlers.
+Lock: One thread puts a "lock" on a resource, preventing other threads from accessing or modifying it.
+Double checked locking: Double-checked locking is a software design pattern also known as "double-checked locking optimization". The pattern is designed to reduce the overhead of acquiring a lock by first testing the locking criterion (the 'lock hint') in an unsafe manner; only if that succeeds does the actual lock proceed.
+	The pattern, when implemented in some language/hardware combinations, can be unsafe. It can therefore sometimes be considered an anti-pattern.
+Read write lock: Allows concurrent read access to an object but requires exclusive access for write operations.
+
+
+ANTI-PATTERNS
+-------------
+Organizational anti-patterns
+
+    * Analysis paralysis: Devoting disproportionate effort to the analysis phase of a project
+    * Cash cow: A profitable legacy product that often leads to complacency about new products
+    * Design by committee: The result of having many contributors to a design, but no unifying vision
+    * Escalation of commitment: Failing to revoke a decision when it proves wrong
+    * Management by perkele: Authoritarian style of management with no tolerance for dissent
+    * Moral hazard: Insulating a decision-maker from the consequences of his or her decision.
+    * Mushroom management: Keeping employees uninformed and misinformed (kept in the dark and fed manure)
+    * Stovepipe: A structure that supports mostly up-down flow of data but inhibits cross organizational communication
+    * Vendor lock-in: Making a system excessively dependent on an externally supplied component[4]
+
+[edit] Project management anti-patterns
+
+    * Death march: Everyone knows that the project is going to be a disaster – except the CEO. However, the truth remains hidden and the project is artificially kept alive until the Day Zero finally comes ("Big Bang"). Alternative definition: Employees are pressured to work late nights and weekends on a project with an unreasonable deadline.
+    * Groupthink: During groupthink, members of the group avoid promoting viewpoints outside the comfort zone of consensus thinking.
+    * Smoke and mirrors: Demonstrating how unimplemented functions will appear
+    * Software bloat: Allowing successive versions of a system to demand ever more resources
+
+[edit] Analysis anti-patterns
+
+    * Bystander apathy: When a requirement or design decision is wrong, but the people who notice this do nothing because it affects a larger number of people.
+
+[edit] Software design anti-patterns
+
+    * Abstraction inversion: Not exposing implemented functionality required by users, so that they re-implement it using higher level functions
+    * Ambiguous viewpoint: Presenting a model (usually OOAD) without specifying its viewpoint
+    * Big ball of mud: A system with no recognizable structure
+    * Database-as-IPC: Using a database as the message queue for routine interprocess communication where a much more lightweight mechanism would be suitable
+    * Gas factory: An unnecessarily complex design
+    * Gold plating: Continuing to work on a task or project well past the point at which extra effort is adding value
+    * Inner-platform effect: A system so customizable as to become a poor replica of the software development platform
+    * Input kludge: Failing to specify and implement handling of possibly invalid input
+    * Interface bloat: Making an interface so powerful that it is extremely difficult to implement
+    * Magic pushbutton: Coding implementation logic directly within interface code, without using abstraction.
+    * Race hazard: Failing to see the consequence of different orders of events
+    * Stovepipe system: A barely maintainable assemblage of ill-related components
+
+[edit] Object-oriented design anti-patterns
+
+    * Anemic Domain Model: The use of domain model without any business logic which is not OOP because each object should have both attributes and behaviors
+    * BaseBean: Inheriting functionality from a utility class rather than delegating to it
+    * Call super: Requiring subclasses to call a superclass's overridden method
+    * Circle-ellipse problem: Subtyping variable-types on the basis of value-subtypes
+    * Circular dependency: Introducing unnecessary direct or indirect mutual dependencies between objects or software modules
+    * Constant interface: Using interfaces to define constants
+    * God object: Concentrating too many functions in a single part of the design (class)
+    * Object cesspool: Reusing objects whose state does not conform to the (possibly implicit) contract for re-use
+    * Object orgy: Failing to properly encapsulate objects permitting unrestricted access to their internals
+    * Poltergeists: Objects whose sole purpose is to pass information to another object
+    * Sequential coupling: A class that requires its methods to be called in a particular order
+    * Yo-yo problem: A structure (e.g., of inheritance) that is hard to understand due to excessive fragmentation
+
+[edit] Programming anti-patterns
+
+    * Accidental complexity: Introducing unnecessary complexity into a solution
+    * Action at a distance: Unexpected interaction between widely separated parts of a system
+    * Blind faith: Lack of checking of (a) the correctness of a bug fix or (b) the result of a subroutine
+    * Boat anchor: Retaining a part of a system that no longer has any use
+    * Busy spin: Consuming CPU while waiting for something to happen, usually by repeated checking instead of messaging
+    * Caching failure: Forgetting to reset an error flag when an error has been corrected
+    * Cargo cult programming: Using patterns and methods without understanding why
+    * Coding by exception: Adding new code to handle each special case as it is recognized
+    * Error hiding: Catching an error message before it can be shown to the user and either showing nothing or showing a meaningless message
+    * Expection handling: (a portmanteau of expect and exception) Using a language's error handling system to implement normal program logic
+    * Hard code: Embedding assumptions about the environment of a system in its implementation
+    * Lava flow: Retaining undesirable (redundant or low-quality) code because removing it is too expensive or has unpredictable consequences[5][6]
+    * Loop-switch sequence: Encoding a set of sequential steps using a loop over a switch statement
+    * Magic numbers: Including unexplained numbers in algorithms
+    * Magic strings: Including literal strings in code, for comparisons, as event types etc.
+    * Soft code: Storing business logic in configuration files rather than source code[7]
+    * Spaghetti code: Systems whose structure is barely comprehensible, especially because of misuse of code structures
+
+[edit] Methodological anti-patterns
+
+    * Copy and paste programming: Copying (and modifying) existing code rather than creating generic solutions
+    * Golden hammer: Assuming that a favorite solution is universally applicable (See: Silver Bullet)
+    * Improbability factor: Assuming that it is improbable that a known error will occur
+    * Premature optimization: Coding early-on for perceived efficiency, sacrificing good design, maintainability, and sometimes even real-world efficiency
+    * Programming by permutation (or "programming by accident"): Trying to approach a solution by successively modifying the code to see if it works
+    * Reinventing the wheel: Failing to adopt an existing, adequate solution
+    * Silver bullet: Assuming that a favorite technical solution can solve a larger process or problem
+    * Tester Driven Development: Software projects in which new requirements are specified in bug reports
+
+[edit] Configuration management anti-patterns
+
+    * Dependency hell: Problems with versions of required products
+    * DLL hell: Inadequate management of dynamic-link libraries (DLLs), specifically on Microsoft Windows
+    * Extension conflict: Problems with different extensions to pre-Mac OS X versions of the Mac OS attempting to patch the same parts of the operating system
+    * JAR hell: Overutilization of the multiple JAR files, usually causing versioning and location problems because of misunderstanding of the Java class loading model
+
+
+List of software development philosophies
+-----------------------------------------
+From Wikipedia, the free encyclopedia
+Jump to: navigation, search
+
+This is a list of approaches, styles, and philosophies in software development.
+
+    * Agile software development
+    * Agile Unified Process (AUP)
+    * Aspect-oriented Programming
+    * Behavior Driven Development (BDD)
+    * Big Design Up Front (BDUF)
+    * Blind Men And Elephant Approach (BMAEA)
+    * Brooks's law
+    * bytecode/interpreter platform independent code
+    * Cathedral and the Bazaar (see also Release early, release often)
+    * Code and fix
+    * Cone of Uncertainty
+    * Constructionist design methodology (CDM)
+    * Continuous integration
+    * Control tables
+    * Conway's Law
+    * Cowboy coding
+    * Crystal Clear
+    * Dependency injection
+    * Design-driven development (D3)
+    * Domain-Driven Design (DDD)
+    * Don't repeat yourself (DRY) or Once and Only Once (OAOO), Single Point of Truth (SPoT)
+    * Dynamic Systems Development Method (DSDM)
+    * Extreme Programming (XP)
+    * Feature Driven Development
+    * Hollywood Principle
+    * Inversion of control
+    * Iterative and incremental development
+    * Joint application design, aka JAD or "Joint Application Development"
+    * Kaizen
+    * Kanban
+    * KISS principle (Keep It Simple, Stupid)
+    * Lean software development
+    * Literate Programming
+    * Microsoft Solutions Framework (MSF)
+    * Model-driven architecture (MDA)
+    * MoSCoW Method
+    * Open source
+    * Open Unified Process
+    * Quick-and-dirty
+    * Rapid application development (RAD)
+    * Rational Unified Process (RUP)
+    * Release early, release often (see also The Cathedral and the Bazaar)
+    * Scrum
+    * Separation of concerns (SoC)
+    * Service-oriented modeling
+    * Software Craftsmanship
+    * Software System Safety
+    * Solid (Object Oriented Design)
+    * Spiral model
+    * Test-driven development (TDD)
+    * Unified Process (UP)
+    * V-Model
+    * Waterfall model
+    * Wheel and spoke model
+    * When it’s ready [1]
+    * Worse is better (New Jersey style, as contrasted with the MIT approach)
+    * You Ain't Gonna Need It (YAGNI)
+    * Zero One Infinity
+    * Win-Win Model
+    

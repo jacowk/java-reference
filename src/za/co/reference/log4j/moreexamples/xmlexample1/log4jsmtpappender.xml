@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration debug="false">
+
+	<appender name="STDOUT" class="org.apache.log4j.SMTPAppender"> <!-- Accumulates logging event in a fixed-size buffer and sends them in an e-mail when a certain triggering event occurs. 
+																		Relies on the JavaMail API.
+																		Initiate transmission of an e-mail message as a response to
+																		an event of level ERROR or higher.
+																	-->
+		<param name="SMTPHost" value="mercury"/> <!-- String - Host name of the SMTP server. Mandatory -->
+		<param name="To" value="toemail@none.co.za"/> <!-- String - Recipient email address -->
+		<param name="From" value="fromemail@none.co.za"/> <!-- String - Sender email address -->
+		<aram name="BuferedSize" value="512"/> <!-- int - The maximum number of logging events to collect in a cycle buffer. 512 is default -->
+		<param name="EvaluatorClass" value=""/> <!-- Name of the class implementing the TriggerEventEvaluator interface -->
+		<param name="LocationInfo" value="true"/>
+		<param name="Threshold" value="WARN"/> <!-- DEBUG, INFO, WARN, ERROR, FATAL -->
+		
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%-5p [%t] %c - %m%n"/>
+		</layout>
+	</appender>
+	
+	<root>
+		<appender-ref ref="STDOUT"/>
+	</root>
+	
+</log4j:configuration>

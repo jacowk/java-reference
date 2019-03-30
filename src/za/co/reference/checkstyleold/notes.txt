@@ -1,0 +1,17 @@
+http://www.javaworld.com/javaworld/jw-11-2008/jw-11-checkstyle1.html?page=3
+http://www.javaworld.com/javaworld/jw-09-2002/jw-0913-designpatterns.html
+
+--Run GUI
+java -classpath checkstyle-all-5.1.jar com.puppycrawl.tools.checkstyle.gui.Main JavaOne.java
+
+--Run with configuration file
+java -classpath checkstyle-all-5.1.jar com.puppycrawl.tools.checkstyle.Main JavaOne.java -c checkstyle.xml IllegalExceptionThrowsCheck.java
+
+java -agentlib:hprof=heap=sites source/net/connectivit/rusulka/NoSpacesInMethodsCheck.java -cp $CP:rusulka.jar com.puppycrawl.tools.checkstyle.Main -c include/rusulka.xml
+
+java source/net/connectivit/rusulka/NoSpacesInMethodsCheck.java -cp $CP:rusulka.jar com.puppycrawl.tools.checkstyle.Main -c include/rusulka.xml
+
+
+set CLASSPATH=.;antlr.jar;checkstyle-5.1.jar;checkstyle-all-5.1.jar;commons-beanutils-core.jar;commons-cli-1.1.jar;commons-logging.jar;google-collect-1.0.jar
+
+java com.puppycrawl.tools.checkstyle.Main -c checkstyle.xml C:\checkstyle\JavaOne.java

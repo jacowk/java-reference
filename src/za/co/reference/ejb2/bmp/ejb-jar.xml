@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ejb-jar xmlns="http://java.sun.com/xml/ns/j2ee" 
+         version="2.1" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/ejb-jar_2_1.xsd">
+  <display-name>AccountJAR</display-name>
+  <enterprise-beans>
+    <entity>
+      <ejb-name>AccountEJB</ejb-name>
+      <home>examples.bmp.AccountHome</home>
+      <remote>examples.bmp.Account</remote>
+      <ejb-class>examples.bmp.AccountBean</ejb-class>
+      <persistence-type>Bean</persistence-type>
+      <prim-key-class>examples.bmp.AccountPK</prim-key-class>
+      <reentrant>false</reentrant>
+      <resource-ref>
+        <res-ref-name>jdbc/bmp-account</res-ref-name>
+        <res-type>javax.sql.DataSource</res-type>
+        <res-auth>Container</res-auth>
+        <res-sharing-scope>Shareable</res-sharing-scope>
+      </resource-ref>
+    </entity>
+  </enterprise-beans>
+  <assembly-descriptor>
+    <container-transaction>
+      <method>
+        <ejb-name>AccountEJB</ejb-name>
+        <method-intf>Remote</method-intf>
+        <method-name>*</method-name>
+      </method>
+     <method>
+        <ejb-name>AccountEJB</ejb-name>
+        <method-intf>Local</method-intf>
+        <method-name>*</method-name>
+      </method>
+      <trans-attribute>Required</trans-attribute>
+    </container-transaction>
+  </assembly-descriptor>
+</ejb-jar>

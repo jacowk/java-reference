@@ -1,0 +1,801 @@
+http://www.ibm.com/developerworks/library/x-xjavaxquery/
+http://www.xquery.com/tutorials/xqj_tutorial/
+
+
+http://www.w3schools.com/xquery/default.asp
+
+============================================================================================================
+XQuery Tutorial
+
+XQuery is to XML what SQL is to database tables.
+
+XQuery was designed to query XML data.
+
+ 
+XQuery Example
+for $x in doc("books.xml")/bookstore/book
+where $x/price>30
+order by $x/title
+return $x/title
+ 
+ 
+Introduction to XQuery
+« Previous Next Chapter » 
+
+--------------------------------------------------------------------------------
+
+XQuery is to XML what SQL is to database tables.
+
+XQuery is designed to query XML data - not just XML files, but anything that can appear as XML, including databases.
+
+
+--------------------------------------------------------------------------------
+
+What You Should Already Know
+Before you continue you should have a basic understanding of the following:
+
+•HTML / XHTML
+•XML / XML Namespaces
+•XPath
+If you want to study these subjects first, find the tutorials on our Home page.
+
+
+--------------------------------------------------------------------------------
+
+What is XQuery?
+•XQuery is the language for querying XML data
+•XQuery for XML is like SQL for databases
+•XQuery is built on XPath expressions
+•XQuery is supported by all major databases
+•XQuery is a W3C Recommendation
+ 
+
+
+--------------------------------------------------------------------------------
+
+XQuery is About Querying XML
+XQuery is a language for finding and extracting elements and attributes from XML documents.
+
+Here is an example of a question that XQuery could solve:
+
+"Select all CD records with a price less than $10 from the CD collection stored in the XML document called cd_catalog.xml"
+
+
+--------------------------------------------------------------------------------
+
+XQuery and XPath
+XQuery 1.0 and XPath 2.0 share the same data model and support the same functions and operators. If you have 
+already studied XPath you will have no problems with understanding XQuery. 
+
+You can read more about XPath in our XPath Tutorial.
+
+
+--------------------------------------------------------------------------------
+
+XQuery - Examples of Use
+XQuery can be used to:
+
+•Extract information to use in a Web Service
+•Generate summary reports
+•Transform XML data to XHTML
+•Search Web documents for relevant information
+
+--------------------------------------------------------------------------------
+
+XQuery is a W3C Recommendation
+XQuery is compatible with several W3C standards, such as XML, Namespaces, XSLT, XPath, and XML Schema.
+
+XQuery 1.0 became a W3C Recommendation January 23, 2007.
+
+To read more about the XQuery activity at W3C, please read our W3C Tutorial.
+ 
+ 
+============================================================================================================
+XQuery Example
+« Previous Next Chapter » 
+
+--------------------------------------------------------------------------------
+
+Let's try to learn some basic XQuery syntax by looking at an example.
+
+
+--------------------------------------------------------------------------------
+
+The XML Example Document
+We will use the following XML document in the examples below.
+
+"books.xml":
+
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<bookstore>
+
+<book category="COOKING">
+  <title lang="en">Everyday Italian</title>
+  <author>Giada De Laurentiis</author>
+  <year>2005</year>
+  <price>30.00</price>
+</book>
+
+<book category="CHILDREN">
+  <title lang="en">Harry Potter</title>
+  <author>J K. Rowling</author>
+  <year>2005</year>
+  <price>29.99</price>
+</book>
+
+<book category="WEB">
+  <title lang="en">XQuery Kick Start</title>
+  <author>James McGovern</author>
+  <author>Per Bothner</author>
+  <author>Kurt Cagle</author>
+  <author>James Linn</author>
+  <author>Vaidyanathan Nagarajan</author>
+  <year>2003</year>
+  <price>49.99</price>
+</book>
+
+<book category="WEB">
+  <title lang="en">Learning XML</title>
+  <author>Erik T. Ray</author>
+  <year>2003</year>
+  <price>39.95</price>
+</book>
+
+</bookstore> 
+
+View the "books.xml" file in your browser.
+
+
+--------------------------------------------------------------------------------
+
+How to Select Nodes From "books.xml"?
+Functions
+XQuery uses functions to extract data from XML documents.
+
+The doc() function is used to open the "books.xml" file:
+
+doc("books.xml") 
+
+Path Expressions
+XQuery uses path expressions to navigate through elements in an XML document.
+
+The following path expression is used to select all the title elements in the "books.xml" file:
+
+doc("books.xml")/bookstore/book/title 
+
+(/bookstore selects the bookstore element, /book selects all the book elements under the bookstore element, 
+and /title selects all the title elements under each book element)
+
+The XQuery above will extract the following:
+
+<title lang="en">Everyday Italian</title>
+<title lang="en">Harry Potter</title>
+<title lang="en">XQuery Kick Start</title>
+<title lang="en">Learning XML</title> 
+
+Predicates
+XQuery uses predicates to limit the extracted data from XML documents.
+
+The following predicate is used to select all the book elements under the bookstore element that have a price 
+element with a value that is less than 30:
+
+doc("books.xml")/bookstore/book[price<30]
+
+The XQuery above will extract the following:
+
+<book category="CHILDREN">
+  <title lang="en">Harry Potter</title>
+  <author>J K. Rowling</author>
+  <year>2005</year>
+  <price>29.99</price>
+</book> 
+
+
+============================================================================================================
+XQuery FLWOR Expressions
+« Previous Next Chapter » 
+
+--------------------------------------------------------------------------------
+
+The XML Example Document
+We will use the "books.xml" document in the examples below (same XML file as in the previous chapter).
+
+View the "books.xml" file in your browser.
+
+
+--------------------------------------------------------------------------------
+
+How to Select Nodes From "books.xml" With FLWOR
+Look at the following path expression:
+
+doc("books.xml")/bookstore/book[price>30]/title 
+
+The expression above will select all the title elements under the book elements that are under the bookstore 
+element that have a price element with a value that is higher than 30.
+
+The following FLWOR expression will select exactly the same as the path expression above:
+
+for $x in doc("books.xml")/bookstore/book
+where $x/price>30
+return $x/title 
+
+The result will be:
+
+<title lang="en">XQuery Kick Start</title>
+<title lang="en">Learning XML</title> 
+
+With FLWOR you can sort the result:
+
+for $x in doc("books.xml")/bookstore/book
+where $x/price>30
+order by $x/title
+return $x/title 
+
+FLWOR is an acronym for "For, Let, Where, Order by, Return".
+
+The for clause selects all book elements under the bookstore element  into a variable called $x.
+
+The where clause selects only book elements with a price element with a value greater than 30.
+
+The order by clause defines the sort-order. Will be sort by the title element.
+
+The return clause specifies what should be returned. Here it returns the title elements.
+
+The result of the XQuery expression above will be:
+
+<title lang="en">Learning XML</title>
+<title lang="en">XQuery Kick Start</title>  
+
+
+============================================================================================================
+XQuery FLWOR + HTML
+« Previous Next Chapter » 
+
+--------------------------------------------------------------------------------
+
+The XML Example Document
+We will use the "books.xml" document in the examples below (same XML file as in the previous chapters).
+
+View the "books.xml" file in your browser.
+
+
+--------------------------------------------------------------------------------
+
+Present the Result In an HTML List
+Look at the following XQuery FLWOR expression:
+
+for $x in doc("books.xml")/bookstore/book/title
+order by $x
+return $x 
+
+The expression above will select all the title elements under the book elements that are under the bookstore element, and return the title elements in alphabetical order.
+
+Now we want to list all the book-titles in our bookstore in an HTML list. We add <ul> and <li> tags to the FLWOR expression: 
+
+<ul>
+{
+for $x in doc("books.xml")/bookstore/book/title
+order by $x
+return <li>{$x}</li>
+}
+</ul> 
+
+The result of the above will be:
+
+<ul>
+<li><title lang="en">Everyday Italian</title></li>
+<li><title lang="en">Harry Potter</title></li>
+<li><title lang="en">Learning XML</title></li>
+<li><title lang="en">XQuery Kick Start</title></li>
+</ul> 
+
+Now we want to eliminate the title element, and show only the data inside the title element:
+
+<ul>
+{
+for $x in doc("books.xml")/bookstore/book/title
+order by $x
+return <li>{data($x)}</li>
+}
+</ul> 
+
+The result will be (an HTML list):
+
+<ul>
+<li>Everyday Italian</li>
+<li>Harry Potter</li>
+<li>Learning XML</li>
+<li>XQuery Kick Start</li>
+</ul> 
+
+
+============================================================================================================
+XQuery Terms
+« Previous Next Chapter » 
+
+--------------------------------------------------------------------------------
+
+In XQuery, there are seven kinds of nodes: element, attribute, text, namespace, processing-instruction, comment, and document (root) nodes.
+
+
+--------------------------------------------------------------------------------
+
+XQuery Terminology
+Nodes
+In XQuery, there are seven kinds of nodes: element, attribute, text, namespace, processing-instruction, comment, 
+and document (root) nodes. XML documents are treated as trees of nodes. The root of the tree is called the document node (or root node).
+
+Look at the following XML document:
+
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<bookstore>
+
+<book>
+  <title lang="en">Harry Potter</title>
+  <author>J K. Rowling</author>
+  <year>2005</year>
+  <price>29.99</price>
+</book>
+
+</bookstore> 
+
+Example of nodes in the XML document above:
+
+<bookstore> (document node)
+
+<author>J K. Rowling</author> (element node)
+
+lang="en" (attribute node) 
+
+Atomic values
+Atomic values are nodes with no children or parent.
+
+Example of atomic values:
+
+J K. Rowling
+
+"en" 
+
+Items
+Items are atomic values or nodes.
+
+
+--------------------------------------------------------------------------------
+
+Relationship of Nodes
+Parent
+Each element and attribute has one parent.
+
+In the following example; the book element is the parent of the title, author, year, and price:
+
+<book>
+  <title>Harry Potter</title>
+  <author>J K. Rowling</author>
+  <year>2005</year>
+  <price>29.99</price>
+</book> 
+
+Children
+Element nodes may have zero, one or more children.
+
+In the following example; the title, author, year, and price elements are all children of the book element:
+
+<book>
+  <title>Harry Potter</title>
+  <author>J K. Rowling</author>
+  <year>2005</year>
+  <price>29.99</price>
+</book> 
+
+Siblings
+Nodes that have the same parent.
+
+In the following example; the title, author, year, and price elements are all siblings:
+
+<book>
+  <title>Harry Potter</title>
+  <author>J K. Rowling</author>
+  <year>2005</year>
+  <price>29.99</price>
+</book> 
+
+Ancestors
+A node's parent, parent's parent, etc.
+
+In the following example; the ancestors of the title element are the book element and the bookstore element:
+
+<bookstore>
+
+<book>
+  <title>Harry Potter</title>
+  <author>J K. Rowling</author>
+  <year>2005</year>
+  <price>29.99</price>
+</book>
+
+</bookstore> 
+
+Descendants
+A node's children, children's children, etc.
+
+In the following example; descendants of the bookstore element are the book, title, author, year, and price elements:
+
+<bookstore>
+
+<book>
+  <title>Harry Potter</title>
+  <author>J K. Rowling</author>
+  <year>2005</year>
+  <price>29.99</price>
+</book>
+
+</bookstore> 
+
+
+
+============================================================================================================
+XQuery Syntax
+« Previous Next Chapter » 
+
+--------------------------------------------------------------------------------
+
+XQuery is case-sensitive and XQuery elements, attributes, and variables must be valid XML names.
+
+
+--------------------------------------------------------------------------------
+
+XQuery Basic Syntax Rules
+Some basic syntax rules:
+
+•XQuery is case-sensitive
+•XQuery elements, attributes, and variables must be valid XML names
+•An XQuery string value can be in single or double quotes
+•An XQuery variable is defined with a $ followed by a name, e.g. $bookstore
+•XQuery comments are delimited by (: and :), e.g. (: XQuery Comment :)
+
+--------------------------------------------------------------------------------
+
+XQuery Conditional Expressions
+"If-Then-Else" expressions are allowed in XQuery.
+
+Look at the following example:
+
+for $x in doc("books.xml")/bookstore/book
+return if ($x/@category="CHILDREN")
+then <child>{data($x/title)}</child>
+else <adult>{data($x/title)}</adult> 
+
+Notes on the "if-then-else" syntax: parentheses around the if expression are required. else is required, but it can be just else ().
+
+The result of the example above will be:
+
+<adult>Everyday Italian</adult>
+<child>Harry Potter</child>
+<adult>Learning XML</adult>
+<adult>XQuery Kick Start</adult> 
+
+
+--------------------------------------------------------------------------------
+
+XQuery Comparisons
+In XQuery there are two ways of comparing values.
+
+1. General comparisons: =, !=, <, <=, >, >=
+
+2. Value comparisons: eq, ne, lt, le, gt, ge
+
+The difference between the two comparison methods are shown below.
+
+The following expression returns true if any q attributes have a value greater than 10:
+
+$bookstore//book/@q > 10 
+
+The following expression returns true if there is only one q attribute returned by the expression, and its 
+value is greater than 10. If more than one q is returned, an error occurs:
+
+$bookstore//book/@q gt 10 
+
+
+============================================================================================================
+XQuery Adding Elements and Attributes
+« Previous Next Chapter » 
+
+--------------------------------------------------------------------------------
+
+The XML Example Document
+We will use the "books.xml" document in the examples below (same XML file as in the previous chapters).
+
+View the "books.xml" file in your browser.
+
+
+--------------------------------------------------------------------------------
+
+Adding Elements and Attributes to the Result
+As we have seen in a previous chapter, we may include elements and attributes from the input document ("books.xml) in the result:
+
+for $x in doc("books.xml")/bookstore/book/title
+order by $x
+return $x
+ 
+
+The XQuery expression above will include both the title element and the lang attribute in the result, like this:
+
+<title lang="en">Everyday Italian</title>
+<title lang="en">Harry Potter</title>
+<title lang="en">Learning XML</title>
+<title lang="en">XQuery Kick Start</title> 
+
+The XQuery expression above returns the title elements the exact same way as they are described in the input document.
+
+We now want to add our own elements and attributes to the result!
+
+Add HTML Elements and Text
+Now, we want to add some HTML elements to the result. We will put the result in an HTML list - together with some text:
+
+<html>
+<body>
+
+<h1>Bookstore</h1>
+
+<ul>
+{
+for $x in doc("books.xml")/bookstore/book
+order by $x/title
+return <li>{data($x/title)}. Category: {data($x/@category)}</li>
+}
+</ul>
+
+</body>
+</html> 
+
+The XQuery expression above will generate the following result:
+
+<html>
+<body>
+
+<h1>Bookstore</h1>
+
+<ul>
+<li>Everyday Italian. Category: COOKING</li>
+<li>Harry Potter. Category: CHILDREN</li>
+<li>Learning XML. Category: WEB</li>
+<li>XQuery Kick Start. Category: WEB</li>
+</ul>
+
+</body>
+</html> 
+
+Add Attributes to HTML Elements
+Next, we want to use the category attribute as a class attribute in the HTML list:
+
+<html>
+<body>
+
+<h1>Bookstore</h1>
+
+<ul>
+{
+for $x in doc("books.xml")/bookstore/book
+order by $x/title
+return <li class="{data($x/@category)}">{data($x/title)}</li>
+}
+</ul>
+
+</body>
+</html> 
+
+The XQuery expression above will generate the following result:
+
+<html>
+<body>
+<h1>Bookstore</h1>
+
+<ul>
+<li class="COOKING">Everyday Italian</li>
+<li class="CHILDREN">Harry Potter</li>
+<li class="WEB">Learning XML</li>
+<li class="WEB">XQuery Kick Start</li>
+</ul>
+
+</body>
+</html> 
+
+
+============================================================================================================
+XQuery Selecting and Filtering
+« Previous Next Chapter » 
+
+--------------------------------------------------------------------------------
+
+The XML Example Document
+We will use the "books.xml" document in the examples below (same XML file as in the previous chapters).
+
+View the "books.xml" file in your browser.
+
+
+--------------------------------------------------------------------------------
+
+Selecting and Filtering Elements
+As we have seen in the previous chapters, we are selecting and filtering elements with either a Path expression or with a FLWOR expression.
+
+Look at the following FLWOR expression:
+
+for $x in doc("books.xml")/bookstore/book
+where $x/price>30
+order by $x/title
+return $x/title 
+
+•for - (optional) binds a variable to each item returned by the in expression
+•let - (optional) 
+•where - (optional) specifies a criteria
+•order by - (optional) specifies the sort-order of the result
+•return - specifies what to return in the result
+The for Clause
+The for clause binds a variable to each item returned by the in expression. The for clause results in iteration. There can be multiple for clauses in the same FLWOR expression.
+
+To loop a specific number of times in a for clause, you may use the to keyword:
+
+for $x in (1 to 5)
+return <test>{$x}</test> 
+
+Result:
+
+<test>1</test>
+<test>2</test>
+<test>3</test>
+<test>4</test>
+<test>5</test> 
+
+The at keyword can be used to count the iteration:
+
+for $x at $i in doc("books.xml")/bookstore/book/title
+return <book>{$i}. {data($x)}</book>
+
+Result:
+
+<book>1. Everyday Italian</book>
+<book>2. Harry Potter</book>
+<book>3. XQuery Kick Start</book>
+<book>4. Learning XML</book> 
+
+It is also allowed with more than one in expression in the for clause. Use comma to separate each in expression:
+
+for $x in (10,20), $y in (100,200)
+return <test>x={$x} and y={$y}</test> 
+
+Result:
+
+<test>x=10 and y=100</test>
+<test>x=10 and y=200</test>
+<test>x=20 and y=100</test>
+<test>x=20 and y=200</test> 
+
+The let Clause
+The let clause allows variable assignments and it avoids repeating the same expression many times. The let 
+clause does not result in iteration.
+
+let $x := (1 to 5)
+return <test>{$x}</test> 
+
+Result:
+
+<test>1 2 3 4 5</test> 
+
+The where Clause
+The where clause is used to specify one or more criteria for the result:
+
+where $x/price>30 and $x/price<100
+
+The order by Clause
+The order by clause is used to specify the sort order of the result. Here we want to order the result by category and title:
+
+for $x in doc("books.xml")/bookstore/book
+order by $x/@category, $x/title
+return $x/title 
+
+Result:
+
+<title lang="en">Harry Potter</title>
+<title lang="en">Everyday Italian</title>
+<title lang="en">Learning XML</title>
+<title lang="en">XQuery Kick Start</title> 
+
+The return Clause
+The return clause specifies what is to be returned.
+
+for $x in doc("books.xml")/bookstore/book
+return $x/title 
+
+Result:
+
+<title lang="en">Everyday Italian</title>
+<title lang="en">Harry Potter</title>
+<title lang="en">XQuery Kick Start</title>
+<title lang="en">Learning XML</title> 
+
+
+
+============================================================================================================
+XQuery Functions
+« Previous Next Chapter » 
+
+--------------------------------------------------------------------------------
+
+XQuery 1.0, XPath 2.0, and XSLT 2.0 share the same functions library.
+
+
+--------------------------------------------------------------------------------
+
+XQuery Functions
+XQuery includes over 100 built-in functions. There are functions for string values, numeric values, date and 
+time comparison, node and QName manipulation, sequence manipulation, Boolean values, and more. You can also 
+define your own functions in XQuery.
+
+
+--------------------------------------------------------------------------------
+
+XQuery Built-in Functions
+The URI of the XQuery function namespace is:
+http://www.w3.org/2005/02/xpath-functions
+
+The default prefix for the function namespace is fn:.
+
+Tip: Functions are often called with the fn: prefix, such as fn:string(). However, since fn: is the default 
+prefix of the namespace, the function names do not need to be prefixed when called.
+
+The reference of all the built-in XQuery 1.0 functions is located in our XPath tutorial.
+
+
+--------------------------------------------------------------------------------
+
+Examples of Function Calls
+A call to a function can appear where an expression may appear. Look at the examples below:
+
+Example 1: In an element
+
+<name>{uppercase($booktitle)}</name> 
+
+Example 2: In the predicate of a path expression
+
+doc("books.xml")/bookstore/book[substring(title,1,5)='Harry'] 
+
+Example 3: In a let clause
+
+let $name := (substring($booktitle,1,4)) 
+
+
+--------------------------------------------------------------------------------
+
+XQuery User-Defined Functions
+If you cannot find the XQuery function you need, you can write your own.
+
+User-defined functions can be defined in the query or in a separate library.
+
+Syntax
+declare function prefix:function_name($parameter AS datatype)
+AS returnDatatype
+{
+ ...function code here...
+} 
+
+Notes on user-defined functions: 
+
+•Use the declare function keyword
+•The name of the function must be prefixed
+•The data type of the parameters are mostly the same as the data types defined in XML Schema
+•The body of the function must be surrounded by curly braces
+Example of a User-defined Function Declared in the Query
+
+declare function local:minPrice($p as xs:decimal?,$d as xs:decimal?)
+AS xs:decimal?
+{
+let $disc := ($p * $d) div 100
+return ($p - $disc)
+}
+
+Below is an example of how to call the function above:
+
+<minPrice>{local:minPrice($book/price,$book/discount)}</minPrice> 
+

@@ -1,0 +1,190 @@
+Audit trailing interceptors in Connectivit works as follows:
+============================================================
+1. Create an @Audit annotation
+2. Annotate applicable methods in your application with the @Audit annotation
+3. To invoke application wide interceptors for all method calls, insert the <interceptor-binding> tag into ejb-jar.xml
+4. Create the AuditTrailInterceptor class with the applicable @AroundInvoke annotation
+5. Inside the AuditTrailInterceptor class method, test via reflection if the @Audit annotation exists
+
+1. @Audit Annotation
+=====================
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface Audit{
+
+	String subjectName() default "";
+	String category();
+	String action() default "";
+	int parameterIndexToLocateSubject() default 0;
+	boolean auditWhenCallerInSystemRole() default false;
+	LocateParentParameter[] locateParentParameters() default {};
+	Parameter[] parameters() default {};
+
+}
+
+-----------------------------------------------------------------------
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface LocateParentParameter{
+	
+	int intendedIndex();
+	Class<? extends Entity> parentEntityClass();
+	int childEntityIndex();
+	String name() default "";
+	boolean verbose() default true;
+	
+}
+
+-----------------------------------------------------------------------
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface Parameter{
+	
+	int index();
+	String name() default "";
+	boolean audit() default true;
+	boolean verbose() default true;
+	
+}
+
+-----------------------------------------------------------------------
+
+2. To annotate an applicable method
+===================================
+@Audit(subjectName = SubjectConstants.POLICY, category = CategoryConstants.POLICY,
+	parameters = {
+		@Parameter(index = 0, verbose = false)
+	}
+)
+
+@Permission(PermissionConstants.ADD_POLICY)
+public Policy addPolicy(Scheme scheme, Policy policy) throws EntityAlreadyExistsException,
+	EntityNotFoundException{
+	scheme = getServices(Scheme.class).retrieve(scheme);
+	...
+}
+
+-----------------------------------------------------------------------
+
+3. ejb-jar.xml
+==============
+
+<?xml version="1.0" encoding="UTF-8"?>
+<ejb-jar xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/ejb-jar_3_0.xsd"
+	version="3.0">
+	<assembly-descriptor>
+		<security-role>
+			<role-name>AuthenticatedCaller</role-name>
+		</security-role>
+		<security-role>
+			<!--
+			This role represents the application's rights.  It effectively allows access to all methods.
+			No user should ever be assigned this role.  It has two purposes.  The first purpose is
+			to secure access to methods which should never be invoked outside of the application.
+			The second purpose is to define a role which can form part of a method-permission declaration
+			which allows access to all methods.  This is necessary, as the EJB 2.0 specification implies
+			that all methods must have a method-permission defined.
+			-->
+			<role-name>System</role-name>
+		</security-role>
+		<interceptor-binding>
+			<ejb-name>*</ejb-name>
+			<interceptor-class>net.connectivit.common2.exception.interceptor.ExceptionInterceptor</interceptor-class>
+			<interceptor-class>net.connectivit.common2.security.interceptor.SecurityInterceptor</interceptor-class>
+			<interceptor-class>net.connectivit.common2.audit.interceptor.AuditTrailInterceptor</interceptor-class>
+		</interceptor-binding>
+	</assembly-descriptor>
+</ejb-jar>
+
+
+-----------------------------------------------------------------------
+
+4. AuditTrailInterceptor class
+===============================
+
+import java.lang.reflect.Method;
+import java.util.Date;
+import javax.ejb.EJB;
+import javax.interceptor.AroundInvoke;
+import javax.interceptor.InvocationContext;
+import net.connectivit.common2.audit.Audit;
+import net.connectivit.common2.audit.session.ProcessAuditDataLocal;
+import net.connectivit.common2.ejb.interceptor.Interceptor;
+import net.connectivit.common2.utility.ValidationUtilities;
+import org.jboss.annotation.IgnoreDependency;
+
+public class AuditTrailInterceptor extends Interceptor{
+
+	@AroundInvoke
+	public Object audit(InvocationContext invocationContext) throws Exception{
+		ValidationUtilities.ensureNotNull(invocationContext, "invocation context");
+		Audit auditAnnotation = invocationContext.getMethod().getAnnotation(Audit.class);
+		if (auditAnnotation == null){
+			return invocationContext.proceed();
+		}
+		if ((!isInvocationOfMessageDrivenBean(invocationContext)) && (isCallerInSystemRole()) &&
+			(!auditAnnotation.auditWhenCallerInSystemRole())){
+			return invocationContext.proceed();
+		}
+		Method method = invocationContext.getMethod();
+		if (method.getName().startsWith("get")){
+			throw new RuntimeException("'Get' methods cannot be audited.");
+		}
+		else if (method.getName().startsWith("list")){
+			throw new RuntimeException("'List' methods cannot be audited.");
+		}
+		Date startDate = new Date();
+		Object result = invocationContext.proceed();
+		Date endDate = new Date();
+		try{
+			processAuditData.createAuditTrail(invocationContext, startDate, endDate);
+		}
+		catch(Exception e){
+			throw new RuntimeException("Unable to create audit trail for method '" + invocationContext
+				.getMethod().getName() + "' on class '" + invocationContext.getTarget().getClass().getName() +
+				"'. " + e.getMessage(), e);
+		}
+		return result;
+	}
+
+	@EJB
+	@IgnoreDependency
+	private ProcessAuditDataLocal processAuditData;
+
+}
+
+-----------------------------------------------------------------------
+
+5. Retrieve the applicable annotation values
+=============================================
+public void createAuditTrail(InvocationContext invocationContext, Date startDate, Date endDate){
+	ValidationUtilities.ensureNotNull(invocationContext, "invocation context");
+	AuditTrail auditTrail = new AuditTrail();
+	auditTrail.setStartDate(startDate);
+	auditTrail.setCategory(determineCategory(invocationContext));
+	auditTrail.setAction(determineAction(invocationContext));
+	auditTrail.setIdentity(getCallerIdentity());
+	auditTrail.setHostAddress(getCallerHostAddress());
+	auditTrail.setParametersDescription(determineParametersDescription(invocationContext));
+	Subject subject = determineSubject(invocationContext);
+	if (subject == null){
+		throw new InvalidArgumentException("A subject has not been successfully located.");
+	}
+	auditTrail.setSubjectName(subject.getName());
+	auditTrail.setSubjectOID(subject.getOID());
+	auditTrail.setSubjectBID(subject.getBID());
+	auditTrail.setEndDate(endDate);
+	maintainAuditData.addAuditTrail(auditTrail);
+}
+
+private String determineCategory(InvocationContext invocationContext){
+	ValidationUtilities.ensureNotNull(invocationContext, "invocation context");
+	Audit auditAnnotation = invocationContext.getMethod().getAnnotation(Audit.class);
+	return auditAnnotation.category();
+}
+
+

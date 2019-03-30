@@ -1,0 +1,55 @@
+http://blogs.sun.com/JavaFundamentals/entry/java_se_application_design_with
+http://java.sun.com/developer/blogs/
+http://nighthacks.com/roller/jag/
+
+
+http://itmanagement.earthweb.com/cnews/article.php/12035_3770056_8
+http://www.joelonsoftware.com/
+www.codeproject.com
+http://en.wikipedia.org/wiki/List_of_software_development_philosophies
+Beginning C ++ Through Game Programming - Book
+http://www.gamedev.net/reference/start_here/#1
+
+Brooks' law is a principle in software development which says that "adding manpower to a late software project 
+makes it later"
+
+Practice Checklist:
+===================
+* 1. Ant
+* 2. JDBC
+* 3. Quartz: http://www.roseindia.net/quartz/quartz-scheduler-tutorial.shtml
+* 4. Log4j
+* 5. JMS
+* 6. EJB: http://www.roseindia.net/ejb/
+7. Swing
+8. XML - Marshall, unmarshall
+9. Descriptors to deserialoze flatfiles
+10. Generics
+* 12. Reading/Writing a textfile
+* 13. Date and Number formatting
+14. POI
+15. JTA
+16. Java Message API or JPA for short
+17. Annotations
+18. Reflection - you can invoke methods using reflection
+* 19. File IO
+20. Threads
+21. LDAP: DomainSecurityProxy
+22. JNLP
+* 23. JavaMail
+24. JNDI
+* 25. Observable
+* 26. Comparator/Comparable
+* 27. equals/hash methods
+* 28. RMI
+* 29. Encryption
+30. Certificates (Java Security)
+
+Other:
+XML
+RMI
+Reflection
+Annotations: http://java.sun.com/developer/technicalArticles/J2SE/constraints/annotations.html
+
+JDO: http://www.roseindia.net/jdotutorials/
+SQLJ

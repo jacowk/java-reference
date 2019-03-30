@@ -1,0 +1,3 @@
+http://www.roseindia.net/tutorials/rmi/rmi-helloworld.shtml
+
+See the site for steps

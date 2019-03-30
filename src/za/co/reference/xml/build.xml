@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="JAXBSource" default="createjaxbsource" basedir=".">
+
+	<target name="createjaxbsource" depends="createjaxbsource_common">
+		<taskdef name="xjc" classname="com.sun.tools.xjc.XJCTask">
+			<classpath refid="defaultclasspath"/>
+		</taskdef>
+		<xjc schema="${fixedlengthconverterfile2.xsd}" destdir="${sourcedir}" package="${fixedlengthconverterfile2.package}"/>
+	</target>
+	
+	<!-- What are these? It's not part of XJCTask
+	<taskdef name="pack200" classname="com.sun.tools.apache.ant.pack200.Pack200Task">
+		<classpath refid="defaultclasspath"/>
+	</taskdef>
+	<taskdef name="unpack200" classname="com.sun.tools.apache.ant.pack200.Unpack200Task">
+		<classpath refid="defaultclasspath"/>
+	</taskdef>-->
+	
+</project>

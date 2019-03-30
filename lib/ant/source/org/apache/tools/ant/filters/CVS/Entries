@@ -1,0 +1,24 @@
+/BaseFilterReader.java/1.2/Mon Jun 29 10:56:18 2009//
+/BaseParamFilterReader.java/1.2/Mon Jun 29 10:56:18 2009//
+/ChainableReader.java/1.2/Mon Jun 29 10:56:18 2009//
+/ClassConstants.java/1.3/Tue Jun 29 11:27:06 2010//
+/ConcatFilter.java/1.2/Mon Jun 29 10:56:18 2009//
+/EscapeUnicode.java/1.2/Mon Jun 29 10:56:18 2009//
+/ExpandProperties.java/1.2/Mon Jun 29 10:56:18 2009//
+/FixCrLfFilter.java/1.1/Mon Jun 29 10:56:18 2009//
+/HeadFilter.java/1.3/Tue Jun 29 11:27:00 2010//
+/LineContains.java/1.2/Mon Jun 29 10:56:18 2009//
+/LineContainsRegExp.java/1.2/Mon Jun 29 10:56:18 2009//
+/PrefixLines.java/1.2/Mon Jun 29 10:56:18 2009//
+/ReplaceTokens.java/1.3/Tue Jun 29 11:27:00 2010//
+/SortFilter.java/1.1/Tue Jun 29 06:39:18 2010//
+/StringInputStream.java/1.2/Mon Jun 29 10:56:18 2009//
+/StripJavaComments.java/1.2/Mon Jun 29 10:56:18 2009//
+/StripLineBreaks.java/1.2/Mon Jun 29 10:56:18 2009//
+/StripLineComments.java/1.2/Mon Jun 29 10:56:18 2009//
+/SuffixLines.java/1.1/Tue Jun 29 06:39:18 2010//
+/TabsToSpaces.java/1.2/Mon Jun 29 10:56:18 2009//
+/TailFilter.java/1.2/Mon Jun 29 10:56:18 2009//
+/TokenFilter.java/1.2/Mon Jun 29 10:56:18 2009//
+/UniqFilter.java/1.1/Tue Jun 29 06:39:18 2010//
+D/util////

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.6.0" class="java.beans.XMLDecoder"> 
+ <object id="Policy0" class="com.webhomecover.model.Policy"> 
+  <void property="annualPremium"> 
+   <double>863.0</double> 
+  </void> 
+  <void property="claims"> 
+   <void method="add"> 
+    <object class="com.webhomecover.model.Claim"> 
+     <void property="amount"> 
+      <double>627.0</double> 
+     </void> 
+     <void property="claimDate"> 
+      <object class="java.util.Date"> 
+       <long>1200861887003</long> 
+      </object> 
+     </void> 
+     <void property="description"> 
+      <string>Flood damage</string> 
+     </void> 
+     <void property="policy"> 
+      <object idref="Policy0"/> 
+     </void> 
+     <void property="reference"> 
+      <string>C2007-08-16-1</string> 
+     </void> 
+     <void property="type"> 
+      <string>Contents</string> 
+     </void> 
+    </object> 
+   </void> 
+  </void> 
+  <void property="paidUp"> 
+   <boolean>true</boolean> 
+  </void> 
+  <void property="policyNumber"> 
+   <string>8374635</string> 
+  </void> 
+  <void property="startDate"> 
+   <object class="java.util.Date"> 
+    <long>1196541887013</long> 
+   </object> 
+  </void> 
+ </object> 
+</java> 

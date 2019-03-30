@@ -1,0 +1,27 @@
+http://www.roseindia.net/tutorials/rmi/RMI-Example-1.shtml
+
+javac RemoteInterface.java
+
+javac ServerImplements.java
+
+rmic ServerImplements
+
+javac Server.java
+
+javac Client.java
+
+start rmiregistry
+
+start java server
+
+java Client
+
+
+
+My Steps
+--------
+javac *.java
+rmic TestImpl
+start rmiregistry
+java TestServer
+java TestClient

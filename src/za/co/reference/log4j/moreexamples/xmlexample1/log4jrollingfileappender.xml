@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration debug="false">
+
+	<appender name="STDOUT" class="org.apache.log4j.RollingFileAppender"> <!-- Appends log events into a file. The size of the file can be limited. -->
+		<param name="Append" value="true"/> <!-- (boolean) If true, append to file. If false, truncate file -->
+		<param name="File" value="output.txt"/> <!-- (String) Name of the file to write to. 
+												"c:/temp/output.txt" or "c:\\temp\\output.txt" -->
+		<param name="Threshold" value="DEBUG"/> <!-- DEBUG, INFO, WARN, ERROR. FATAL -->
+		<param name="MaxBackupIndex" value="5"/> <!-- Number of previously rolled files to preserve.
+													First file = sample.txt.1, then sample.txt.2, ect.
+													Rolls over when MaxFileSize is reached
+													0 - No rollover
+													1 - Default
+													10 - Should not be surpassed -->
+		<param name="MaxFileSize" value="1"/> <!-- 0 - 2/63. Can be suffixed by KB, MB or GB -->
+		
+		<!--<param name="Encoding" value="US-ASCII"/>--> <!-- (String) “US-ASCII”, “ISO-8859-1”, “UTF-8”, “UTF-16BE”, “UTF-16LE” and “UTF-16” -->
+		<!--<param name="BufferedIO" value="false"/>--> <!-- (boolean) Default false. If true, Underlying OutputStreamWriter is wrapped in
+													a BufferedWriter, improving performance. Setting it true
+													will cause ImmediateFlush to automatically be set to false.-->
+		<!--<param name="BufferSize" value="1000"/>--> <!-- (int) Size of BufferedWriter -->
+		<!--<param name="ImmediateFlush" value="false"/>-->
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%-5p [%t] %c - %m%n"/>
+		</layout>
+	</appender>
+	
+	<root>
+		<appender-ref ref="STDOUT"/>
+	</root>
+	
+</log4j:configuration>

@@ -1,0 +1,7 @@
+https://jaxb.dev.java.net/tutorial/
+http://weblogs.java.net/blog/kohsuke
+https://jaxb.dev.java.net/tutorial/section_2_1-Writing-an-XML-Schema-for-JAXB.html
+http://www.w3.org/TR/xmlschema-0/
+
+xjc -p hello hello.xsd
+

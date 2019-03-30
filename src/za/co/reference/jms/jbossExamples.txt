@@ -1,0 +1,28 @@
+Define the following in JBossMQ-destinations-service.xml :
+
+
+
+<mbean code="org.jboss.mq.server.QueueManager" name="jboss.mq.destination:service=Queue,name=testQueue">
+<depends optional-attributename="JBossMQService">jboss.mq:service=Server</depends>
+<depends optional-attributename="SecurityManager">jboss.mq:service=SecurityManager</depends>
+<attribute name="SecurityConf">
+<security>
+<role name="guest" read="true" write="true"/>
+<role name="publisher" read="true" write="true" create="false"/> 
+<role name="noacc" read="false" write="false" create="false"/>
+</security>
+</attribute>
+</mbean>
+
+
+<mbean code="org.jboss.mq.server.TopicManager"name="jboss.mq.destination:service=Topic,name=testTopic">
+<depends optional-attributename="JBossMQService">jboss.mq:service=Server</depends>
+<depends optional-attributename="SecurityManager">jboss.mq:service=SecurityManager</depends>
+<attribute name="SecurityConf">
+<security>
+<role name="guest" read="true" write="true"/>
+<role name="publisher" read="true" write="true" create="false"/>
+<role name="durpublisher" read="true" write="true" create="true"/>
+</security>
+</attribute>
+</mbean>

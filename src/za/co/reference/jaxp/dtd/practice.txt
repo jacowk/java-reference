@@ -1,0 +1,4 @@
+<!ELEMENT note ANY>
+<!ENTITY writer "John Doe">
+
+<note>&writer;</note>

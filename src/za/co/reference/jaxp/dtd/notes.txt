@@ -1,0 +1,597 @@
+http://www.w3schools.com/dtd/dtd_building.asp
+
+SYSTEM always indicates "external" in DTD
+
+Internal DTD Declaration:
+=========================
+<?xml version="1.0"?>
+<!DOCTYPE note [
+<!ELEMENT note (to,from,heading,body)>
+<!ELEMENT to (#PCDATA)>
+<!ELEMENT from (#PCDATA)>
+<!ELEMENT heading (#PCDATA)>
+<!ELEMENT body (#PCDATA)>
+]>
+<note>
+<to>Tove</to>
+<from>Jani</from>
+<heading>Reminder</heading>
+<body>Don't forget me this weekend</body>
+</note>
+
+External DTD Declaration (Separate files):
+==========================================
+<?xml version="1.0"?>
+<!DOCTYPE note SYSTEM "note.dtd">
+<note>
+  <to>Tove</to>
+  <from>Jani</from>
+  <heading>Reminder</heading>
+  <body>Don't forget me this weekend!</body>
+</note>
+
+
+<!ELEMENT note (to,from,heading,body)>
+<!ELEMENT to (#PCDATA)>
+<!ELEMENT from (#PCDATA)>
+<!ELEMENT heading (#PCDATA)>
+<!ELEMENT body (#PCDATA)>
+
+DTD Building Blocks
+===================
+•Elements: "body" in <body></body>
+•Attributes:
+•Entities
+•PCDATA
+•CDATA
+
+
+Elements
+--------
+
+Attributes
+----------
+<img src="computer.gif" />
+
+"src" is the atribute name
+"computer.gif" is the attribute value
+
+Entities
+--------
+Entity References - Character 
+&lt; - < 
+&gt; - > 
+&amp; - & 
+&quot; - " 
+&apos; - ' 
+
+PCDATA
+------
+Parsed Character Data
+Think of character data as the text found between the start tag and the end tag of an XML element.
+Will be parsed by a parser.
+
+Must use Entity References and not the respective characters.
+
+CDATA
+-----
+CDATA means character data.
+Will not be parsed by a parser
+
+
+=========================================================================================
+ELEMENTS
+=========================================================================================
+<!ELEMENT element-name category>
+or
+<!ELEMENT element-name (element-content)>
+
+
+Empty elements
+---------------
+<!ELEMENT element-name EMPTY>
+
+Example:
+
+<!ELEMENT br EMPTY>
+
+XML example:
+
+<br />
+
+
+Elements with Parsed Character Data
+-----------------------------------
+<!ELEMENT element-name (#PCDATA)>
+
+Example:
+
+<!ELEMENT from (#PCDATA)>
+
+
+Elements with any Contents
+--------------------------
+<!ELEMENT element-name ANY>
+
+Example:
+
+<!ELEMENT note ANY>
+
+
+Elements with Children (sequences)
+----------------------------------
+<!ELEMENT element-name (child1)>
+or
+<!ELEMENT element-name (child1,child2,...)>
+
+Example:
+
+<!ELEMENT note (to,from,heading,body)>
+
+In this case, the children must also be declared:
+<!ELEMENT note (to,from,heading,body)>
+<!ELEMENT to (#PCDATA)>
+<!ELEMENT from (#PCDATA)>
+<!ELEMENT heading (#PCDATA)>
+<!ELEMENT body (#PCDATA)>
+
+
+Declaring Only One Occurrence of an Element
+-------------------------------------------
+<!ELEMENT element-name (child-name)>
+
+Example:
+
+<!ELEMENT note (message)>
+
+
+Declaring Minimum One Occurrence of an Element
+-------------------------------------------
+<!ELEMENT element-name (child-name+)>
+
+Example:
+
+<!ELEMENT note (message+)> 
+
+The + sign in the example above declares that the child element "message" must occur one or more times inside the "note" element.
+
+
+
+Declaring Zero or More Occurrences of an Element
+-------------------------------------------
+<!ELEMENT element-name (child-name*)>
+
+Example:
+
+<!ELEMENT note (message*)> 
+
+The * sign in the example above declares that the child element "message" can occur zero or more times inside the "note" element.
+
+
+
+Declaring Zero or One Occurrences of an Element 
+-------------------------------------------
+<!ELEMENT element-name (child-name?)>
+
+Example:
+
+<!ELEMENT note (message?)> 
+
+The ? sign in the example above declares that the child element "message" can occur zero or one time inside the "note" element.
+
+
+
+
+Declaring either/or Content
+-------------------------------------------
+Example:
+
+<!ELEMENT note (to,from,header,(message|body))> 
+
+The example above declares that the "note" element must contain a "to" element, a "from" element, a "header" 
+element, and either a "message" or a "body" element.
+
+
+Declaring Mixed Content
+-------------------------------------------
+Example:
+
+<!ELEMENT note (#PCDATA|to|from|header|message)*> 
+
+The example above declares that the "note" element can contain zero or more occurrences of parsed character 
+data, "to", "from", "header", or "message" elements.
+
+
+=========================================================================================
+DTD ATTRIBUTES
+=========================================================================================
+Declaring Attributes
+--------------------
+An attribute declaration has the following syntax:
+
+<!ATTLIST element-name attribute-name attribute-type default-value>
+
+DTD example:
+
+<!ATTLIST payment type CDATA "check">
+
+XML example:
+
+<payment type="check" />  
+
+
+The attribute-type can be one of the following:
+
+Type Description 
+CDATA The value is character data 
+(en1|en2|..) The value must be one from an enumerated list 
+ID The value is a unique id  
+IDREF The value is the id of another element 
+IDREFS The value is a list of other ids 
+NMTOKEN The value is a valid XML name 
+NMTOKENS The value is a list of valid XML names 
+ENTITY The value is an entity  
+ENTITIES The value is a list of entities 
+NOTATION The value is a name of a notation 
+xml: The value is a predefined xml value 
+
+The default-value can be one of the following:
+
+Value Explanation 
+value The default value of the attribute 
+#REQUIRED The attribute is required 
+#IMPLIED The attribute is not required 
+#FIXED value The attribute value is fixed 
+
+
+--------------------------------------------------------------------------------
+
+A Default Attribute Value
+DTD:
+<!ELEMENT square EMPTY>
+<!ATTLIST square width CDATA "0">
+
+Valid XML:
+<square width="100" /> 
+
+In the example above, the "square" element is defined to be an empty element with a "width" attribute of  type 
+CDATA. If no width is specified, it has a default value of 0.
+
+
+--------------------------------------------------------------------------------
+
+#REQUIRED
+Syntax
+<!ATTLIST element-name attribute-name attribute-type #REQUIRED> 
+
+Example
+DTD:
+<!ATTLIST person number CDATA #REQUIRED>
+
+Valid XML:
+<person number="5677" />
+
+Invalid XML:
+<person /> 
+
+Use the #REQUIRED keyword if you don't have an option for a default value, but still want to force the attribute to be present.
+
+
+--------------------------------------------------------------------------------
+
+#IMPLIED
+Syntax
+<!ATTLIST element-name attribute-name attribute-type #IMPLIED> 
+
+Example
+DTD:
+<!ATTLIST contact fax CDATA #IMPLIED>
+
+Valid XML:
+<contact fax="555-667788" />
+
+Valid XML:
+<contact /> 
+
+Use the #IMPLIED keyword if you don't want to force the author to include an attribute, and you don't have an 
+option for a default value.
+
+
+--------------------------------------------------------------------------------
+
+#FIXED
+Syntax
+<!ATTLIST element-name attribute-name attribute-type #FIXED "value"> 
+
+Example
+DTD:
+<!ATTLIST sender company CDATA #FIXED "Microsoft">
+
+Valid XML:
+<sender company="Microsoft" />
+
+Invalid XML:
+<sender company="W3Schools" /> 
+
+Use the #FIXED keyword when you want an attribute to have a fixed value without allowing the author to change 
+it. If an author includes another value, the XML parser will return an error.
+
+
+--------------------------------------------------------------------------------
+
+Enumerated Attribute Values
+Syntax
+<!ATTLIST element-name attribute-name (en1|en2|..) default-value> 
+
+Example
+DTD:
+<!ATTLIST payment type (check|cash) "cash">
+
+XML example:
+<payment type="check" />
+or
+<payment type="cash" /> 
+
+Use enumerated attribute values when you want the attribute value to be one of a fixed set of legal values.
+
+
+===========================================================================================
+In XML, there are no rules about when to use attributes, and when to use child elements.
+
+
+--------------------------------------------------------------------------------
+
+=========================================================================================
+Use of Elements vs. Attributes
+=========================================================================================
+Data can be stored in child elements or in attributes.
+
+Take a look at these examples:
+
+<person sex="female">
+  <firstname>Anna</firstname>
+  <lastname>Smith</lastname>
+</person> 
+
+<person>
+  <sex>female</sex>
+  <firstname>Anna</firstname>
+  <lastname>Smith</lastname>
+</person> 
+
+In the first example sex is an attribute. In the last, sex is a child element. Both examples provide the same information.
+
+There are no rules about when to use attributes, and when to use child elements. My experience is that 
+attributes are handy in HTML, but in XML you should try to avoid them. Use child elements if the information feels like data.
+
+
+--------------------------------------------------------------------------------
+
+My Favorite Way
+I like to store data in child elements.
+
+The following three XML documents contain exactly the same information:
+
+A date attribute is used in the first example:
+
+<note date="12/11/2002">
+  <to>Tove</to>
+  <from>Jani</from>
+  <heading>Reminder</heading>
+  <body>Don't forget me this weekend!</body>
+</note>  
+
+A date element is used in the second example:
+
+<note>
+  <date>12/11/2002</date>
+  <to>Tove</to>
+  <from>Jani</from>
+  <heading>Reminder</heading>
+  <body>Don't forget me this weekend!</body>
+</note>  
+
+An expanded date element is used in the third: (THIS IS MY FAVORITE):
+
+<note>
+  <date>
+    <day>12</day>
+    <month>11</month>
+    <year>2002</year>
+  </date>
+  <to>Tove</to>
+  <from>Jani</from>
+  <heading>Reminder</heading>
+  <body>Don't forget me this weekend!</body>
+</note>  
+
+
+--------------------------------------------------------------------------------
+
+Avoid using attributes?
+Should you avoid using attributes?
+
+Some of the problems with attributes are:
+
+•attributes cannot contain multiple values (child elements can)
+•attributes are not easily expandable (for future changes)
+•attributes cannot describe structures (child elements can)
+•attributes are more difficult to manipulate by program code
+•attribute values are not easy to test against a DTD
+If you use attributes as containers for data, you end up with documents that are difficult to read and 
+maintain. Try to use elements to describe data. Use attributes only to provide information that is not relevant to the data.
+
+Don't end up like this (this is not how XML should be used):
+
+<note day="12" month="11" year="2002"
+to="Tove" from="Jani" heading="Reminder"
+body="Don't forget me this weekend!">
+</note>  
+
+
+--------------------------------------------------------------------------------
+
+An Exception to my Attribute Rule
+Rules always have exceptions.
+
+My rule about attributes has one exception:
+
+Sometimes I assign ID references to elements. These ID references can be used to access XML elements in much 
+the same way as the NAME or ID attributes in HTML. This example demonstrates this:
+
+<messages>
+<note id="p501">
+  <to>Tove</to>
+  <from>Jani</from>
+  <heading>Reminder</heading>
+  <body>Don't forget me this weekend!</body>
+</note>
+
+<note id="p502">
+  <to>Jani</to>
+  <from>Tove</from>
+  <heading>Re: Reminder</heading>
+  <body>I will not!</body>
+</note>
+</messages>  
+
+The ID in these examples is just a counter, or a unique identifier, to identify the different notes in the XML file, and not a part of the note data.
+
+What I am trying to say here is that metadata (data about data) should be stored as attributes, and that data itself should be stored as elements.
+
+
+======================================================================================================
+ENTITIES
+=========================================================================================
+Entities are variables used to define shortcuts to standard text or special characters.
+
+•Entity references are references to entities
+
+•Entities can be declared internal or external
+
+
+--------------------------------------------------------------------------------
+
+An Internal Entity Declaration
+Syntax
+<!ENTITY entity-name "entity-value"> 
+
+Example
+DTD Example:
+
+<!ENTITY writer "Donald Duck.">
+<!ENTITY copyright "Copyright W3Schools.">
+
+XML example:
+
+<author>&writer;&copyright;</author> 
+
+Note: An entity has three parts: an ampersand (&), an entity name, and a semicolon (;).
+
+
+--------------------------------------------------------------------------------
+
+An External Entity Declaration
+Syntax
+<!ENTITY entity-name SYSTEM "URI/URL"> 
+
+Example
+DTD Example:
+
+<!ENTITY writer SYSTEM "http://www.w3schools.com/entities.dtd">
+<!ENTITY copyright SYSTEM "http://www.w3schools.com/entities.dtd">
+
+XML example:
+
+<author>&writer;&copyright;</author> 
+
+========================================================================================================
+EXAMPLES
+=========================================================================================
+TV Schedule DTD
+By David Moisan. Copied from http://www.davidmoisan.org/
+
+<!DOCTYPE TVSCHEDULE [
+
+<!ELEMENT TVSCHEDULE (CHANNEL+)>
+<!ELEMENT CHANNEL (BANNER,DAY+)>
+<!ELEMENT BANNER (#PCDATA)>
+<!ELEMENT DAY (DATE,(HOLIDAY|PROGRAMSLOT+)+)>
+<!ELEMENT HOLIDAY (#PCDATA)>
+<!ELEMENT DATE (#PCDATA)>
+<!ELEMENT PROGRAMSLOT (TIME,TITLE,DESCRIPTION?)>
+<!ELEMENT TIME (#PCDATA)>
+<!ELEMENT TITLE (#PCDATA)> 
+<!ELEMENT DESCRIPTION (#PCDATA)>
+
+<!ATTLIST TVSCHEDULE NAME CDATA #REQUIRED>
+<!ATTLIST CHANNEL CHAN CDATA #REQUIRED>
+<!ATTLIST PROGRAMSLOT VTR CDATA #IMPLIED>
+<!ATTLIST TITLE RATING CDATA #IMPLIED>
+<!ATTLIST TITLE LANGUAGE CDATA #IMPLIED>
+]> 
+
+
+--------------------------------------------------------------------------------
+
+Newspaper Article DTD
+Copied from http://www.vervet.com/
+
+<!DOCTYPE NEWSPAPER [
+
+<!ELEMENT NEWSPAPER (ARTICLE+)>
+<!ELEMENT ARTICLE (HEADLINE,BYLINE,LEAD,BODY,NOTES)>
+<!ELEMENT HEADLINE (#PCDATA)>
+<!ELEMENT BYLINE (#PCDATA)>
+<!ELEMENT LEAD (#PCDATA)>
+<!ELEMENT BODY (#PCDATA)>
+<!ELEMENT NOTES (#PCDATA)>
+
+<!ATTLIST ARTICLE AUTHOR CDATA #REQUIRED>
+<!ATTLIST ARTICLE EDITOR CDATA #IMPLIED>
+<!ATTLIST ARTICLE DATE CDATA #IMPLIED>
+<!ATTLIST ARTICLE EDITION CDATA #IMPLIED>
+
+<!ENTITY NEWSPAPER "Vervet Logic Times">
+<!ENTITY PUBLISHER "Vervet Logic Press">
+<!ENTITY COPYRIGHT "Copyright 1998 Vervet Logic Press">
+
+]> 
+
+
+--------------------------------------------------------------------------------
+
+Product Catalog DTD
+Copied from http://www.vervet.com/
+
+<!DOCTYPE CATALOG [
+
+<!ENTITY AUTHOR "John Doe">
+<!ENTITY COMPANY "JD Power Tools, Inc.">
+<!ENTITY EMAIL "jd@jd-tools.com">
+
+<!ELEMENT CATALOG (PRODUCT+)>
+
+<!ELEMENT PRODUCT (SPECIFICATIONS+,OPTIONS?,PRICE+,NOTES?)>
+<!ATTLIST PRODUCT NAME CDATA #IMPLIED CATEGORY (HandTool|Table|Shop-Professional) "HandTool" PARTNUM CDATA #IMPLIED PLANT (Pittsburgh|Milwaukee|Chicago) "Chicago" INVENTORY (InStock|Backordered|Discontinued) "InStock">
+
+<!ELEMENT SPECIFICATIONS (#PCDATA)>
+<!ATTLIST SPECIFICATIONS WEIGHT CDATA #IMPLIED POWER CDATA #IMPLIED>
+
+<!ELEMENT OPTIONS (#PCDATA)>
+<!ATTLIST OPTIONS FINISH (Metal|Polished|Matte) "Matte" ADAPTER (Included|Optional|NotApplicable) "Included" CASE (HardShell|Soft|NotApplicable) "HardShell">
+
+<!ELEMENT PRICE (#PCDATA)>
+<!ATTLIST PRICE MSRP CDATA #IMPLIED WHOLESALE CDATA #IMPLIED STREET CDATA #IMPLIED SHIPPING CDATA #IMPLIED>
+
+<!ELEMENT NOTES (#PCDATA)>
+
+]> 
+
+==========================================================================================================
+
+
+
+
+
+

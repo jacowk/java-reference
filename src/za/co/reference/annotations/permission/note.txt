@@ -1,0 +1,173 @@
+Security interceptors in Connectivit works as follows:
+============================================================
+1. Create a @Permission annotation
+2. Annotate applicable methods in your application with the @Permission annotation
+3. To invoke application wide interceptors for all method calls, insert the <interceptor-binding> tag into ejb-jar.xml
+4. Create the SecurityInterceptor class with the applicable @AroundInvoke annotation
+5. Inside the SecurityInterceptor class method, test via reflection if the @Permission annotation exists
+
+1. @Permission annotation
+=========================
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface Permission{
+
+	String value();
+	String message() default "";
+
+}
+
+-----------------------------------------------------------------------
+
+2. To annotate an applicable method
+===================================
+@Permission(PermissionConstants.ADD_POLICY)
+public Policy addPolicy(Scheme scheme, Policy policy) throws EntityAlreadyExistsException,
+	EntityNotFoundException{
+	scheme = getServices(Scheme.class).retrieve(scheme);
+	...
+}
+
+
+-----------------------------------------------------------------------
+
+3. ejb-jar.xml
+==============
+
+<?xml version="1.0" encoding="UTF-8"?>
+<ejb-jar xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/ejb-jar_3_0.xsd"
+	version="3.0">
+	<assembly-descriptor>
+		<security-role>
+			<role-name>AuthenticatedCaller</role-name>
+		</security-role>
+		<security-role>
+			<!--
+			This role represents the application's rights.  It effectively allows access to all methods.
+			No user should ever be assigned this role.  It has two purposes.  The first purpose is
+			to secure access to methods which should never be invoked outside of the application.
+			The second purpose is to define a role which can form part of a method-permission declaration
+			which allows access to all methods.  This is necessary, as the EJB 2.0 specification implies
+			that all methods must have a method-permission defined.
+			-->
+			<role-name>System</role-name>
+		</security-role>
+		<interceptor-binding>
+			<ejb-name>*</ejb-name>
+			<interceptor-class>net.connectivit.common2.exception.interceptor.ExceptionInterceptor</interceptor-class>
+			<interceptor-class>net.connectivit.common2.security.interceptor.SecurityInterceptor</interceptor-class>
+			<interceptor-class>net.connectivit.common2.audit.interceptor.AuditTrailInterceptor</interceptor-class>
+		</interceptor-binding>
+	</assembly-descriptor>
+</ejb-jar>
+
+
+-----------------------------------------------------------------------
+
+4. SecurityInterceptor class
+============================
+
+import java.net.InetAddress;
+import javax.interceptor.AroundInvoke;
+import javax.interceptor.InvocationContext;
+import net.connectivit.common2.ejb.interceptor.Interceptor;
+import net.connectivit.common2.exception.PermissionDeniedException;
+import net.connectivit.common2.security.Permission;
+import net.connectivit.common2.security.PermissionNotRequired;
+import net.connectivit.common2.security.Permissions;
+import net.connectivit.common2.security.ServerSecurityManager;
+import net.connectivit.common2.utility.ValidationUtilities;
+import net.connectivit.security.SystemAccountCredentials;
+
+public class SecurityInterceptor extends Interceptor{
+
+	@AroundInvoke
+	public Object checkPermission(InvocationContext invocation) throws Exception{
+//System.out.println("SecurityInterceptor.checkPermission() called for class: " + invocation
+//	.getMethod().getDeclaringClass().getName() + ", method: " + invocation.getMethod().getName());
+		if (isInvocationOfMessageDrivenBean(invocation)){
+			return proceedWithMessageDrivenBeanInvocation(invocation);
+		}
+		if (isCallerInSystemRole()){
+			return proceedWithSystemRoleInvocation(invocation);
+		}
+		/* Remote invocation. */
+		ensurePermitted(invocation);
+		return proceedWithRemoteInvocation(invocation);
+	}
+
+	private Object proceedWithMessageDrivenBeanInvocation(InvocationContext invocation) throws Exception{
+		/* Run all message-driven beans under the SYSTEM account. */
+		ServerSecurityManager.getInstance().setCallerPrincipal(SystemAccountCredentials.SYSTEM.getIdentity(),
+			InetAddress.getLocalHost().getHostAddress());
+        return invocation.proceed();
+	}
+
+	private Object proceedWithSystemRoleInvocation(InvocationContext invocation) throws Exception{
+		return invocation.proceed();
+	}
+
+	private Object proceedWithRemoteInvocation(InvocationContext invocation) throws Exception{
+		return invocation.proceed();
+	}
+
+	private void ensurePermitted(InvocationContext invocation){
+		boolean permissionFound = false;
+		Permission permissionAnnotation = invocation.getMethod().getAnnotation(Permission.class);
+		if (permissionAnnotation != null){
+			permissionFound = true;
+			checkPermission(permissionAnnotation);
+		}
+		Permissions permissionsAnnotation = invocation.getMethod().getAnnotation(Permissions.class);
+		if (permissionsAnnotation != null){
+			permissionFound = true;
+			Permission[] permissions = permissionsAnnotation.value();
+			for (Permission permission : permissions){
+				checkPermission(permission);
+			}
+		}
+		if (permissionFound == false){
+			PermissionNotRequired permissionNotRequiredAnnotation = invocation.getMethod().getAnnotation
+				(PermissionNotRequired.class);
+			if (permissionNotRequiredAnnotation == null){
+				getLogger().warn("No permission check performed for " + invocation.getMethod()
+					.getDeclaringClass().getName() + "." + invocation.getMethod().getName());
+			}
+		}
+	}
+
+	private void checkPermission(Permission permissionAnnotation){
+//		System.out.println("SecurityInterceptor.checkPermission() (principal = " + sessionContext
+//			.getCallerPrincipal() + ", permission: " + permissionAnnotation.value() + ")");
+		boolean hasPermission = ServerSecurityManager.getInstance().hasPermission(getApplicationName(),
+			sessionContext.getCallerPrincipal(), permissionAnnotation.value());
+//		System.out.println("hasPermission: " + hasPermission);
+		if (!hasPermission){
+			getLogger().warn("SecurityInterceptor.checkPermission() FAILED for (principal = " + sessionContext
+				.getCallerPrincipal() + ", permission: " + permissionAnnotation.value() + ")");
+			String message;
+			if (ValidationUtilities.isNotNullAndNotEmpty(permissionAnnotation.message())){
+				message = permissionAnnotation.message();
+			}
+			else{
+				message = "Permission Denied. The '" + permissionAnnotation.value() + "' permission is " +
+					"required.";
+			}
+			throw new PermissionDeniedException(message);
+		}
+	}
+
+}
+
+
+
+
+---------------------------------------------------------
+protected boolean isInvocationOfMessageDrivenBean(InvocationContext invocation){
+	if (invocation.getMethod().getDeclaringClass().getAnnotation(MessageDriven.class) != null){
+		return true;
+	}
+	return false;
+}

@@ -1,0 +1,61 @@
+Exchanging files
+================
+The same basic steps are followed as for Signing Code
+
+A. Steps for the Contract Sender
+--------------------------------
+1. Create a JAR File Containing the Contract
+	"jar cvf Contract.jar contract"	
+	PS: contract can be a text file
+
+2. Generate keys
+	"keytool -genkey -alias signLegal -keystore stanstore"
+
+Enter keystore password:  balloon53 
+What is your first and last name?
+  [Unknown]:  Stan Smith 
+What is the name of your organizational unit?
+  [Unknown]:  Legal 
+What is the name of your organization?
+  [Unknown]:  XYZ 
+What is the name of your City or Locality?
+  [Unknown]:  New York
+What is the name of your State or Province?
+  [Unknown]:  NY 
+What is the two-letter country code for this unit?
+  [Unknown]:  US 
+Is <CN=Stan Smith, OU=Legal, O=XYZ, L=New York, 
+       ST=NY, C=US> correct?
+  [no]:  y 
+    
+Enter key password for 
+        (RETURN if same as keystore password):  cat876 
+
+Optional step:
+--------------
+Optional Step: Generate a certificate signing request (CSR) for the public key certificate, and 
+import the response from the certification authority. For simplicity and since you are only pretending to be Stan Smith, 
+this step is omitted. See Generating a Certificate Signing Request (CSR) for a Public Key Certificate for more information
+(file:///C:/Users/jacok/Documents/Java%20Documentation/tutorial/security/sigcert/index.html#GenCSR)
+
+3. Sign the JAR File
+	"jarsigner -keystore stanstore -signedjar sContract.jar Contract.jar signLegal"
+	
+4.  Export the Public Key Certificate
+	"keytool -export -keystore stanstore -alias signLegal -file StanSmith.cer"
+
+B. Steps for the Contract Receiver
+----------------------------------
+1. Import the Certificate as a Trusted Certificate
+	"keytool -import -alias stan -file StanSmith.cer -keystore ruthstore"
+	
+2. Verify the JAR File Signature
+	a. The Receiver confirms the finger print
+		Sender use this command to get the fingerprint: "keytool -printcert -file StanSmith.cer"
+	
+	b. Verify the JAR file signature:
+		Receiver use this command: "jarsigner -verify -verbose -keystore ruthstore sContract.jar"
+
+
+
+	

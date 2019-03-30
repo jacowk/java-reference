@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ejb-jar xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/ejb-jar_3_0.xsd"
+	version="3.0">
+	<assembly-descriptor>
+		<security-role>
+			<role-name>AuthenticatedCaller</role-name>
+		</security-role>
+		<security-role>
+			<!--
+			This role represents the application's rights.  It effectively allows access to all methods.
+			No user should ever be assigned this role.  It has two purposes.  The first purpose is
+			to secure access to methods which should never be invoked outside of the application.
+			The second purpose is to define a role which can form part of a method-permission declaration
+			which allows access to all methods.  This is necessary, as the EJB 2.0 specification implies
+			that all methods must have a method-permission defined.
+			-->
+			<role-name>System</role-name>
+		</security-role>
+		<interceptor-binding>
+			<ejb-name>*</ejb-name>
+			<interceptor-order>
+				<interceptor-class>za.co.reference.ejb3.globalinterceptor.GlobalInterceptor</interceptor-class>
+			</interceptor-order>
+		</interceptor-binding>
+	</assembly-descriptor>
+</ejb-jar>

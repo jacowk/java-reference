@@ -1,0 +1,11 @@
+RMI Steps
+=========
+
+1) Start the RMI registry: Enter "rmiregistry" on the command line
+2) Create an interface that extends "Remote"
+3) Create a class that implements your interface created in 2, and that extends RemoteUnicastObject
+4) Compile all and package them in a jar (jar cvf rmiexample.jar za/co/reference/practice/rmi/*.class)
+5) Generate the skeletons and stubs using "rmic YourClass" (no extensions)
+6) Bind the instance of your remote object to the RMI registry using 'Naming.rebind("//localhost/RObjectServer", robj);'
+7) Retrieve an instance of your remote object from the RMI registry using ...
+	'RMIExample rmiExampleLookup = (RMIExample)Naming.lookup("RMIExample");' 

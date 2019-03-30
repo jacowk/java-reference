@@ -1,0 +1,6 @@
+http://www.javaworld.com/community/node/1006
+http://www.jroller.com/talipozturk/entry/hashmap_and_hashing
+
+If you want to compare two objects using the equals() method, and you want to override the equals method, then
+you have to override the hashCode method aswell.
+

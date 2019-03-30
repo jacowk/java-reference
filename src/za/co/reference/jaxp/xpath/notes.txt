@@ -1,0 +1,578 @@
+http://www.w3schools.com/xpath/default.asp
+
+XPath is used to navigate through elements and attributes in an XML document.
+
+XPath is a major element in W3C's XSLT standard - and XQuery and XPointer are both built on XPath expressions.
+
+XPath is a language for finding information in an XML document.
+
+
+--------------------------------------------------------------------------------
+
+What You Should Already Know
+Before you continue you should have a basic understanding of the following:
+
+•HTML / XHTML
+•XML / XML Namespaces
+If you want to study these subjects first, find the tutorials on our Home page.
+
+
+--------------------------------------------------------------------------------
+
+What is XPath?
+ •XPath is a syntax for defining parts of an XML document
+•XPath uses path expressions to navigate in XML documents
+•XPath contains a library of standard functions
+•XPath is a major element in XSLT
+•XPath is a W3C recommendation
+ 
+
+
+--------------------------------------------------------------------------------
+
+XPath Path Expressions
+XPath uses path expressions to select nodes or node-sets in an XML document. These path expressions look very 
+much like the expressions you see when you work with a traditional computer file system.
+
+
+--------------------------------------------------------------------------------
+
+XPath Standard Functions
+XPath includes over 100 built-in functions. There are functions for string values, numeric values, date and 
+time comparison, node and QName manipulation, sequence manipulation, Boolean values, and more.
+
+
+--------------------------------------------------------------------------------
+
+XPath is Used in XSLT
+XPath is a major element in the XSLT standard. Without XPath knowledge you will not be able to create XSLT documents.
+
+You can read more about XSLT in our XSLT tutorial.
+
+XQuery and XPointer are both built on XPath expressions. XQuery 1.0 and XPath 2.0 share the same data model 
+and support the same functions and operators.
+
+You can read more about XQuery in our XQuery tutorial.
+
+
+--------------------------------------------------------------------------------
+
+XPATH is a W3C Recommendation
+XPath became a W3C Recommendation 16. November 1999.
+
+XPath was designed to be used by XSLT, XPointer and other XML parsing software.
+
+To read more about the XPATH activities at W3C, please read our W3C tutorial.
+
+
+==========================================================================================
+
+XPath Terminology
+Nodes
+In XPath, there are seven kinds of nodes: element, attribute, text, namespace, processing-instruction, comment, and document nodes.
+
+XML documents are treated as trees of nodes. The topmost element of the tree is called the root element.
+
+Look at the following XML document:
+
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<bookstore>
+  <book>
+    <title lang="en">Harry Potter</title>
+    <author>J K. Rowling</author>
+    <year>2005</year>
+    <price>29.99</price>
+  </book>
+</bookstore> 
+
+Example of nodes in the XML document above:
+
+<bookstore> (root element node)
+
+<author>J K. Rowling</author> (element node)
+
+lang="en" (attribute node) 
+
+Atomic values
+Atomic values are nodes with no children or parent.
+
+Example of atomic values:
+
+J K. Rowling
+
+"en" 
+
+Items
+Items are atomic values or nodes.
+
+
+--------------------------------------------------------------------------------
+
+Relationship of Nodes
+Parent
+Each element and attribute has one parent.
+
+In the following example; the book element is the parent of the title, author, year, and price:
+
+<book>
+  <title>Harry Potter</title>
+  <author>J K. Rowling</author>
+  <year>2005</year>
+  <price>29.99</price>
+</book> 
+
+Children
+Element nodes may have zero, one or more children.
+
+In the following example; the title, author, year, and price elements are all children of the book element:
+
+<book>
+  <title>Harry Potter</title>
+  <author>J K. Rowling</author>
+  <year>2005</year>
+  <price>29.99</price>
+</book> 
+
+Siblings
+Nodes that have the same parent.
+
+In the following example; the title, author, year, and price elements are all siblings:
+
+<book>
+  <title>Harry Potter</title>
+  <author>J K. Rowling</author>
+  <year>2005</year>
+  <price>29.99</price>
+</book> 
+
+Ancestors
+A node's parent, parent's parent, etc.
+
+In the following example; the ancestors of the title element are the book element and the bookstore element:
+
+<bookstore>
+
+<book>
+  <title>Harry Potter</title>
+  <author>J K. Rowling</author>
+  <year>2005</year>
+  <price>29.99</price>
+</book>
+
+</bookstore> 
+
+Descendants
+A node's children, children's children, etc.
+
+In the following example; descendants of the bookstore element are the book, title, author, year, and price elements:
+
+<bookstore>
+
+<book>
+  <title>Harry Potter</title>
+  <author>J K. Rowling</author>
+  <year>2005</year>
+  <price>29.99</price>
+</book>
+
+</bookstore> 
+
+==========================================================================================
+
+XPath Syntax
+============
+« Previous Next Chapter » 
+
+--------------------------------------------------------------------------------
+
+XPath uses path expressions to select nodes or node-sets in an XML document. The node is selected by following a path or steps.
+
+
+--------------------------------------------------------------------------------
+
+The XML Example Document
+We will use the following XML document in the examples below.
+
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<bookstore>
+
+<book>
+  <title lang="eng">Harry Potter</title>
+  <price>29.99</price>
+</book>
+
+<book>
+  <title lang="eng">Learning XML</title>
+  <price>39.95</price>
+</book>
+
+</bookstore> 
+
+
+--------------------------------------------------------------------------------
+
+Selecting Nodes
+XPath uses path expressions to select nodes in an XML document. The node is selected by following a path or steps. The most useful path expressions are listed below:
+
+Expression Description 
+nodename Selects all child nodes of the named node 
+/ Selects from the root node 
+// Selects nodes in the document from the current node that match the selection no matter where they are  
+. Selects the current node 
+.. Selects the parent of the current node 
+@ Selects attributes 
+
+In the table below we have listed some path expressions and the result of the expressions:
+
+Path Expression Result 
+bookstore Selects all the child nodes of the bookstore element 
+/bookstore Selects the root element bookstore
+Note: If the path starts with a slash ( / ) it always represents an absolute path to an element!
+ 
+bookstore/book Selects all book elements that are children of bookstore 
+//book Selects all book elements no matter where they are in the document 
+bookstore//book Selects all book elements that are descendant of the bookstore element, no matter where they are under the bookstore element 
+//@lang Selects all attributes that are named lang 
+
+
+--------------------------------------------------------------------------------
+
+Predicates
+Predicates are used to find a specific node or a node that contains a specific value.
+
+Predicates are always embedded in square brackets.
+
+In the table below we have listed some path expressions with predicates and the result of the expressions:
+
+Path Expression Result 
+/bookstore/book[1]  Selects the first book element that is the child of the bookstore element.
+Note: IE5 and later has implemented that [0] should be the first node, but according to the W3C standard it should have been [1]!!
+ 
+/bookstore/book[last()] Selects the last book element that is the child of the bookstore element 
+/bookstore/book[last()-1] Selects the last but one book element that is the child of the bookstore element 
+/bookstore/book[position()<3] Selects the first two book elements that are children of the bookstore element 
+//title[@lang] Selects all the title elements that have an attribute named lang 
+//title[@lang='eng'] Selects all the title elements that have an attribute named lang with a value of 'eng' 
+/bookstore/book[price>35.00] Selects all the book elements of the bookstore element that have a price element with a value greater than 35.00 
+/bookstore/book[price>35.00]/title Selects all the title elements of the book elements of the bookstore element that have a price element with a value greater than 35.00 
+
+
+--------------------------------------------------------------------------------
+
+Selecting Unknown Nodes
+XPath wildcards can be used to select unknown XML elements.
+
+Wildcard Description 
+* Matches any element node 
+@* Matches any attribute node 
+node() Matches any node of any kind 
+
+In the table below we have listed some path expressions and the result of the expressions:
+
+Path Expression Result 
+/bookstore/* Selects all the child nodes of the bookstore element 
+//* Selects all elements in the document 
+//title[@*] Selects all title elements which have any attribute 
+
+
+--------------------------------------------------------------------------------
+
+Selecting Several Paths
+By using the | operator in an XPath expression you can select several paths.
+
+In the table below we have listed some path expressions and the result of the expressions:
+
+Path Expression Result 
+//book/title | //book/price Selects all the title AND price elements of all book elements 
+//title | //price Selects all the title AND price elements in the document 
+/bookstore/book/title | //price Selects all the title elements of the book element of the bookstore element AND all the price elements in the document 
+
+==========================================================================================
+XPath Axes
+==========
+« Previous Next Chapter » 
+
+--------------------------------------------------------------------------------
+
+The XML Example Document
+We will use the following XML document in the examples below.
+
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<bookstore>
+
+<book>
+  <title lang="eng">Harry Potter</title>
+  <price>29.99</price>
+</book>
+
+<book>
+  <title lang="eng">Learning XML</title>
+  <price>39.95</price>
+</book>
+
+</bookstore> 
+
+
+--------------------------------------------------------------------------------
+
+XPath Axes
+An axis defines a node-set relative to the current node.
+
+AxisName Result 
+ancestor Selects all ancestors (parent, grandparent, etc.) of the current node 
+ancestor-or-self Selects all ancestors (parent, grandparent, etc.) of the current node and the current node itself 
+attribute Selects all attributes of the current node 
+child Selects all children of the current node 
+descendant Selects all descendants (children, grandchildren, etc.) of the current node 
+descendant-or-self Selects all descendants (children, grandchildren, etc.) of the current node and the current node itself 
+following Selects everything in the document after the closing tag of the current node 
+following-sibling Selects all siblings after the current node 
+namespace Selects all namespace nodes of the current node 
+parent Selects the parent of the current node 
+preceding Selects everything in the document that is before the start tag of the current node 
+preceding-sibling Selects all siblings before the current node 
+self Selects the current node 
+
+
+--------------------------------------------------------------------------------
+
+Location Path Expression
+A location path can be absolute or relative.
+
+An absolute location path starts with a slash ( / ) and a relative location path does not. In both cases the 
+location path consists of one or more steps, each separated by a slash:
+
+An absolute location path:
+
+/step/step/...
+
+A relative location path:
+
+step/step/...  
+
+Each step is evaluated against the nodes in the current node-set.
+
+A step consists of:
+
+•an axis (defines the tree-relationship between the selected nodes and the current node)
+•a node-test (identifies a node within an axis)
+•zero or more predicates (to further refine the selected node-set)
+The syntax for a location step is:
+
+axisname::nodetest[predicate] 
+
+Examples
+Example Result 
+child::book Selects all book nodes that are children of the current node 
+attribute::lang Selects the lang attribute of the current node 
+child::* Selects all children of the current node 
+attribute::* Selects all attributes of the current node 
+child::text() Selects all text child nodes of the current node 
+child::node() Selects all child nodes of the current node 
+descendant::book Selects all book descendants of the current node 
+ancestor::book Selects all book ancestors of the current node 
+ancestor-or-self::book Selects all book ancestors of the current node - and the current as well if it is a book node 
+child::*/child::price Selects all price grandchildren of the current node 
+
+==========================================================================================
+XPath Operators
+===============
+
+An XPath expression returns either a node-set, a string, a Boolean, or a number.
+
+
+--------------------------------------------------------------------------------
+
+XPath Operators
+Below is a list of the operators that can be used in XPath expressions:
+
+Operator Description Example Return value 
+| Computes two node-sets //book | //cd Returns a node-set with all book and cd elements 
++ Addition 6 + 4 10 
+- Subtraction 6 - 4 2 
+* Multiplication 6 * 4
+ 24 
+div Division 8 div 4 2 
+= Equal price=9.80 true if price is 9.80
+false if price is 9.90 
+!= Not equal price!=9.80 true if price is 9.90
+false if price is 9.80 
+< Less than price<9.80 true if price is 9.00
+false if price is 9.80 
+<= Less than or equal to price<=9.80 true if price is 9.00
+false if price is 9.90 
+> Greater than price>9.80 true if price is 9.90
+false if price is 9.80 
+>= Greater than or equal to price>=9.80 true if price is 9.90
+false if price is 9.70 
+or or price=9.80 or price=9.70 true if price is 9.80
+false if price is 9.50 
+and and  price>9.00 and price<9.90 true if price is 9.80
+false if price is 8.50 
+mod Modulus (division remainder) 5 mod 2 1 
+
+
+==========================================================================================
+XPath Examples
+« Previous Next Chapter » 
+
+--------------------------------------------------------------------------------
+
+Let's try to learn some basic XPath syntax by looking at some examples.
+
+
+--------------------------------------------------------------------------------
+
+The XML Example Document
+We will use the following XML document in the examples below.
+
+"books.xml":
+
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<bookstore>
+
+<book category="COOKING">
+  <title lang="en">Everyday Italian</title>
+  <author>Giada De Laurentiis</author>
+  <year>2005</year>
+  <price>30.00</price>
+</book>
+
+<book category="CHILDREN">
+  <title lang="en">Harry Potter</title>
+  <author>J K. Rowling</author>
+  <year>2005</year>
+  <price>29.99</price>
+</book>
+
+<book category="WEB">
+  <title lang="en">XQuery Kick Start</title>
+  <author>James McGovern</author>
+  <author>Per Bothner</author>
+  <author>Kurt Cagle</author>
+  <author>James Linn</author>
+  <author>Vaidyanathan Nagarajan</author>
+  <year>2003</year>
+  <price>49.99</price>
+</book>
+
+<book category="WEB">
+  <title lang="en">Learning XML</title>
+  <author>Erik T. Ray</author>
+  <year>2003</year>
+  <price>39.95</price>
+</book>
+
+</bookstore> 
+
+View the "books.xml" file in your browser.
+
+
+--------------------------------------------------------------------------------
+
+Loading the XML Document
+Using XMLHttpRequest to load XML documents is supported in all modern browsers.
+
+Code for most modern browsers:
+
+var xmlhttp=new XMLHttpRequest() 
+
+Code for old Microsoft browsers (IE 5 and 6):
+
+var xmlhttp=new ActiveXObject("Microsoft.XMLHTTP") 
+
+
+--------------------------------------------------------------------------------
+
+Selecting Nodes
+Unfortunately, there are different ways of dealing with XPath in Internet Explorer and other browsers.
+
+In our examples we have included code that should work with most major browsers.
+
+Internet Explorer uses the selectNodes() method to select nodes from the XML document:
+
+xmlDoc.selectNodes(xpath); 
+
+Firefox, Chrome, Opera and Safari use the evaluate() method to select nodes from the XML document:
+
+xmlDoc.evaluate(xpath, xmlDoc, null, XPathResult.ANY_TYPE,null); 
+
+
+--------------------------------------------------------------------------------
+
+Select all the titles
+The following example selects all the title nodes:
+
+Example
+/bookstore/book/title  
+
+
+Try it yourself »  
+
+
+--------------------------------------------------------------------------------
+
+Select the title of the first book
+The following example selects the title of the first book node under the bookstore element:
+
+Example
+/bookstore/book[1]/title
+
+
+Try it yourself »  
+
+There is a problem with this. The example above shows different results in IE and other browsers.
+
+IE5 and later has implemented that [0] should be the first node, but according to the W3C standard it should have been [1]!!
+
+A Workaround!
+To solve the [0] and [1] problem in IE5+, you can set the SelectionLanguage to XPath.
+
+The following example selects the title of the first book node under the bookstore element:
+
+Example
+xml.setProperty("SelectionLanguage","XPath");
+xml.selectNodes("/bookstore/book[1]/title");  
+
+
+Try it yourself »  
+
+
+--------------------------------------------------------------------------------
+
+Select all the prices
+The following example selects the text from all the price nodes:
+
+Example
+/bookstore/book/price/text()  
+
+
+Try it yourself »  
+
+
+--------------------------------------------------------------------------------
+
+Select price nodes with price>35
+The following example selects all the price nodes with a price higher than 35:
+
+Example
+/bookstore/book[price>35]/price  
+
+
+Try it yourself »  
+
+
+--------------------------------------------------------------------------------
+
+Select title nodes with price>35
+The following example selects all the title nodes with a price higher than 35:
+
+Example
+/bookstore/book[price>35]/title  
+ 
+
+

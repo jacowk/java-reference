@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xsd:element name="fixedLengthFile">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:choice>
+					<xsd:element name="recordFormat" type="SingleRecordFormatType">
+						<xsd:key name="singleRecordFormatFieldFormatName">
+							<xsd:selector xpath="fieldFormat"/>
+							<xsd:field xpath="@name"/>
+						</xsd:key>
+						<xsd:key name="singleRecordFormatFieldFormatStartPosition">
+							<xsd:selector xpath="fieldFormat"/>
+							<xsd:field xpath="@startPosition"/>
+						</xsd:key>
+					</xsd:element>
+					<xsd:element name="recordFormats" type="RecordFormatsType">
+						<xsd:key name="multipleRecordFormatRecordFormatName">
+							<xsd:selector xpath="recordFormat"/>
+							<xsd:field xpath="@name"/>
+						</xsd:key>
+						<xsd:key name="multipleRecordFormatRecordFormatIdentifier">
+							<xsd:selector xpath="recordFormat"/>
+							<xsd:field xpath="@identifier"/>
+						</xsd:key>
+					</xsd:element>
+				</xsd:choice>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:complexType name="RecordFormatsType">
+		<xsd:sequence>
+			<xsd:element name="recordFormatIdentifier" type="RecordFormatIdentifierType"/>
+			<xsd:element name="recordFormat" type="MultipleRecordFormatType" minOccurs="2"  maxOccurs="unbounded">
+				<xsd:key name="multipleRecordFormatFieldFormatName">
+					<xsd:selector xpath="fieldFormat"/>
+					<xsd:field xpath="@name"/>
+				</xsd:key>
+				<xsd:key name="multipleRecordFormatFieldFormatStartPosition">
+					<xsd:selector xpath="fieldFormat"/>
+					<xsd:field xpath="@startPosition"/>
+				</xsd:key>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="RecordFormatIdentifierType">
+		<xsd:attribute name="seperationToken" use="required">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:length value="1"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="startPosition" use="required">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:integer">
+					<xsd:minInclusive value="0"/>
+				</xsd:restriction>	
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="length" use="required">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:integer">
+					<xsd:minInclusive value="1"/>
+				</xsd:restriction>	
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="padValue" use="optional">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:length value="1"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="padPosition" use="optional">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="before"/>
+					<xsd:enumeration value="after"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="SingleRecordFormatType">
+		<xsd:sequence>
+			<xsd:element name="fieldFormat" type="FieldFormatType" minOccurs="1" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		<xsd:attribute name="name" type="xsd:string" use="required"/>
+		<xsd:attribute name="length" use="required">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:integer">
+					<xsd:minInclusive value="1"/>
+				</xsd:restriction>	
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="version" type="xsd:string"/>
+	</xsd:complexType>
+	<xsd:complexType name="MultipleRecordFormatType">
+		<xsd:sequence>
+			<xsd:element name="fieldFormat" type="FieldFormatType" minOccurs="1" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		<xsd:attribute name="name" type="xsd:string" use="required"/>
+		<xsd:attribute name="length" use="required">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:integer">
+					<xsd:minInclusive value="1"/>
+				</xsd:restriction>	
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="version" type="xsd:string"/>
+		<xsd:attribute name="identifier" use="required">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:minLength value="1"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>		
+	</xsd:complexType>
+	<xsd:complexType name="FieldFormatType">
+		<xsd:attribute name="name" type="xsd:string" use="required"/>
+		<xsd:attribute name="startPosition" use="required">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:integer">
+					<xsd:minInclusive value="0"/>
+				</xsd:restriction>	
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="length" use="required">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:integer">
+					<xsd:minInclusive value="1"/>
+				</xsd:restriction>	
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attributeGroup ref="padGroup"/>
+	</xsd:complexType>
+	
+	<xsd:attributeGroup name="padGroup" >
+		<xsd:attribute name="padValue" use="optional">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:length value="1"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="padPosition" use="optional">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="before"/>
+					<xsd:enumeration value="after"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:attributeGroup>
+	
+</xsd:schema>

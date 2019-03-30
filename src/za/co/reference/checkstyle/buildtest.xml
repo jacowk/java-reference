@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="TestProject" basedir="." default="createear">
+	
+	<property name="source.dir" value="${basedir}/source"/>
+	<property name="build.dir" value="${basedir}/build"/>
+	<property name="lib.dir" value="${basedir}/lib"/>
+	<property name="projectname" value="testproject"/>
+	
+	<path id="build.path">
+		<fileset dir="${basedir}/lib">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+	
+	<target name="cleanup">
+		<delete dir="${build.dir}"/>
+		<mkdir dir="${build.dir}"/>
+	</target>
+	
+	<target name="compile" depends="cleanup">
+		<javac srcdir="${source.dir}" destdir="${build.dir}">
+			<classpath refid="build.path"/>
+		</javac>
+	</target>
+	
+	<target name="createjar" depends="compile">
+		<jar name="${build.dir}/${projectname}.jar">
+			<fileset dir="${build.dir}">
+				<include name="com/myproject/**/*.class"/>
+			</fileset>
+		</jar>
+	</target>
+	
+	<target name="createear" depends="createjar">
+		<ear destfile="${projectname}.ear" appxml="application.xml">
+			<fileset dir="${build.dir}" includes="${projectname}.jar"/>
+		</ear>
+		<delete>
+			<fileset dir="${build.dir}" includes="${projectname}.jar"/>
+		</delete>
+	</target>
+	
+	<target name="copy" depends="createear">
+		<copy todir="${lib.dir}">
+			<filelist dir="${build.dir}" filelist="${projectname}.ear"/>
+		</copy>
+	</target>
+	
+</project>

@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ejb-jar
+        xmlns="http://java.sun.com/xml/ns/j2ee"
+        version="2.1"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/ejb-jar_2_1.xsd"
+        >
+    <display-name>LogEjb</display-name>
+    <enterprise-beans>
+        <message-driven>
+            <ejb-name>LogBean</ejb-name>
+            <ejb-class>examples.LogBean</ejb-class>
+            <messaging-type>javax.jms.MessageListener</messaging-type>
+            <transaction-type>Bean</transaction-type>
+            <message-destination-type>javax.jms.Topic</message-destination-type>
+            <message-destination-link>PhysicalTopic</message-destination-link>
+        </message-driven>
+    </enterprise-beans>
+    <assembly-descriptor>
+        <message-destination>
+            <message-destination-name>PhysicalTopic</message-destination-name>
+        </message-destination>
+    </assembly-descriptor>
+</ejb-jar>

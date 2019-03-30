@@ -1,0 +1,64 @@
+DES - Symmetric key encryption
+
+
+http://www.exampledepot.com/taxonomy/term/267
+
+Core classes and interfaces
+
+The JCE core classes and interfaces are:
+
+    * javax.crypto.Cipher - a cryptographic cipher object used for either encryption or decryption
+    * The javax.crypto CipherStream classes - classes which adapt ciphers for use with the Java I/O stream APIs
+    * javax.crypto.KeyGenerator - used to generate new symmetric keys
+    * java.security.KeyFactory - used to convert keys back and forth from internal (Java object) to external (transparent representations of the underlying key material) format
+    * java.security.KeyPairGenerator - used to generate new pairs of asymmetric keys
+    * javax.crypto.Mac - used to generate MACs for cleartexts represented as arrays of bytes
+
+
+
+http://jnb.ociweb.com/jnb/jnbDec2003.html\
+http://www.garykessler.net/library/crypto.html#intro
+file:///C:/Users/jacok/MyDocuments/Java%20Documentation/jdk-6-doc/docs/technotes/guides/security/crypto/CryptoSpec.html#Introduction
+
+
+Perhaps the most important areas that cryptography encompasses are:
+
+    * Encryption/decryption
+    * Message Authentication Codes (MACs)
+    * Digital certificates and signatures
+
+There are other aspects to cryptography beyond the scope of this article, but these are some of the most central. There is also some terminology that is common in the cryptographic community that makes it easier to discuss. The most important terms are:
+
+    * Cleartext - the original information in unencrypted form (also called plaintext) [Credit card #=123456...]
+    * Ciphertext - an encrypted text, which must be decrypted before it makes any sense [Ciphertext=A30B9F6...]
+    * Encryption - the process of converting a cleartext into a ciphertext
+    * Decryption - the process of converting a ciphertext back into cleartext
+    * Key - the information needed encrypt/decrypt a cleartext or ciphertext
+
+
+API Organization
+
+The generic APIs that the JCE provides are defined in three packages:
+
+    * javax.crypto
+    * javax.crypto.interfaces
+    * javax.crypto.spec
+
+In addition to these packages, the javax.crypto classes and interfaces build upon existing classes and interfaces in the packages that start with java.security:
+
+    * java.security
+    * java.security.acl
+    * java.security.cert
+    * java.security.interfaces
+    * java.security.spec
+
+
+
+
+References
+
+    * The JDK security page - http://java.sun.com/j2se/1.4.2/docs/guide/security/index.html
+    * The Java Cryptography Architecture - http://java.sun.com/j2se/1.4.2/docs/guide/security/CryptoSpec.html
+    * The JCE Reference Guide - http://java.sun.com/j2se/1.4.2/docs/guide/security/jce/JCERefGuide.html
+    * Practical Cryptography - by Niels Ferguson & Bruce Schneier (ISBN 0471223573)
+    * Applied Cryptography: Protocols, Algorithms, and Source Code in C, Second Edition - by Bruce Schneier (ISBN 0471117099)

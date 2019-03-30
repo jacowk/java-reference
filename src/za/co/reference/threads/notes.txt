@@ -1,0 +1,178 @@
+http://download.oracle.com/javase/tutorial/essential/concurrency/sync.html
+http://download.oracle.com/javase/7/docs/api/java/util/concurrent/package-summary.html
+
+DEFINING AND STARTING A THREAD
+==============================
+Implement a Runnable interface
+------------------------------
+public class HelloRunnable implements Runnable {
+
+    public void run() {
+        System.out.println("Hello from a thread!");
+    }
+
+    public static void main(String args[]) {
+        (new Thread(new HelloRunnable())).start();
+    }
+
+}
+
+or Extend the Thread class
+--------------------------
+public class HelloThread extends Thread {
+
+    public void run() {
+        System.out.println("Hello from a thread!");
+    }
+
+    public static void main(String args[]) {
+        (new HelloThread()).start();
+    }
+
+}
+
+
+PAUSE EXECUTION
+===============
+Thread.sleep(5000);
+
+INTERRUPTS
+==========
+for (int i = 0; i < importantInfo.length; i++) {
+    //Pause for 4 seconds
+    try {
+        Thread.sleep(4000);
+    } catch (InterruptedException e) {
+        //We've been interrupted: no more messages.
+        return;
+    }
+    //Print a message
+    System.out.println(importantInfo[i]);
+}
+
+
+Methods:
+--------
+The interrupt mechanism is implemented using an internal flag known as the interrupt status.
+Thread.interrupt(): Sets the interrupt status
+Thread.interrupted(): Clears the interrupt status
+Thread.isInterrupted(): Checks the interrupt status flag
+
+Interrupt example
+-----------------
+for (int i = 0; i < inputs.length; i++) {
+    heavyCrunch(inputs[i]);
+    if (Thread.interrupted()) {
+        //We've been interrupted: no more crunching.
+        return;
+        
+        //or you can also do this
+        throw new InterruptedException();
+        
+    }
+}
+
+JOINS
+=====
+Thread t ...;
+t.join();  //The join method allows one thread to wait for the completion of another.
+t.join(5000); //Waits for a limited period
+
+
+==================================================================================================
+SYNCHRONIZATION
+==================================================================================================
+Thread Interference describes how errors are introduced when multiple threads access shared data. 
+Memory Consistency Errors describes errors that result from inconsistent views of shared memory. 
+Synchronized Methods describes a simple idiom that can effectively prevent thread interference and memory consistency errors. 
+Implicit Locks and Synchronization describes a more general synchronization idiom, and describes how synchronization is based on implicit locks. 
+Atomic Access talks about the general idea of operations that can't be interfered with by other threads. 
+
+Thread interference
+Memory Consistency Errors
+	happens-before relationship
+Synchronized Methods (You also get Synchronized Statements)
+====================
+public class SynchronizedCounter {
+    private int c = 0;
+
+    public synchronized void increment() {
+        c++;
+    }
+
+    public synchronized void decrement() {
+        c--;
+    }
+
+    public synchronized int value() {
+        return c;
+    }
+}
+
+Ensures that the method invocations between multiple threads on the same method, does not interleave.
+
+Intrinsic Locks and Synchronization
+===================================
+Synchronization is built around an internal entity known as the intrinsic lock or monitor lock. (The API 
+specification often refers to this entity simply as a "monitor.") Intrinsic locks play a role in both aspects 
+of synchronization: enforcing exclusive access to an object's state and establishing happens-before 
+relationships that are essential to visibility.
+
+One thread cannot acquire the lock owned by another thread. 
+
+Synchronized Statements example
+-------------------------------
+public class MsLunch {
+    private long c1 = 0;
+    private long c2 = 0;
+    private Object lock1 = new Object();
+    private Object lock2 = new Object();
+
+    public void inc1() {
+        synchronized(lock1) { //Must provide the object that will provide the intrinsic lock(lock1 in this case)
+            c1++;
+        }
+    }
+
+    public void inc2() {
+        synchronized(lock2) {
+            c2++;
+        }
+    }
+}
+
+Reentrant Synchronization
+-------------------------
+Study this
+
+
+-----------------------------------------
+http://www.javamex.com/tutorials/synchronization_volatile.shtml
+volatile keyword
+================
+Essentially, volatile is used to indicate that a variable's value will be modified by different threads.
+
+Declaring a volatile Java variable means: 
+
+The value of this variable will never be cached thread-locally: all reads and writes will go straight to "main memory"; 
+Access to the variable acts as though it is enclosed in a synchronized block, synchronized on itself.
+
+----------------------------------------
+
+LIVELINESS
+==========
+A concurrent application's ability to execute in a timely manner is known as its liveness.
+
+(Try to simulate these)
+*Deadlock: Deadlock describes a situation where two or more threads are blocked forever, waiting for each other.
+*Starvation: Starvation describes a situation where a thread is unable to gain regular access to shared resources and is unable to make progress.
+*Livelock: A thread often acts in response to the action of another thread. If the other thread's action is 
+also a response to the action of another thread, then livelock may result. As with deadlock, livelocked 
+threads are unable to make further progress. However, the threads are not blocked — they are simply too busy 
+responding to each other to resume work.
+
+
+GUARDED BLOCKS
+==============
+http://download.oracle.com/javase/tutorial/essential/concurrency/guardmeth.html
+

@@ -1,0 +1,164 @@
+EJB3 Notes: http://www.roseindia.net/ejb/
+===========
+http://download-llnw.oracle.com/javaee/5/api/index.html?index-all.html
+
+1. Transactions (Study from EJB3 book)
+------------------------------------------------------------------------------------------------------------------------
+@TransactionAttribute values:
+NotSupported
+Supports
+Required
+RequiresNew
+Mandatory
+Never
+
+Example:
+--------
+@Stateless
+@TransactionAttribute(NOT_SUPPORTED)
+public class TravelAgentBean implements TravelAgentRemote {
+
+   public void setCustomer(Customer cust) {...}
+
+   @TransactionAttribute(REQUIRED) 
+
+   public TicketDO bookPassage(CreditCardDO card, double price) {
+      ...
+   }
+   
+}
+
+
+
+
+2. Interceptors (http://www.java2s.com/Code/Java/EJB3/UseInterceptorsToCheckPermission.htm)
+------------------------------------------------------------------------------------------------------------------------
+Step 1: Writing the Interceptor:
+
+
+    public class MyInterceptor {
+
+    @AroundInvoke
+    public Object someMethod(InvocationContext invocation){
+    try{
+    invocation.proceed();
+    }
+    catch (Exception e){
+    e.printStackTrace();
+    }
+    return null;
+    }
+
+    }
+
+
+
+The following are important:
+
+
+    * You need the @AroundInvoke annotation
+
+    * The method may have any identifier, but the Object return type is required, aswell as the InvocationContext parameter.
+
+    * invocation.proceed(); is required to execute your method which you annotate with @Interceptors (See step 2). So you can execute code before, or after this invocation.
+
+    * invocation.proceed(); also requires that you catch Exception. This method does not throw any specialized exceptions.
+
+
+
+Step 2: Implementing your Interceptor
+
+
+    public class JavaOne{
+
+    @Interceptors(MyInterceptor.class)
+    public void someMethod(){
+    /* Your code goes here */
+    }
+
+    }
+
+
+
+The only important thing in this step is that you have to annotate your method (or class) with the @Interceptors annotation.
+
+
+
+3. How does EJBQL work?
+------------------------------------------------------------------------------------------------------------------------
+import javax.persistence.Query;
+...
+public Collection<ContentRequest> findContentRequestsByStateAndEarlierThanEqualToCreationDate(State state,
+	Date creationDate){
+	ValidationUtilities.ensureNotNull(state, "state");
+	ValidationUtilities.ensureNotNull(creationDate, "creation date");
+	Query query =  entityManager.createQuery("SELECT c from ContentRequest c WHERE " +
+		"c.currentContentRequestState.effectiveToDate = 0 AND c.currentContentRequestState.state = " +
+		":state AND c.creationDate <= " + ":creationDate");
+	query.setParameter("state", state);
+	query.setParameter("creationDate", creationDate.getTime());
+	query.setMaxResults(100);
+	return query.getResultList();
+}
+
+4. How are named queries used? (http://download-llnw.oracle.com/javaee/5/api/javax/persistence/NamedQuery.html)
+------------------------------------------------------------------------------------------------------------------------
+Is used to specify a named query in the Java Persistence query language, which is a static query expressed in metadata. Query names are scoped to the persistence unit.
+
+The following is an example of the definition of a named query in the Java Persistence query language:
+
+    @NamedQuery(
+            name="findAllCustomersWithName",
+            query="SELECT c FROM Customer c WHERE c.name LIKE :custName"
+    )
+ 
+
+The following is an example of the use of a named query:
+
+    @PersistenceContext
+    public EntityManager em;
+    ...
+    customers = em.createNamedQuery("findAllCustomersWithName")
+            .setParameter("custName", "Smith")
+            .getResultList();
+ 
+
+
+5. @AssociationOverrides (http://download-llnw.oracle.com/javaee/5/api/javax/persistence/AssociationOverride.html)
+------------------------------------------------------------------------------------------------------------------
+This annotation is used to override a many-to-one or one-to-one mapping of property or field for an entity relationship.
+
+The AssociationOverride annotation may be applied to an entity that extends a mapped superclass to override a 
+many-to-one or one-to-one mapping defined by the mapped superclass. If the AssociationOverride annotation is 
+not specified, the join column is mapped the same as in the original mapping.
+
+    Example:
+    @MappedSuperclass
+    public class Employee {
+        ...
+        @ManyToOne
+        protected Address address;
+        ...
+    }
+    
+    @Entity 
+    @AssociationOverride(name="address", 
+        joinColumns=@JoinColumn(name="ADDR_ID"))
+    // address field mapping overridden to ADDR_ID fk
+    public class PartTimeEmployee extends Employee {
+        ...
+    }
+ 
+
+6. Some annotations
+------------------------------------------------------------------------------------------------------------------
+@Resource
+@Resource(type = javax.jms.ConnectionFactory.class, mappedName = "ConnectionFactory")
+@EJB
+@IgnoreDependency
+
+@Resource
+protected SessionContext sessionContext;
+
+@PersistenceContext()
+protected EntityManager entityManager;

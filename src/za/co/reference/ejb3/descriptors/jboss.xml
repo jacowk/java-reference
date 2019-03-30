@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--$Author: cuene $-->
+<!--$Revision: 1.1 $-->
+<!DOCTYPE jboss PUBLIC "-//JBoss//DTD JBOSS 4.2//EN" "http://www.jboss.org/j2ee/dtd/jboss_4_2.dtd">
+<jboss>
+	<!--<enterprise-beans>
+		<session>
+			<ejb-name>CompanyBean</ejb-name>
+			<jndi-name>net/students/studentcapture/company/session/CompanyBean</jndi-name>
+		</session>
+		<session>
+			<ejb-name>BranchBean</ejb-name>
+			<jndi-name>net/students/studentcapture/branch/session/BranchBean</jndi-name>
+		</session>
+		<session>
+			<ejb-name>UserBean</ejb-name>
+			<jndi-name>net/students/studentcapture/user/session/UserBean</jndi-name>
+		</session>
+	</enterprise-beans>-->
+	<resource-managers>
+		<resource-manager>
+			<res-name>StudentDS</res-name>
+			<res-jndi-name>java:/StudentDS</res-jndi-name>
+		</resource-manager>
+	</resource-managers>
+</jboss>

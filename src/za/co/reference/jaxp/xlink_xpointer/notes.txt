@@ -1,0 +1,3 @@
+XLink defines a standard way of creating hyperlinks in XML documents.
+XPointer allows the hyperlinks to point to more specific parts in the XML document.
+

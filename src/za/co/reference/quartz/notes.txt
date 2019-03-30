@@ -1,0 +1,252 @@
+Quartz Notes: http://www.roseindia.net/quartz/index.shtml
+============
+
+1# Introduction to the Quartz Scheduler
+In this section you will learn about the importance of Job Scheduling in your java application. You will also learn how Quartz Job Scheduler helps you to develop job scheduling application in Java. 
+  
+2# Download Quartz Job Scheduler
+In this section we will download Quartz Job Scheduler from its distribution web site and then create development environment in the eclipse integrated development environment.
+ 
+3# Developing Hello World Scheduler
+In this section we will develop a simple Quartz Scheduler application that will display "Hello Quartz Scheduler: <date>" on the console window.
+ 
+4# Jobs & Triggers
+If you want to schedule you software components then it must implement the Job interface which override the execute() method. Here is the interface:
+          
+5# More About Triggers
+In this section we will try to provide the brief description of triggers. As we know that the trigger objects are used for executing the jobs or firing jobs. When we wish to schedule the jobs, then we can used the properties of triggers.
+             
+6# More About Simple Trigger
+Simple trigger can be used to one shot execution or fire a job and in other words, we can say that just a single execution of job to the specified time. 
+                                  
+7# More About the CronTrigger
+The CronTriggers are more useful than the SimpleTrigger, if we want to performed the job triggering based on the calendar schedules such as "every day", "every weekday" etc.
+      
+8# Example of Cron Trigger
+In this section we are just providing you a Cron Trigger example and by this, you can better understand the working of cron trigger.
+               
+9# Implementing more than one Job Details and Triggers
+In this quartz tutorial, we will learn how to implement more than one triggers and jobs with a quartz scheduler. We know that, the scheduler is a main interface of quartz scheduler that contains Job Details and Triggers.
+                  
+10#Scheduler Shutdown Example
+In this section we will see how to shutdown the scheduler in quartz application. As we know that the scheduler is a main interface of a Quartz Scheduler it maintains the list of JobDetail and Trigger. 
+             
+11#TriggerListeners and JobListeners
+To perform any action you create Listeners objects and these actions are based on events occurring within the scheduler. TriggerListeners receive events related to triggers, and JobListeners receive events related to jobs.
+             
+12# JobStores
+Job Store are used to keep track of all the "work data" that you give to the scheduler: jobs, triggers, calendars, etc. The important step for Quartz Scheduler step is selecting the appropriate JobStore.
+           
+13# Configuration, Resource Usage and StdSchedulerFactory
+Quartz is architected in modularized way, that's why before running it, several components need to be snapped together. Components  need to be configure before Quartz :
+              
+14# Advance (Enterprise) Features
+Clustering feature works with only JDBCJobStore. It include job fail-over and loaded - balancing. Setting up the "org.quartz.jobStore.isClustered" property to "true" for enabling the clustering.
+            
+15# Establish a Connection with MySQL Database
+In this section, we will teach about establishing the connection between MySQL database and quartz application for updating and manipulating the data of MySQL database tables.
+
+http://www.roseindia.net/quartz/trigger.shtml
+---------------------------------------------
+Calendars
+
+Quartz Calendars (not java.util.Calendar) objects can be associated with triggers object at the time of the triggers are stored in the scheduler. It is very useful to excluding blocks of time to fire the triggers schedule. For example, we wish to create a trigger that fires a job every weekday at 4.15 am, in this case we would to add a Calendar that excludes all of the holidays.
+
+We are going to implement the Calendar interface:
+
+Here is the code of Calendar interface:
+package org.quartz;
+
+  public interface Calendar {
+    public boolean isTimeIncluded(long timeStamp);
+    public long getNextIncludedTime(long timeStamp);
+  }
+
+isTimeIncluded(long timeStamp);
+Above method returns a Boolean type values either true or false. Which takes long type value (timeStamp) in milliseconds and included by the Calendar interface.
+
+getNextIncluedeTime(long timeStamp);
+This method takes long type value (timeStamp) in millisecond and determine the next time which is included by the Calendar after the given time.
+
+The Quartz consists of the org.quartz.impl.HolidayCalendar class. The Calendar object integrated with the scheduler through the addCalendar() method. If you want to use the HolidayCalendar then first of all you must be initialized it, after that you will use the addExcludedDate(Date date) method in the program. This method is used to exclude the days from the scheduling.
+
+Here we are going to implement a simple Calendar object to add and exclude with it:
+
+HolidayCalendar hcal = new HolidayCalendar();
+cal.addExcludedDate(Date date);
+
+sched.addCalendar("myHoliday", hcal, false);
+
+Misfire Instructions
+The triggers contains another important property that is "misfire instruction". Sometimes, a persistent trigger misses to its firing time because the scheduler being shutdown, in this case the misfire is occurred. More descriptions about the misfire instruction will provide below with the Simple and Cron Triggers. The misfire instruction can be used with trigger object by using the setMisfireInstruction() method.
+
+
+http://www.roseindia.net/quartz/simple-trigger.shtml
+----------------------------------------------------
+SimpleTrigger Constructor:
+--------------------------
+public SimpleTrigger(String name, String group, Date startTime, Date endTime, int repeatCount, long repeatInterval);
+
+name: This is the name of Simple Trigger.
+group: This is the name of scheduler group.
+startTime:  This is the time for firing or executing the Trigger.
+endTime: This is the time for the Trigger to drop repeat firing or executing. 
+repeatCount: This is the number of repeat firing or executing the Trigger by using the REPEAT_INDEFINITELY  
+	for no any foundation of time.
+repeatInterval: This is the time (milliseconds) for stopping or pausing the repeat firing.
+
+1. Example SimpleTrigger : Create a simple trigger which fires exactly once, 20 seconds from now:
+
+long startTime = System.currentTimeMillis() + (20L*1000L);
+
+SimpleTrigger strigger  =  new SimpleTrigger("mySimpleTrigger", sched.DEFAULT_GROUP, new Date(startTime), null, 0, 0L);
+
+2. Example SimpleTrigger : Create a simple trigger that fires quickly and repeats every 20 seconds:
+
+SimpleTrigger strigger  =  new SimpleTrigger("mySimpleTrigger", sched.DEFAULT_GROUP, new Date(), null, SimpleTrigger.REPEAT_INDEFINITELY, 20L * 1000L);
+
+3. Example SimpleTrigger: Create a Simple Trigger that fires quickly and repeats every 10 seconds until 50 seconds from now:
+
+long endTime = System.currentTimeMillis() + (50L * 1000L);
+
+SimpleTrigger strigger  =  new SimpleTrigger("mySimpleTrigger", sched.DEFAULT_GROUP, new Date(), new Date(endTime), SimpleTrigger.REPEAT_INDEFINITELY, 10L * 1000L);
+
+4. Example SimpleTrigger: Create a Simple Trigger that fires on February 19 of the year 2007 at accurately 9:15 am, and repeats 10 times with 20 seconds delay between each firing.
+
+java.util.Calendar cal = new java.util.GregorianCalendar(2007,cal.FEB, 19);
+cal.set(cal.HOUR, 9);
+cal.set(cal.MINUTE, 15);
+cal.set(cal.SECOND, 0);
+cal.set(cal.MILLISECOND, 0);
+
+Data startTime = cal.getTime();
+
+SimpleTrigger trigger = new SimpleTrigger("mySimpleTrigger", sched.DEFAULT_GROUP, startTime, 10, 20L*1000L);
+
+Simple Trigger Misfire Instructions
+
+When the misfire instruction occurs then what should to do the Quartz. There are following misfire 
+instructions to use for informing the Quartz.
+
+    MISFIRE_INSTRUCTION_FIRE_NOW
+
+     MISFIRE_INSTRUCTION_RESCHEDULE_NOW_WITH_EXISTING_REPEAT_COUNT
+
+   MISFIRE_INSTRUCTION_RESCHEDULE_NOW_WITH_REMAINING_REPEAT_COUNT
+
+   MISFIRE_INSTRUCTION_RESCHEDULE_NEXT_WITH_REMAINING_COUNT
+
+   MISFIRE_INSTRUCTION_RESCHEDULE_NEXT_EXISTING_COUNT
+
+Here is the also mis-fire instruction that have used for all trigger types:
+
+   Trigger.MISFIRE_INSTRUCTION_SMART_POLICY
+
+When we will use the "smart policy" misfire instruction with the triggers then the SimpleTrigger determine 
+between its various types of mis-fire instructions that depends upon the configuration and state of the 
+specified SimpleTrigger instance. The JavaDOC has the SimpleTrigger.updateAfterMisfire() method that describes 
+the brief description of this dynamic behavior.
+
+
+http://www.roseindia.net/quartz/crontrigger.shtml
+-------------------------------------------------
+Cron Expression 
+
+The Cron-Expressions are strings which are used for configuring the instances of CronTrigger. The Cron-Expressions made up of following sub-expressions that performs individual works according to it's schedule and that is separated by the white-space. :
+
+   1. Seconds
+   2. Minutes
+   3. Hours
+   4. Day-of-Month
+   5. Month
+   6. Day-of-Week
+
+Example: The Cron-expression string is "0  0  10  ?  *  SUN" that means "every Sunday at 10 am". This example reads only the "SUN" from weekday and replaces to all weekday.
+
+The Wild-cards ('* ' character) that can be used for inserting the every possible value of this field. The '*' character is used in the "Month" field that means "every month" and "Day-Of-Week" field means "every day of the week".
+
+All fields have some specific values that are specified by us. Such as the numbers 0 to 23 for hours, 0 to 59 that is used for minutes and seconds, 0 to 31 for Day-of-Month but here, we should more careful about how many day are used in a month. Months have the specified values between 0 to 11, for this we will use the some string as like: JAN, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT, NOV and DEC. Similarly, the Days-of-week has specified values between 1 to 7. Here 1 for Sunday, 2 for Monday, 3 for Tuesday,....... so on. But here we will use the some string for this like: SUN, MON, TUE, WED, THU, FRI and SAT.
+
+The Cron-Expressions are used the '/' character for increments to specify values. If we will put "0/10" in the seconds field that means every 10 seconds will start at second zero and if we will put "0/20" in the Minutes field then it will simply fires every 20 minutes.
+
+The Cron-Expressions are also used the '?' character that allows for the day-of-month and day-of-week fields for specifying "no specific value".
+
+The 'L' character, it is the short form of "last" that allows us for using the day-of -month and day-of-week fields. If we can use the value 'L' in the day-of-month field that means last day of the month like: 31 for January, 28 for February not the leap years. In case of day-of-week field that means "7 stands for SAT".
+
+There are following example of expressions for specify the JavaDOC for CronTrigger:
+
+1.Example: Write an expression to create a trigger that fires ever 10 minutes.
+
+                     "0  0/10  *  *  *  ?"
+
+2.Example: Write an expression to create a trigger that fires every 10 minutes, at 10 seconds after the minute.
+
+                    "10  0/10  *  *  *  ?"
+
+                    (That means each firing after the 10 seconds interval like: 8:00:00am, 8:10:00am,8:20:00am etc.)
+
+3.Example: Write an expression to create a trigger that fires at 9:30, 10:30, 11:30, 12:30 and 13:30 on every Sunday and Saturday.
+
+                    "0  30  9-13  ?  *  SUN, SAT"
+                    
+                    
+http://www.roseindia.net/quartz/scheduler-shut-down.shtml
+---------------------------------------------------------
+Scheduler Shutdown Example: Example 6 with StatusJob and StatusSchedule
+
+Description of code:
+
+shutdown();
+Above method used to shutdown the quartz scheduler that means breaking the scheduler firing of triggers. The scheduler can not be re-started here.
+
+isShutdown();
+This method has the scheduler reports and returns a Boolean type date either true or false. When it will return true that means scheduler is shutdown otherwise it couldn't be shutdown and operations are executed here.
+
+getFireTime();
+This method has exact trigger firing time.
+
+
+
+http://www.roseindia.net/quartz/triggerlisteners-and-joblistener.shtml
+----------------------------------------------------------------------
+TriggerListeners and JobListeners: No examples
+TriggerListeners receive events related to triggers, and JobListeners receive events related to jobs.
+Events related to Trigger : trigger firings, trigger mis-firings and trigger completions.
+
+Events related to Job : a notification when the job is about to be executed, and a notification that the job has completed execution
+
+For creating listener, simply create an object that implements either the org.quartz.JobListener and/or org.quartz.TriggerListener interface
+. Then during run time listeners are registered with the scheduler, and must be given a name. Listeners can be registered as either "global" or "non-global". Global listeners receive events for ALL triggers/jobs, and non-global listeners receive events only for the specific triggers/jobs that explicitly name the listener in their getJobListenerNames() or getTriggerListenerNames() properties.
+
+scheduler.addGlobalJobListener(myJobListener);
+or
+scheduler.addJobListener(myJobListener);
+         
+SchedulerListeners
+
+SchedulerListeners are much same as TriggerListeners and JobListeners, but they receive notification of events within the Scheduler itself - its not necessary events related to a specific trigger or job.
+
+Events related to Scheduler : the addition of a job/trigger, the removal of a job/trigger, a serious error within the scheduler, notification of the scheduler being shutdown, and others.
+
+SchedulerListeners are created and registered in the same way as the Trigger & Job Listener, but there is no distinction between global and non-global listeners. SchedulerListeners can be virtually any object that implements the org.quartz.SchedulerListener interface
+
+
+http://www.roseindia.net/quartz/jobstores.shtml
+-----------------------------------------------
+Job Stores
+
+TODO
+
+http://www.roseindia.net/quartz/configuration-resourceusage-stdschedulerfactory.shtml
+-------------------------------------------------------------------------------------
+Configuration, Resource Usage and StdSchedulerFactory
+
+StdSchedulerFactory
+StdSchedulerFactory is a class, that is implementation of org.quartz.SchedulerFactory interface and does all of its work of creating a Quartz Scheduler instance based on the content of properties file. Generally, properties are stored in and loaded from a file, but can also be created by your program and handed directly to the factory. Simply invoking getScheduler() on the factory you get the instance of scheduler.
+
+DirectSchedulerFactory
+DirectSchedulerFactory is a class, that is singleton implementation of SchedulerFactory interface. It is useful for those user that want to create their Scheduler instance in more programatic way. Generally, it can be used for the following reasons: (1) it requires the user to have a greater understanding of what they're doing (2) it does not allow for declarative configuration - or in other words, you end up hard-coding all of the scheduler's settings.
+
+
+
+

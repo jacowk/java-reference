@@ -1,0 +1,437 @@
+xjc -p hello hello.xsd
+
+https://jaxb.dev.java.net/tutorial/
+===================================
+
+Import another schema file
+--------------------------
+<xsd:import namespace="http://astronomy.org/common" schemaLocation="common.xsd"/>
+
+Groups
+------
+xs:group and xs:attributeGroup
+*Don't know how this works yet
+
+Spurious-Classes
+----------------
+https://jaxb.dev.java.net/tutorial/section_2_3_5-Spurious-Classes.html#Spurious Classes
+
+
+2.1 XML Schema Types
+--------------------
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+            jxb:version="2.0">
+...
+
+2.2.1 Defining an Integer Range Type
+------------------------------------
+https://jaxb.dev.java.net/tutorial/section_2_2_1-JAXB-Examples.html#Defining an Integer Range Type
+
+<xsd:element name="value">
+	<xsd:simpleType name="GroupType">
+	  <xsd:restriction base="xsd:int">
+	    <xsd:minInclusive value="1"/>
+	    <xsd:maxInclusive value="255"/>
+	  </xsd:restriction>
+	</xsd:simpleType>
+</xsd:element>
+
+2.2.2 Numeric Types
+-------------------
+https://jaxb.dev.java.net/tutorial/section_2_2_2-Numeric-Types.html
+
+<xsd:complexType name="NumericZooType">
+  <xsd:sequence>
+    <xsd:element name="decimal"         type="xsd:decimal"/> <!-- Represented by java.math.BigDecimal -->
+    <xsd:element name="integer"         type="xsd:integer"/> <!-- Represented by java.math.BigInteger -->
+    <xsd:element name="long"            type="xsd:long"/>
+    <xsd:element name="int"             type="xsd:int" default="42"/>
+    <xsd:element name="short_nil"       type="xsd:short" nillable="true"/>
+    <xsd:element name="byte"            type="xsd:byte"  default="13" nillable="true"/>
+    <xsd:element name="nonNegative"     type="xsd:nonNegativeInteger"/> <!-- Represented by java.math.BigInteger -->
+    <xsd:element name="unsignedLong"    type="xsd:unsignedLong"/>
+    <xsd:element name="unsignedInt"     type="xsd:unsignedInt"/>
+    <xsd:element name="unsignedShort"     type="xsd:unsignedShort"/>
+    <xsd:element name="unsignedByte"     type="xsd:unsignedByte"/>
+  </xsd:sequence>
+</xsd:complexType>
+
+2.2.3 Defining a String with Length Limits
+------------------------------------------
+https://jaxb.dev.java.net/tutorial/section_2_2_3-Defining-a-String-with-Length-Limits.html
+
+<xsd:simpleType name="ShortNameType">
+  <xsd:restriction base="xsd:string">
+    <xsd:minLength  value="1"/>
+    <xsd:maxLength  value="3"/>
+  </xsd:restriction>
+</xsd:simpleType>
+
+2.2.4 Defining a String Type Restricted By Pattern
+--------------------------------------------------
+https://jaxb.dev.java.net/tutorial/section_2_2_4-Defining-a-String-Type-Restricted-By-Pattern.html
+
+<xsd:simpleType name="DirType">
+  <xsd:restriction base="xsd:string">
+    <xsd:pattern value="[LR]*"/>
+  </xsd:restriction>
+</xsd:simpleType>
+
+2.2.5 Date and Time
+-------------------
+https://jaxb.dev.java.net/tutorial/section_2_2_5-Date-and-Time.html
+
+<xsd:complexType name="DateTimeType">
+  <xsd:sequence>
+    <xsd:element name="Date" type="xsd:date"/>
+    <xsd:element name="Time" type="xsd:time"/>
+    <xsd:element name="DateTime" type="xsd:datetime"/>
+  </xsd:sequence>
+ </xsd:complexType>
+ 
+*xsd:date, xsd:time and xsd:dateTime is bounded to XMLGregorianCalendar
+ 
+//Java snippet: Work to be done before you can call the getters and setters for these POJO generated properties:
+// Create a DateTimeType element for the current time and date.
+ObjectFactory of = new ObjectFactory();
+DateTimeType meta = of.createDateTimeType();
+GregorianCalendar now = new GregorianCalendar();
+
+// Obtain a DatatypeFactory instance.
+DatatypeFactory df = DatatypeFactory.newInstance();
+
+// Create an XMLGregorianCalendar with the current date.
+XMLGregorianCalendar gcDate =
+    df.newXMLGregorianCalendarDate(
+        now.get( Calendar.YEAR ),
+        now.get( Calendar.MONTH ),
+        now.get( Calendar.DAY_OF_MONTH ),
+        DatatypeConstants.FIELD_UNDEFINED );
+
+// Create an XMLGregorianCalendar with the current time.
+XMLGregorianCalendar gcTime =
+    df.newXMLGregorianCalendarTime(
+        now.get( Calendar.HOUR_OF_DAY ),
+        now.get( Calendar.MINUTE ),
+        now.get( Calendar.SECOND ),
+        null,                               // no fraction
+        DatatypeConstants.FIELD_UNDEFINED );
+
+// Insert sub-elements into the DateTimeType element.
+meta.setDate( gcDate );
+meta.setTime( gcTime );
+
+2.2.6 Binary Data
+-----------------
+https://jaxb.dev.java.net/tutorial/section_2_2_6-Binary-Data.html
+
+<xsd:complexType name="BinaryType">
+  <xsd:sequence>
+    <xsd:element name="data" type="xsd:hexBinary"/> <!-- Represented by byte[] -->
+  </xsd:sequence>
+</xsd:complexType>
+
+2.2.7 Defining a List of Integers
+---------------------------------
+https://jaxb.dev.java.net/tutorial/section_2_2_7-Defining-a-List-of-Integers.html
+
+<xsd:simpleType name="NumberListType">
+  <xsd:list itemType="xsd:int"/> <!-- Represented by List<Integer>...only getter, no setter -->
+</xsd:simpleType>
+
+2.2.8 Defining Other Lists
+--------------------------
+https://jaxb.dev.java.net/tutorial/section_2_2_8-Defining-Other-Lists.html
+
+<xsd:simpleType name="StringListType">
+  <xsd:list itemType="xsd:string"/>   <!-- dangerous! Use only if all values are present. Product space delimited list -->
+</xsd:simpleType>
+
+2.2.9 Defining an Enumeration
+-----------------------------
+https://jaxb.dev.java.net/tutorial/section_2_2_9-Defining-an-Enumeration.html#Defining an Enumeration
+
+<xsd:simpleType name="IXLType">
+  <xsd:restriction base="xsd:string">
+    <xsd:enumeration value="eStwA"/> <!-- Produce enum with 'E_STW_A("eStwA")' -->
+    <xsd:enumeration value="eStwS"/>
+    <xsd:enumeration value="SpDrL"/>
+    <xsd:enumeration value="SpDrS"/>
+    <xsd:enumeration value="VGS80"/>
+  </xsd:restriction>
+</xsd:simpleType>
+
+or
+<xsd:simpleType name="IXLType">
+  <xsd:restriction base="xsd:string">
+    <xsd:enumeration value="eStwA"/>
+      <xsd:annotation>
+      	<xsd:appinfo>
+        	<jxb:typesafeEnumMember name="eStwA"/> <!-- Produce enum with 'eStwA' -->
+      	</xsd:appinfo>
+      </xsd:annotation>
+      ...
+  </xsd:restriction>
+</xsd:simpleType>
+
+
+2.2.10 Defining a Type Union (Try to avoid)
+----------------------------
+A simple type may also be constructed as a union of two or more simple types. 
+
+<xsd:simpleType name="SpeedOrNumberType">
+  <xsd:union>
+    <xsd:simpleType>
+      <xsd:restriction base="xsd:int">
+      </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:simpleType>
+      <xsd:restriction base="xsd:string">
+        <xsd:pattern value="+?d+"/>
+      </xsd:restriction>
+    </xsd:simpleType>
+  </xsd:union>
+</xsd:simpleType>
+
+2.2.11 Defining Types for XML Elements Without Content
+------------------------------------------------------
+https://jaxb.dev.java.net/tutorial/section_2_2_11-Defining-Types-for-XML-Elements-Without-Content.html
+
+<xsd:complexType name="RouteType">
+  <xsd:attribute name="Pos" type="xsd:int" use="optional" default="1"/>
+  <xsd:attribute name="Dir" type="DirType" use="required"/>
+</xsd:complexType>
+
+2.2.12 Defining Types for XML Elements With Content
+2.2.12.1 Content: A Value
+-------------------------
+<xsd:element name="Quantity" type="xsd:int"/> <!-- Example: <Quantity>144</Quantity> -->
+<xsd:element name="Doc" type="DocType"/>
+
+2.2.12.2 Content: An Ordered Set of Elements
+--------------------------------------------
+<xsd:complexType name="PointType">
+  <xsd:sequence>
+    <xsd:element name="X" type="xsd:int"/>
+    <xsd:element name="Y" type="xsd:int"/>
+  </xsd:sequence>
+</xsd:complexType>
+
+*maxOccurs may not have a value greater than 1
+*All elements appears in the exact order
+
+2.2.12.3 Content: An Unordered Set of Elements 
+----------------------------------------------
+<xsd:complexType name="DinnerType">
+  <xsd:all>
+    <xsd:element name="Starter" type="xsd:string" minOccurs="0"/>
+    <xsd:element name="Soup"    type="xsd:string" minOccurs="0"/>
+    <xsd:element name="Entree"  type="xsd:string"/>
+    <xsd:element name="Dessert" type="xsd:string" minOccurs="0"/>
+  </xsd:all>
+</xsd:complexType>
+
+*maxOccurs may not have a value greater than 1
+*All elements must be present, but they may have any order
+
+2.2.12.4 Content: Alternative Elements
+--------------------------------------
+(https://jaxb.dev.java.net/tutorial/section_2_2_12_4-Content-Alternative-Elements.html)
+
+<xsd:complexType name="CommType">
+  <xsd:choice>
+    <xsd:element name="SMS"   type="xsd:string"/>
+    <xsd:element name="MMS"   type="xsd:string"/>
+    <xsd:element name="Email" type="xsd:string"/>
+  </xsd:choice>
+</xsd:complexType>
+
+*Only one of these elements should be present
+
+2.2.12.5 Content: A Homogeneous List of Elements (Continue here)
+------------------------------------------------
+<xsd:complexType name="PolygonType">
+  <xsd:sequence>
+    <xsd:element name="Points" type="PointType" minOccurs="2" maxOccurs="unbounded"/> <!-- sub-element occurs repeatedly -->
+  </xsd:sequence>
+</xsd:complexType>
+
+2.2.12.6 Content: A Mixed List of Elements: (Generates List<Object>)
+------------------------------------------
+<xsd:complexType name="MixType">
+  <xsd:choice maxOccurs="unbounded">
+    <xsd:element name="Text"   type="xsd:string"/>
+    <xsd:element name="Number" type="xsd:int"/>
+    <xsd:element name="Point"  type="PointType"/>
+  </xsd:choice>
+</xsd:complexType>
+
+*In Java, to distinguish between the different elements, an instanceof should be used.
+
+2.2.12.7 Mixed Content
+----------------------
+(https://jaxb.dev.java.net/tutorial/section_2_2_12_7-Mixed-Content.html)
+Example:
+<P>
+	<B>Mixed content</B> lets you embed <I>child elements</I> into the value of an element.
+</P>
+
+<xsd:complexType name="ChunkType" mixed="true">
+    <xsd:choice maxOccurs="unbounded">
+      <xsd:element name="B" type="ChunkType"/>  
+      <xsd:element name="I" type="ChunkType"/>  
+      <xsd:element name="U" type="ChunkType"/>  
+    </xsd:choice>
+</xsd:complexType>
+
+<xsd:complexType name="TextType">
+  <xsd:sequence>
+    <xsd:element name="P" type="ChunkType" maxOccurs="unbounded"/>
+  </xsd:sequence>
+</xsd:complexType>
+
+
+2.2.12.8 No Value
+-----------------
+https://jaxb.dev.java.net/tutorial/section_2_2_12_8-No-Value.html
+
+<xsd:complexType name="DemoType">
+    <xsd:sequence>
+      <xsd:element name="A" type="xsd:string"/> 
+      <xsd:element name="B" type="xsd:string" minOccurs="0"/>  
+      <xsd:element name="C" type="xsd:string" nillable="true"/>  
+    </xsd:sequence>
+</xsd:complexType>
+
+<demo>
+  <A></A>
+  <!-- no element <B> here -->
+  <C xsi:nil="true"/>
+</demo>
+
+2.2.13 Defining Subtypes
+------------------------
+https://jaxb.dev.java.net/tutorial/section_2_2_13-Defining-Subtypes.html
+
+*Schema inheritance is achieved through <xsd:extension>
+* in Java subclasses would be generated that extends superclasses
+
+<xsd:complexType name="EntryType">
+  <xsd:attribute name="Text" type="xsd:string"/>
+</xsd:complexType>
+
+<xsd:complexType name="ItemType">
+  <xsd:complexContent>
+    <xsd:extension base="EntryType">
+      <xsd:sequence>
+        <xsd:element name="Command" type="xsd:string"/>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+
+<xsd:complexType name="CheckBoxType">
+  <xsd:complexContent>
+    <xsd:extension base="ItemType">
+      <xsd:attribute name="State" type="xsd:boolean"/>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+
+<xsd:complexType name="RadioButtonType">
+  <xsd:complexContent>
+    <xsd:extension base="ItemType">
+      <xsd:attribute name="Group" type="xsd:string"/>      
+      <xsd:attribute name="State" type="xsd:boolean"/>
+      <xsd:attribute name="Value" type="xsd:string"/>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+
+<xsd:complexType name="MenuType">
+  <xsd:complexContent>
+    <xsd:extension base="EntryType">
+      <xsd:choice maxOccurs="unbounded">
+        <xsd:element name="Item"        type="ItemType"/>
+        <xsd:element name="CheckBox"    type="CheckBoxType"/>
+        <xsd:element name="RadioButton" type="RadioButtonType"/>
+        <xsd:element name="Menu"        type="MenuType"/>
+      </xsd:choice>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+
+2.2.14 Substitution Groups
+--------------------------
+https://jaxb.dev.java.net/tutorial/section_2_2_14-Substitution-Groups.html
+
+(https://jaxb.dev.java.net/tutorial/section_2_2_14-Substitution-Groups.html)
+<xsd:complexType name="BinopType">
+  <xsd:sequence>
+    <xsd:element ref="operand"/>
+    <xsd:element ref="operand"/>
+  </xsd:sequence>
+  <xsd:attribute name="operator" type="xsd:string"/>
+</xsd:complexType>
+
+<xsd:element name="operand"  type="xsd:string"/>
+<xsd:element name="constant" type="xsd:string" substitutionGroup="operand"/>
+<xsd:element name="variable" type="xsd:string" substitutionGroup="operand"/>
+
+<xsd:element name="binop" type="BinopType"/>
+
+*To process this in Java takes a bit of work
+
+2.2.15 Referring to Another XML Element
+---------------------------------------
+https://jaxb.dev.java.net/tutorial/section_2_2_15-Referring-to-Another-XML-Element.html
+
+<xsd:complexType name="AirportType">
+  <xsd:attribute name="LocId" type="xsd:ID"     use="required"/> <!-- xsd:ID required -->
+  <xsd:attribute name="Name"  type="xsd:string" use="required"/>
+</xsd:complexType>
+
+<xsd:complexType name="FlightType">
+  <xsd:all>
+    <xsd:element name="From"    type="xsd:IDREF"/> <!-- xsd:IDREF required -->
+    <xsd:element name="To"      type="xsd:IDREF"/> <!-- xsd:IDREF required -->
+    <xsd:element name="Carrier" type="xsd:string"/>
+    <xsd:element name="DepTime" type="xsd:time"/>
+    <xsd:element name="ArrTime" type="xsd:time"/>
+  </xsd:all>
+  <xsd:attribute name="Number" type="xsd:int" use="required"/>
+</xsd:complexType>
+
+<xsd:complexType name="TimetableType">
+  <xsd:sequence>
+    <xsd:element name="Airports" type="AirportType" maxOccurs="unbounded"/>
+    <xsd:element name="Flight"   type="FlightType"  maxOccurs="unbounded"/>
+  </xsd:sequence>
+</xsd:complexType>
+
+
+2.2.16 Elements With Any Type
+2.2.16.1 DOM Elements
+---------------------
+<xsd:complexType name="BagType">
+  <xsd:sequence>
+    <xsd:element name="Content" type="xsd:anyType"/> <!-- Represented by Object in Java -->
+  </xsd:sequence>
+</xsd:complexType>
+
+
+2.2.16.2 Another Content Tree as Element
+----------------------------------------
+https://jaxb.dev.java.net/tutorial/section_2_2_16_2-Another-Content-Tree-as-Element.html
+
+
+2.2.17 Image Data
+-----------------
+https://jaxb.dev.java.net/tutorial/section_2_2_17-Image-Data.html
+
+
+
+
+https://jaxb.dev.java.net/tutorial/section_3_1-Unmarshalling-and-Using-the-Data.html#Unmarshalling and Using the Data

@@ -1,0 +1,38 @@
+http://www.roseindia.net/tutorials/rmi/RMI-Example-2.shtml
+
+Steps for execution:
+
+Step-1 
+
+javac RemoteInterface.java
+javac ServerImplements.java
+
+Step-2
+
+rmic ServerImplements
+
+This steps create Stub/ Skeleton
+
+Step-3
+
+javac Server.java
+javac Client.java
+
+Step-4
+
+Open Two More Consoles. by writing 'start' twice.
+
+Step-5
+
+On first console
+rmiregistry
+
+Step-6
+
+On second console 
+java Server
+
+Step-7
+
+On third console
+java Client

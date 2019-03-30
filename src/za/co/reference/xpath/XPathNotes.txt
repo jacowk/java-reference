@@ -1,0 +1,12 @@
+ // To get an instance of the XPathFactory object itself.
+ XPathFactory xPathFactory = XPathFactory.newInstance();
+
+// Create an instance of XPath from the factory class.
+XPath xPath = xPathFactory.newXPath();
+
+// Compile the expression to get a XPathExpression object.
+String expression = "SomeXPathExpression";
+XPathExpression xPathExpression = xPath.compile(expression);
+
+// Evaluate the expression against the XML Document to get the result.
+Object result = xPathExpression.evaluate(xmlDocument);

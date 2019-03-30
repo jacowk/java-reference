@@ -1,0 +1,83 @@
+Log4j Notes: http://www.roseindia.net/tutorials/log4j/
+===========
+The architecture of Log4J framework is layered and consists of three main components. There components of the Log4J are:
+1. Logger
+2. Appender 
+3. Layout 
+
+Logger
+------
+Logger is the most essential component of the logging process. It is responsible for capturing the logging information. There are 5 different log levels of the Logger. The level of Logger are as following:
+
+There are 5 normal levels of logger:
+
+DEBUG : Most useful to debug an application. 
+INFO : It provides informational messages. 
+WARN : It provides that application may have harmful events. 
+ERROR : It provides that application having error events but that might allow it to continue running. 
+FATAL : It denotes the severe error events which lead the application to abort.
+ 
+In addition, there are two special levels also they are:
+
+ALL : It is intended to turn on all logging 
+OFF : It is intended to turn off logging 
+
+You can also set the logger level by putting a simple code like: 
+logger.setLevel((Level)Level.WARN); 
+
+
+
+Appender
+--------
+The Appender is responsible for publishing the log to a destination. It controls how the logging provides the output.
+
+There are few list of appenders listed below:
+
+ConsoleAppender 
+DailyRollingFileAppender 
+FileAppender 
+RollingFileAppender 
+WriterAppender 
+SMTPAppender 
+SocketAppender 
+SocketHubAppender 
+SyslogAppendersends 
+TelnetAppender
+ 
+ ConsoleAppender is used as: 
+
+ ConsoleAppender appender = new ConsoleAppender(new PatternLayout()); 
+
+ FileAppender is used as:
+
+
+FileAppender appender = new FileAppender(new PatternLayout(),"filename"); 
+
+ WriterAppender is used as:
+ 
+appender = new WriterAppender(new PatternLayout(),new FileOutputStream("filename")); 
+
+
+Layouts
+------
+For each Appender it needs to have an associated Layout, which guides how to format the output. The Layout is responsible for formatting the log output in different layouts. User can control the output format by modifying the Log4J configuration file.
+
+There are basically three types of Layout:
+
+HTMLLayout : It formats the output in the HTML table 
+PatternLayout : It formats the output in the conversion pattern 
+SimpleLayout : It formats the output in a simple manner, it prints the level then place a dash and then the user specified log message.
+
+Other layouts:
+XMLLayout
+TTCCLayout
+
+ 
+Configuring Log4J
+-----------------
+
+For running application using Log4J you need to download the latest version log4j jar file and then add this to the classpath.
+
+There are two ways to configure the Log4J one is by using properties file and other by using xml file. Using xml for Log4J is quite popular and it is recommended also.
+
+

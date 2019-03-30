@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application>
+    <display-name>student</display-name>
+    <module>
+        <ejb>student.jar</ejb>
+    </module>
+</application>

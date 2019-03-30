@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration threshold="warn">
+	<appender name="STDOUT" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.SimpleLayout"/>
+	</appender>
+	
+	<root>
+		<appender-ref ref="STDOUT"/>
+	</root>
+</log4j:configuration>

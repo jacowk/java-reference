@@ -1,0 +1,104 @@
+Signing Code and Granting Permissions
+=====================================
+A. Steps for the Code Signer
+----------------------------
+1. Compile the application
+	"javac Count.java"
+	
+2. Create a JAR file
+	"jar cvf Count.jar Count.class"
+	
+3. Generate Keys (Private/Public key pair with self-signed certificate)
+	"keytool -genkey -alias signFiles -keypass kpi135 -keystore susanstore -storepass ab987c"
+	
+Answer the following few questions:
+...................................
+What is your first and last name?
+  [Unknown]:  Susan Jones 
+What is the name of your organizational unit?
+  [Unknown]:  Purchasing 
+What is the name of your organization?
+  [Unknown]:  ABC 
+What is the name of your City or Locality?
+  [Unknown]:  Cupertino 
+What is the name of your State or Province?
+  [Unknown]:  CA 
+What is the two-letter country code for this unit?
+  [Unknown]:  US 
+Is <CN=Susan Jones, OU=Purchasing, O=ABC,
+    L=Cupertino, ST=CA, C=US> correct?
+  [no]:  y 
+
+4. Sign the JAR file
+	"jarsigner -keystore susanstore -signedjar sCount.jar Count.jar signFiles"
+
+5. Export the public key certificate
+	"keytool -export -keystore susanstore -alias signFiles -file SusanJones.cer"
+
+The signed JAR file together with the certificate file (containing the public key corresponding to the 
+private key used to sign the certificate) is sent to the Code Receiver.
+
+------------------------------
+B. Steps for the Code Receiver
+------------------------------
+Execute a file directly from the jar file:
+	"java -cp sCount.jar Count C:/test/data/text.txt"
+
+Execute a file with a security manager:
+java -Djava.security.manager -cp sCount.jar Count C:\TestData\data
+
+1. Import the certificate as a trusted certificate
+	"keytool -import -alias susan -file SusanJones.cer -keystore raystore"
+
+-Use any password
+-The finger print of the public key is printed, which is compared with the
+finger print of another (trusted) source. You might phone Susan, and ask her
+what the fingerprint should be, and compare it with the finger print you have.
+Susan can get the fingerprint from SusanJones.cert by using:
+	"keytool -printcert -file SusanJones.cer"
+
+Example from the keytool -import and -printcert command flags:
+==============================================================================
+Owner: CN=Susan Jones, OU=Purchasing, O=ABC, L=Cupertino, ST=CA, C=US
+Issuer: CN=Susan Jones, OU=Purchasing, O=ABC, L=Cupertino, ST=CA, C=US
+Serial number: 4bcecc3a
+Valid from: Wed Apr 21 11:58:18 CAT 2010 until: Tue Jul 20 11:58:18 CAT 2010
+Certificate fingerprints:
+         MD5:  16:59:82:5F:BA:71:D1:D3:94:1C:17:FE:62:4B:B5:A7
+         SHA1: 19:F0:D4:4A:73:54:33:92:B4:9B:09:C0:D9:08:34:16:4B:CE:9B:18
+         Signature algorithm name: SHA1withDSA
+         Version: 3
+==============================================================================
+
+2. Set Up a Policy File to Grant the Required Permission
+	2a. Start the policy tool
+		i. "policytool"
+		ii. Select File and New from the menu
+	2b. Specify the Keystore
+		i. Select KeyStore, Edit menu
+		ii. In the KeyStore URL field, specify the KeyStore created in step 1, where the keystore received
+			by the Receiver is imported
+	2c. Add a Policy Entry with a SignedBy Alias
+		i. Click the "Add Policy Entry" button
+		ii. Add Permissions (Read up on this)
+		iii. Click OK
+		iv. Click Done
+	2d. Save the Policy File
+		i. File, Save As
+		ii. Type the filename: "raypolicy" for example
+	2e. See the effects
+		Approach 1:
+		-----------
+		"java -Djava.security.manager -Djava.security.policy=raypolicy -cp sCount.jar Count C:\TestData\data"
+		
+		Approach 2:
+		-----------
+		-Add the policy to the security properties file for java: "java.home\lib\security\java.security"
+		-Add "policy.url.3=file:/C:/Test/raypolicy" entry for windows to this file
+		-Run the program using "java -Djava.security.manager -cp sCount.jar Count C:\TestData\data"
+		
+Exchanging Files		
+================
+file:///C:/Users/jacok/MyDocuments/Java%20Documentation/tutorial/security/toolfilex/index.html
+
+

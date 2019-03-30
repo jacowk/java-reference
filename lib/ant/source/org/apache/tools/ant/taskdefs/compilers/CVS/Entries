@@ -1,0 +1,13 @@
+/AptCompilerAdapter.java/1.1/Mon Jun 29 10:56:21 2009//
+/AptExternalCompilerAdapter.java/1.1/Mon Jun 29 10:56:21 2009//
+/CompilerAdapter.java/1.2/Mon Jun 29 10:56:21 2009//
+/CompilerAdapterFactory.java/1.3/Tue Jun 29 11:27:08 2010//
+/DefaultCompilerAdapter.java/1.3/Tue Jun 29 11:27:00 2010//
+/Gcj.java/1.3/Tue Jun 29 11:27:00 2010//
+/Javac12.java/1.3/Tue Jun 29 11:27:08 2010//
+/Javac13.java/1.2/Mon Jun 29 10:56:21 2009//
+/JavacExternal.java/1.2/Mon Jun 29 10:56:21 2009//
+/Jikes.java/1.2/Mon Jun 29 10:56:21 2009//
+/Jvc.java/1.2/Mon Jun 29 10:56:21 2009//
+/Kjc.java/1.2/Mon Jun 29 10:56:21 2009//
+/Sj.java/1.2/Mon Jun 29 10:56:21 2009//

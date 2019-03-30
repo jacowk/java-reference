@@ -1,0 +1,65 @@
+http://www.idevelopment.info/data/Programming/java/PROGRAMMING_Java_Programming.shtml
+
+Focus on the following things:
+==============================
+1) EJB
+2) Swing
+3) Design Patterns
+4) Enterprise Integration Patterns
+5) XML Processing
+
+Other:
+======
+1) RMI
+2) Sockets
+3) JMS
+
+Swing Components:
+=================
+Basic Controls
+--------------
+JButton
+JCheckBox
+JComboBox
+JList
+JMenu
+JRadioButton
+JSlider
+JSpinner
+JTextField
+JPasswordField
+
+Interactive Displays of Highly Formatted Information 
+----------------------------------------------------
+JColorChooser
+JTable
+JTextArea
+JTree
+
+Uneditable Information Displays
+-------------------------------
+JLabel
+JProgressBar
+JSeparator
+JToolTip
+
+Top-Level Containers
+--------------------
+JApplet
+JDialog
+JFrame
+
+General-Purpose Containers
+--------------------------
+JPanel
+JScrollPane
+JSplitPane
+JTabbedPane
+JToolBar
+
+Special-Purpose Containers
+---------------------------
+JInternalFrame
+JLayeredPane
+Root pane
+

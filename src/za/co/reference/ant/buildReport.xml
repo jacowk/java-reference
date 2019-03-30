@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<project name="Package Report" default="createbatchfile" basedir=".">
+	
+	<property name="source.dir" value="${basedir}/source"/>
+	<property name="build.dir" value="${basedir}/build"/>
+	<property name="report.dir" value="${basedir}/report"/>
+	
+	<path id="build.path">
+		<fileset dir="../common/include/inhouse/spatula">
+			<include name="spatulalib.jar"/>
+		</fileset>
+		<fileset dir="../common/include/inhouse/common">
+			<include name="commonlib.jar"/>
+			<include name="common2lib.jar"/>
+		</fileset>
+		<fileset dir="../common/include/thirdparty/poi">
+			<include name="*.jar"/>
+		</fileset>
+		<fileset dir="../common/include/thirdparty/jortho">
+			<include name="jortho.jar"/>
+		</fileset>
+		<fileset dir="../common/include/thirdparty/jxlayer">
+			<include name="JXLayer-2009_05_17.jar"/>
+		</fileset>
+		<fileset dir="../common/include/thirdparty/swingx">
+			<include name="*.jar"/>
+		</fileset>
+		<fileset dir="../common/include/thirdparty/mysql">
+			<include name="mysql-connector-java-5.1.13-bin.jar"/>
+		</fileset>
+	</path>
+	
+	<target name="cleanup">
+		<delete>
+			<fileset dir="${build.dir}">
+				<include name="net/connectivit/supernova/report/**"/>
+			</fileset>
+			<dirset dir="${build.dir}">
+				<include name="net/connectivit/supernova/report/**"/>
+			</dirset>
+			<fileset dir="${report.dir}">
+				<include name="*.jar"/>
+				<include name="run.bat"/>
+			</fileset>
+		</delete>
+	</target>
+	
+	<target name="compile" depends="cleanup">
+		<javac srcdir="${source.dir}" destdir="${build.dir}" debug="true" includes="net/connectivit/supernova/report/**/*.java">
+			<classpath refid="build.path"/>
+		</javac>
+	</target>
+	
+	<target name="createjar" depends="compile">
+		<jar file="${report.dir}/reports.jar">
+			<fileset dir="${build.dir}">
+				<include name="net/connectivit/supernova/report/**/*.class"/>
+			</fileset>
+			<manifest>
+				<attribute name="Main-Class" value="net.connectivit.supernova.report.CustomReportGeneratorGUI"/>
+				<attribute name="Class-Path" value="mysql-connector-java-5.1.13-bin.jar swingx-1.0.jar swingx-beaninfo-1.0.jar JXLayer-2009_05_17.jar jortho.jar common2lib.jar commonlib.jar dom4j-1.6.1.jar geronimo-stax-api_1.0_spec-1.0.jar poi-3.6-20091214.jar poi-contrib-3.6-20091214.jar poi-ooxml-3.6-20091214.jar poi-ooxml-schemas-3.6-20091214.jar poi-scratchpad-3.6-20091214.jar spatulalib.jar xmlbeans-2.3.0.jar"/>
+			</manifest>
+		</jar>
+	</target>
+	
+	<target name="copyproject" depends="createjar">
+		<copy todir="${report.dir}">
+			<fileset dir="../common/include/inhouse/spatula">
+				<include name="spatulalib.jar"/>
+			</fileset>
+			<fileset dir="../common/include/inhouse/common">
+				<include name="commonlib.jar"/>
+				<include name="common2lib.jar"/>
+			</fileset>
+			<fileset dir="../common/include/thirdparty/poi">
+				<include name="*.jar"/>
+			</fileset>
+			<fileset dir="../common/include/thirdparty/jortho">
+				<include name="jortho.jar"/>
+			</fileset>
+			<fileset dir="../common/include/thirdparty/jxlayer">
+				<include name="JXLayer-2009_05_17.jar"/>
+			</fileset>
+			<fileset dir="../common/include/thirdparty/swingx">
+				<include name="*.jar"/>
+			</fileset>
+			<fileset dir="../common/include/thirdparty/mysql">
+				<include name="mysql-connector-java-5.1.13-bin.jar"/>
+			</fileset>
+		</copy>
+	</target>
+	
+	<target name="createbatchfile" depends="copyproject">
+		<echo file="${report.dir}/run.bat">java -jar reports.jar CustomReportGeneratorGUI</echo>
+	</target>
+	
+</project>

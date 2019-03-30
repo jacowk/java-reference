@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<persistence>
+	<persistence-unit name="student">
+		<jta-data-source>java:/StudentDS</jta-data-source>
+		<properties>
+			<property name="hibernate.hbm2ddl.auto" value="create-drop"/>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
+		</properties>
+	</persistence-unit>
+</persistence>

@@ -1,0 +1,159 @@
+http://java.sun.com/developer/onlineTraining/JavaMail/contents.html
+
+PS: JavaMail requires the Java Activation Framework to run (activation.jar, mail.jar)
+
+Core classes: (in javax.mail.*)
+-------------
+Session, Message, Address, Authenticator, Transport, Store, and Folder
+
+
+Session
+---------------
+The Session class defines a basic mail session. It is through this session that everything else works. The Session object takes advantage of a java.util.Properties object to get information like mail server, username, password, and other information that can be shared across your entire application. 
+
+The constructors for the class are private. You can get a single default session that can be shared with the getDefaultInstance() method: 
+
+	Properties props = new Properties();
+	// fill props with any information
+	Session session = Session.getDefaultInstance(props, null);
+
+Or, you can create a unique session with getInstance(): 
+
+	Properties props = new Properties();
+	// fill props with any information
+	Session session = Session.getInstance(props, null);
+	
+In both cases here the null argument is an Authenticator object which is not being used at this time. More on Authenticator shortly. 
+
+In most cases, it is sufficient to use the shared session, even if working with mail sessions for multiple user mailboxes. You can add the username and password combination in at a later step in the communication process, keeping everything separate. 
+
+
+Message
+---------------
+Once you have your Session object, it is time to move on to creating the message to send. This is done with a type of Message. Being an abstract class, you must work with a subclass, in most cases javax.mail.internet.MimeMessage. A MimeMessage is a email message that understands MIME types and headers, as defined in the different RFCs. Message headers are restricted to US-ASCII characters only, though non-ASCII characters can be encoded in certain header fields. 
+
+To create a Message, pass along the Session object to the MimeMessage constructor: 
+
+	MimeMessage message = new MimeMessage(session);
+Note: There are other constructors, like for creating messages from RFC822-formatted input streams.
+ 
+
+Once you have your message, you can set its parts, as Message implements the Part interface (with MimeMessage implementing MimePart). The basic mechanism to set the content is the setContent() method, with arguments for the content and the mime type: 
+
+	message.setContent("Hello", "text/plain");
+	
+If, however, you know you are working with a MimeMessage and your message is plain text, you can use its setText() method which only requires the actual content, defaulting to the MIME type of text/plain: 
+
+	message.setText("Hello");
+	
+For plain text messages, the latter form is the preferred mechanism to set the content. For sending other kinds of messages, like HTML messages, use the former. More on HTML messages later though.
+
+For setting the subject, use the setSubject() method:
+
+	message.setSubject("First");
+
+
+Address
+---------------
+Once you've created the Session and the Message, as well as filled the message with content, it is time to address your letter with an Address. Like Message, Address is an abstract class. You use the javax.mail.internet.InternetAddress class. 
+
+To create an address with just the email address, pass the email address to the constructor: 
+
+	Address address = new InternetAddress("president@whitehouse.gov");
+	 
+If you want a name to appear next to the email address, you can pass that along to the constructor, too: 
+
+	Address address = new InternetAddress("president@whitehouse.gov", "George Bush");
+ 
+You will need to create address objects for the message's from field as well as the to field. Unless your mail server prevents you, there is nothing stopping you from sending a message that appears to be from anyone. 
+
+Once you've created the addresses, you connect them to a message in one of two ways. For identifying the sender, you use the setFrom() and setReplyTo() methods. 
+
+	message.setFrom(address)
+
+If your message needs to show multiple from addresses, use the addFrom() method: 
+
+	Address address[] = ...;
+	message.addFrom(address);
+
+For identifying the message recipients, you use the addRecipient() method. This method requires a Message.RecipientType besides the address. 
+
+	message.addRecipient(type, address)
+	
+The three predefined types of address are:
+
+Message.RecipientType.TO
+Message.RecipientType.CC
+Message.RecipientType.BCC
+
+So, if the message was to go to the vice president, sending a carbon copy to the first lady, the following would be appropriate: 
+
+	Address toAddress = new InternetAddress("vice.president@whitehouse.gov");
+	Address ccAddress = new InternetAddress("first.lady@whitehouse.gov");
+	message.addRecipient(Message.RecipientType.TO, toAddress);
+	message.addRecipient(Message.RecipientType.CC, ccAddress);
+
+The JavaMail API provides no mechanism to check for the validity of an email address. While you can program in support to scan for valid characters (as defined by RFC 822) or verify the MX (mail exchange) record yourself, these are all beyond the scope of the JavaMail API. 
+
+
+Authenticator
+---------------
+Like the java.net classes, the JavaMail API can take advantage of an Authenticator to access protected resources via a username and password. For the JavaMail API, that resource is the mail server. The JavaMail Authenticator is found in the javax.mail package and is different from the java.net class of the same name. The two don't share the same Authenticator as the JavaMail API works with Java 1.1, which didn't have the java.net variety. 
+
+To use the Authenticator, you subclass the abstract class and return a PasswordAuthentication instance from the getPasswordAuthentication() method. You must register the Authenticator with the session when created. Then, your Authenticator will be notified when authentication is necessary. You could popup a window or read the username and password from a configuration file (though if not encrypted it is not secure), returning them to the caller as a PasswordAuthentication object. 
+
+	Properties props = new Properties();
+	// fill props with any information
+	Authenticator auth = new MyAuthenticator();
+	Session session = Session.getDefaultInstance(props, auth);
+
+
+Transport
+---------------
+The final part of sending a message is to use the Transport class. This class speaks the protocol-specific language for sending the message (usually SMTP). It's an abstract class and works something like Session. You can use the default version of the class by just calling the static send() method: 
+
+	Transport.send(message);
+Or, you can get a specific instance from the session for your protocol, pass along the username and password (blank if unnecessary), send the message, and close the connection: 
+
+	message.saveChanges(); // implicit with send()
+	Transport transport = session.getTransport("smtp");
+	transport.connect(host, username, password);
+	transport.sendMessage(message, message.getAllRecipients());
+	transport.close();
+ 
+
+This latter way is best when you need to send multiple messages, as it will keep the connection with the mail server active between messages. The basic send() mechanism makes a separate connection to the server for each method call. 
+
+Note: To watch the mail commands go by to the mail server, set the debug flag with session.setDebug(true). 
+ 
+
+Store and Folder
+---------------
+Getting messages starts similarly to sending messages, with a Session. However, after getting the session, you connect to a Store, quite possibly with a username and password or Authenticator. Like Transport, you tell the Store what protocol to use: 
+
+	// Store store = session.getStore("imap");
+	Store store = session.getStore("pop3");
+	store.connect(host, username, password);
+
+After connecting to the Store, you can then get a Folder, which must be opened before you can read messages from it: 
+
+	Folder folder = store.getFolder("INBOX");
+	folder.open(Folder.READ_ONLY);
+	Message message[] = folder.getMessages();
+	
+For POP3, the only folder available is the INBOX. If you are using IMAP, you can have other folders available. 
+
+Note: Sun's providers are meant to be smart. While Message message[] = folder.getMessages(); might look like a slow operation reading every message from the server, only when you actually need to get a part of the message is the message content retrieved. 
+ 
+
+Once you have a Message to read, you can get its content with getContent() or write its content to a stream with writeTo(). The getContent() method only gets the message content, while writeTo() output includes headers. 
+
+	System.out.println(((MimeMessage)message).getContent());
+Once you're done reading mail, close the connection to the folder and store. 
+
+	folder.close(aBoolean);
+	store.close();
+	
+The boolean passed to the close() method of folder states whether or not to update the folder by removing deleted messages. 
+
+

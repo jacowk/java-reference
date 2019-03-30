@@ -1,0 +1,10 @@
+http://www.javadocexamples.com/overview-summary.html
+
+
+http://download.oracle.com/docs/cd/E11882_01/timesten.112/e13068/jta.htm
+http://en.wikipedia.org/wiki/Java_Transaction_API
+http://archive.devx.com/java/free/articles/dd_jta/jta-1.asp
+http://www.java-tips.org/java-ee-tips/enterprise-java-beans/introduction-to-the-java-transactio.html
+JSR 907
+http://www.oracle.com/technetwork/java/javaee/tech/index.html
+http://www.amazon.com/exec/obidos/ASIN/0201433281/qid=1028060185/sr=1-1/ref=sr_1_1/104-6579449-9764701

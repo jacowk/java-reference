@@ -1,0 +1,657 @@
+SIMPLE TYPES
+============
+
+Example 1: Element
+=========
+<lastname>Doe</lastname>
+
+<xs:element name="lastname" type="xs:string"/>
+
+Example 2: Attribute
+=========
+<lastname lang="EN">Smith</lastname>
+
+<xs:attribute name="lang" type="xs:string"/>
+<xs:attribute name="lang" type="xs:string" default="EN"/>
+<xs:attribute name="lang" type="xs:string" fixed="EN"/>
+<xs:attribute name="lang" type="xs:string" use="required"/>  //To make it optional or required
+
+Example 3: Restrictions on Values
+==========
+<xs:element name="age">
+  <xs:simpleType>
+    <xs:restriction base="xs:integer">
+      <xs:minInclusive value="0"/>
+      <xs:maxInclusive value="120"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:element> 
+
+
+Example 4: Restrictions on a Set of Values
+==========
+<xs:element name="car">
+  <xs:simpleType>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Audi"/>
+      <xs:enumeration value="Golf"/>
+      <xs:enumeration value="BMW"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:element>
+
+
+Example 5: Restrictions on a Series of Values
+==========
+<xs:element name="letter">
+  <xs:simpleType>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[a-z]"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:element> 
+
+or
+<xs:pattern value="[A-Z][A-Z][A-Z]"/>
+<xs:pattern value="[a-zA-Z][a-zA-Z][a-zA-Z]"/>
+<xs:pattern value="[xyz]"/>
+<xs:pattern value="[0-9][0-9][0-9][0-9][0-9]"/>
+<xs:pattern value="([a-z])*"/>
+<xs:pattern value="([a-z])?"/>
+<xs:pattern value="([a-z])+"/>
+<xs:pattern value="male|female"/>
+<xs:pattern value="[a-zA-Z0-9]{8}"/>
+
+Example 6: Restrictions on Whitespace Characters
+==========
+<xs:element name="address">
+  <xs:simpleType>
+    <xs:restriction base="xs:string">
+      <xs:whiteSpace value="preserve"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:element> 
+
+or
+<xs:whiteSpace value="replace"/>
+<xs:whiteSpace value="collapse"/>
+
+
+Example 7a: Restrictions on Length
+==========
+<xs:element name="password">
+  <xs:simpleType>
+    <xs:restriction base="xs:string">
+      <xs:length value="8"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:element>
+
+Example 7b: Restrictions on Length
+==========
+<xs:element name="password">
+  <xs:simpleType>
+    <xs:restriction base="xs:string">
+      <xs:minLength value="5"/>
+      <xs:maxLength value="8"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:element> 
+
+COMPLEX TYPES
+=============
+
+Example 8a: How to Define a Complex Element
+==========
+<employee>
+  <firstname>John</firstname>
+  <lastname>Smith</lastname>
+</employee>
+
+<xs:element name="employee">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element name="firstname" type="xs:string"/>
+      <xs:element name="lastname" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element> 
+
+Example 8b: How to Define a Complex Element
+==========
+<employee>
+  <firstname>John</firstname>
+  <lastname>Smith</lastname>
+</employee>
+
+
+<xs:element name="employee" type="personinfo"/>
+
+<xs:complexType name="personinfo">
+  <xs:sequence>
+    <xs:element name="firstname" type="xs:string"/>
+    <xs:element name="lastname" type="xs:string"/>
+  </xs:sequence>
+</xs:complexType> 
+
+Example 8c: How to Define a Complex Element
+==========
+<xs:element name="employee" type="fullpersoninfo"/>
+
+<xs:complexType name="personinfo">
+  <xs:sequence>
+    <xs:element name="firstname" type="xs:string"/>
+    <xs:element name="lastname" type="xs:string"/>
+  </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="fullpersoninfo">
+  <xs:complexContent>
+    <xs:extension base="personinfo">
+      <xs:sequence>
+        <xs:element name="address" type="xs:string"/>
+        <xs:element name="city" type="xs:string"/>
+        <xs:element name="country" type="xs:string"/>
+      </xs:sequence>
+    </xs:extension>
+  </xs:complexContent>
+</xs:complexType>
+
+
+Example 9: Complex Empty Elements
+==========
+<product prodid="1345" />
+
+<xs:element name="product">
+  <xs:complexType>
+    <xs:attribute name="prodid" type="xs:positiveInteger"/>
+  </xs:complexType>
+</xs:element>
+
+
+Example 10: Complex Types Containing Elements Only (Same as Example 8)
+===========
+<person>
+  <firstname>John</firstname>
+  <lastname>Smith</lastname>
+</person>
+
+
+<xs:element name="person">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element name="firstname" type="xs:string"/>
+      <xs:element name="lastname" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+
+Example 11a: A complex text-only element can contain text and attributes.
+===========
+//Extension
+<xs:element name="somename">
+  <xs:complexType>
+    <xs:simpleContent>
+      <xs:extension base="basetype">
+        ....
+        ....
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+</xs:element>
+
+OR
+
+//Restriction
+<xs:element name="somename">
+  <xs:complexType>
+    <xs:simpleContent>
+      <xs:restriction base="basetype">
+        ....
+        ....
+      </xs:restriction>
+    </xs:simpleContent>
+  </xs:complexType>
+</xs:element> 
+
+
+Example 11b: A complex text-only element can contain text and attributes.
+===========
+<shoesize country="france">35</shoesize>
+
+<xs:element name="shoesize">
+  <xs:complexType>
+    <xs:simpleContent>
+      <xs:extension base="xs:integer">
+        <xs:attribute name="country" type="xs:string" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+</xs:element>
+
+
+Example 12b: A mixed complex type element can contain attributes, elements, and text.
+============
+<letter>
+  Dear Mr.<name>John Smith</name>.
+  Your order <orderid>1032</orderid>
+  will be shipped on <shipdate>2001-07-13</shipdate>.
+</letter> 
+
+<xs:element name="letter">
+  <xs:complexType mixed="true">
+    <xs:sequence>
+      <xs:element name="name" type="xs:string"/>
+      <xs:element name="orderid" type="xs:positiveInteger"/>
+      <xs:element name="shipdate" type="xs:date"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+
+------------------------------------------------------------------------------------------------------------
+Example 13: Indicators
+===========
+There are seven indicators:
+
+Order indicators: Order indicators are used to define the order of the elements.
+-----------------
+•All: The <all> indicator specifies that the child elements can appear in any order, and that each child element must occur only once.
+•Choice: The <choice> indicator specifies that either one child element or another can occur.
+•Sequence: The <sequence> indicator specifies that the child elements must appear in a specific order.
+
+Occurrence indicators: Occurrence indicators are used to define how often an element can occur.
+----------------------
+•maxOccurs: The <maxOccurs> indicator specifies the maximum number of times an element can occur.
+•minOccurs: The <minOccurs> indicator specifies the minimum number of times an element can occur.
+
+Group indicators: Group indicators are used to define related sets of elements.
+-----------------
+•Group name: 
+•attributeGroup name: 
+
+
+Example 14: All Indicator
+===========
+<xs:element name="person">
+  <xs:complexType>
+    <xs:all>
+      <xs:element name="firstname" type="xs:string"/>
+      <xs:element name="lastname" type="xs:string"/>
+    </xs:all>
+  </xs:complexType>
+</xs:element>
+
+Example 15: Choice Indicator
+===========
+<xs:element name="person">
+  <xs:complexType>
+    <xs:choice>
+      <xs:element name="employee" type="employee"/>
+      <xs:element name="member" type="member"/>
+    </xs:choice>
+  </xs:complexType>
+</xs:element>
+
+Example 16: Sequence Indicator
+===========
+<xs:element name="person">
+   <xs:complexType>
+    <xs:sequence>
+      <xs:element name="firstname" type="xs:string"/>
+      <xs:element name="lastname" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element> 
+
+
+Example 17: maxOccurs Indicator
+===========
+<xs:element name="person">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element name="full_name" type="xs:string"/>
+      <xs:element name="child_name" type="xs:string" maxOccurs="10"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+
+**To allow an element to appear an unlimited number of times, use the maxOccurs="unbounded"
+
+
+Example 18: minOccurs Indicator
+===========
+<xs:element name="person">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element name="full_name" type="xs:string"/>
+      <xs:element name="child_name" type="xs:string" maxOccurs="10" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+
+
+Example 19a: Element Group
+===========
+<xs:group name="persongroup">
+  <xs:sequence>
+    <xs:element name="firstname" type="xs:string"/>
+    <xs:element name="lastname" type="xs:string"/>
+    <xs:element name="birthday" type="xs:date"/>
+  </xs:sequence>
+</xs:group> 
+
+Example 19b: Element Group
+============
+<xs:group name="persongroup">
+  <xs:sequence>
+    <xs:element name="firstname" type="xs:string"/>
+    <xs:element name="lastname" type="xs:string"/>
+    <xs:element name="birthday" type="xs:date"/>
+  </xs:sequence>
+</xs:group>
+
+<xs:element name="person" type="personinfo"/>
+
+<xs:complexType name="personinfo">
+  <xs:sequence>
+    <xs:group ref="persongroup"/>
+    <xs:element name="country" type="xs:string"/>
+  </xs:sequence>
+</xs:complexType>
+
+
+Example 20a: Attribute Group
+===========
+<xs:attributeGroup name="personattrgroup">
+  <xs:attribute name="firstname" type="xs:string"/>
+  <xs:attribute name="lastname" type="xs:string"/>
+  <xs:attribute name="birthday" type="xs:date"/>
+</xs:attributeGroup>
+
+
+Example 20b: Attribute Group
+===========
+<xs:attributeGroup name="personattrgroup">
+  <xs:attribute name="firstname" type="xs:string"/>
+  <xs:attribute name="lastname" type="xs:string"/>
+  <xs:attribute name="birthday" type="xs:date"/>
+</xs:attributeGroup>
+
+<xs:element name="person">
+  <xs:complexType>
+    <xs:attributeGroup ref="personattrgroup"/>
+  </xs:complexType>
+</xs:element> 
+
+------------------------------------------------------------------------------------------------------------
+
+Example 21: <any> 
+===========
+<xs:element name="person">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element name="firstname" type="xs:string"/>
+      <xs:element name="lastname" type="xs:string"/>
+      <xs:any minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+
+
+Example 22: <anyAttribute>
+===========
+<xs:element name="person">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element name="firstname" type="xs:string"/>
+      <xs:element name="lastname" type="xs:string"/>
+    </xs:sequence>
+    <xs:anyAttribute/>
+  </xs:complexType>
+</xs:element> 
+
+
+Example 23: Element Substitution
+===========
+<xs:element name="name" type="xs:string"/>
+<xs:element name="navn" substitutionGroup="name"/>
+
+<xs:complexType name="custinfo">
+  <xs:sequence>
+    <xs:element ref="name"/>
+  </xs:sequence>
+</xs:complexType>
+
+<xs:element name="customer" type="custinfo"/>
+<xs:element name="kunde" substitutionGroup="customer"/> 
+
+<customer>
+  <name>John Smith</name>
+</customer> 
+
+or like this:
+
+<kunde>
+  <navn>John Smith</navn>
+</kunde>
+
+
+<xs:element name="name" type="xs:string" block="substitution"/> --Makes element substitution invalid
+
+
+Example 24: Example
+===========
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<shiporder orderid="889923"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:noNamespaceSchemaLocation="shiporder.xsd">
+  <orderperson>John Smith</orderperson>
+  <shipto>
+    <name>Ola Nordmann</name>
+    <address>Langgt 23</address>
+    <city>4000 Stavanger</city>
+    <country>Norway</country>
+  </shipto>
+  <item>
+    <title>Empire Burlesque</title>
+    <note>Special Edition</note>
+    <quantity>1</quantity>
+    <price>10.90</price>
+  </item>
+  <item>
+    <title>Hide your heart</title>
+    <quantity>1</quantity>
+    <price>9.90</price>
+  </item>
+</shiporder>
+
+
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="shiporder">
+	  <xs:complexType>
+	    <xs:sequence>
+	      <xs:element name="orderperson" type="xs:string"/>
+	      <xs:element name="shipto">
+	        <xs:complexType>
+	          <xs:sequence>
+	            <xs:element name="name" type="xs:string"/>
+	            <xs:element name="address" type="xs:string"/>
+	            <xs:element name="city" type="xs:string"/>
+	            <xs:element name="country" type="xs:string"/>
+	          </xs:sequence>
+	        </xs:complexType>
+	      </xs:element>
+	      <xs:element name="item" maxOccurs="unbounded">
+	        <xs:complexType>
+	          <xs:sequence>
+	            <xs:element name="title" type="xs:string"/>
+	            <xs:element name="note" type="xs:string" minOccurs="0"/>
+	            <xs:element name="quantity" type="xs:positiveInteger"/>
+	            <xs:element name="price" type="xs:decimal"/>
+	          </xs:sequence>
+	        </xs:complexType>
+	      </xs:element>
+	    </xs:sequence>
+	    <xs:attribute name="orderid" type="xs:string" use="required"/>
+	  </xs:complexType>
+	</xs:element>
+</xs:schema>
+
+
+--OR--
+
+
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<!-- definition of simple elements -->
+	<xs:element name="orderperson" type="xs:string"/>
+	<xs:element name="name" type="xs:string"/>
+	<xs:element name="address" type="xs:string"/>
+	<xs:element name="city" type="xs:string"/>
+	<xs:element name="country" type="xs:string"/>
+	<xs:element name="title" type="xs:string"/>
+	<xs:element name="note" type="xs:string"/>
+	<xs:element name="quantity" type="xs:positiveInteger"/>
+	<xs:element name="price" type="xs:decimal"/>
+	
+	<!-- definition of attributes -->
+	<xs:attribute name="orderid" type="xs:string"/>
+	
+	<!-- definition of complex elements -->
+	<xs:element name="shipto">
+	  <xs:complexType>
+	    <xs:sequence>
+	      <xs:element ref="name"/>
+	      <xs:element ref="address"/>
+	      <xs:element ref="city"/>
+	      <xs:element ref="country"/>
+	    </xs:sequence>
+	  </xs:complexType>
+	</xs:element>
+	
+	<xs:element name="item">
+	  <xs:complexType>
+	    <xs:sequence>
+	      <xs:element ref="title"/>
+	      <xs:element ref="note" minOccurs="0"/>
+	      <xs:element ref="quantity"/>
+	      <xs:element ref="price"/>
+	    </xs:sequence>
+	  </xs:complexType>
+	</xs:element>
+	
+	<xs:element name="shiporder">
+	  <xs:complexType>
+	    <xs:sequence>
+	      <xs:element ref="orderperson"/>
+	      <xs:element ref="shipto"/>
+	      <xs:element ref="item" maxOccurs="unbounded"/>
+	    </xs:sequence>
+	    <xs:attribute ref="orderid" use="required"/>
+	  </xs:complexType>
+	</xs:element>
+
+</xs:schema> 
+
+
+Example 25a: Named Types
+===========
+<xs:simpleType name="stringtype">
+  <xs:restriction base="xs:string"/>
+</xs:simpleType>
+
+Example 25b: Named Types
+===========
+<xs:complexType name="shiptotype">
+  <xs:sequence>
+    <xs:element name="name" type="stringtype"/>
+    <xs:element name="address" type="stringtype"/>
+    <xs:element name="city" type="stringtype"/>
+    <xs:element name="country" type="stringtype"/>
+  </xs:sequence>
+</xs:complexType>
+
+Example 25c: Named Types
+===========
+<xs:simpleType name="orderidtype">
+  <xs:restriction base="xs:string">
+    <xs:pattern value="[0-9]{6}"/>
+  </xs:restriction>
+</xs:simpleType> 
+
+
+Example 26: Data Types
+===========
+String:
+<xs:element name="customer" type="xs:string"/>
+<customer>John Smith</customer>
+
+NormalizedString:
+<xs:element name="customer" type="xs:normalizedString"/>
+<customer>John Smith</customer>
+
+Token:
+<xs:element name="customer" type="xs:token"/>
+<customer>John Smith</customer>
+
+Date:
+<xs:element name="start" type="xs:date"/>
+<start>2002-09-24</start>
+
+•YYYY indicates the year
+•MM indicates the month
+•DD indicates the day
+
+Time:
+<xs:element name="start" type="xs:time"/>
+<start>09:00:00</start>
+
+•hh indicates the hour
+•mm indicates the minute
+•ss indicates the second
+
+DateTime:
+<xs:element name="startdate" type="xs:dateTime"/>
+<startdate>2002-05-30T09:30:10.5</startdate>
+
+TimeZone: (Also applies to dates and times only)
+<startdate>2002-05-30T09:30:10Z</startdate>
+
+Offset: (Also applies to dates and times only)
+<startdate>2002-05-30T09:30:10-06:00</startdate>
+<startdate>2002-05-30T09:30:10+06:00</startdate>
+
+Duration Data Type:
+<xs:element name="period" type="xs:duration"/>
+<period>P5Y</period>
+
+•P indicates the period (required)
+•nY indicates the number of years
+•nM indicates the number of months
+•nD indicates the number of days
+•T indicates the start of a time section (required if you are going to specify hours, minutes, or seconds)
+•nH indicates the number of hours
+•nM indicates the number of minutes
+•nS indicates the number of seconds
+
+Decimal Data Type: (Max digits is 18)
+<xs:element name="prize" type="xs:decimal"/>
+<prize>999.50</prize>
+
+Integer Data Type:
+<xs:element name="prize" type="xs:integer"/>
+<prize>999</prize>
+
+
+Binary Data Type:
+<xs:attribute name="disabled" type="xs:boolean"/>
+<prize disabled="true">999</prize>
+
+anyURI Data Type:
+<xs:attribute name="src" type="xs:anyURI"/>
+<pic src="http://www.w3schools.com/images/smiley.gif" />
+
+

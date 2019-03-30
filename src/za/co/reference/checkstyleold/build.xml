@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="JavaOne" default="default" basedir=".">
+	<description>Checkstyle test</description>
+	<taskdef resource="checkstyletask.properties" classpath="checkstyle-all-5.1.jar"/>
+ 	<checkstyle config="mystyle.xml" file="JavaOne.java"/>
+</project>

@@ -1,0 +1,119 @@
+<?xml version="1.0"?>
+
+<ejb-jar xmlns="http://java.sun.com/xml/ns/j2ee" 
+         version="2.1" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/ejb-jar_2_1.xsd">
+  
+  <display-name>Product</display-name>
+
+  <enterprise-beans>
+    <entity>
+      <ejb-name>Product</ejb-name>
+      <home>examples.cmp.ProductHome</home>
+      <remote>examples.cmp.Product</remote>
+      <ejb-class>examples.cmp.ProductBean</ejb-class>
+      <persistence-type>Container</persistence-type>
+      <prim-key-class>java.lang.String</prim-key-class>
+      
+      <reentrant>false</reentrant>
+      
+      <cmp-version>2.x</cmp-version>
+      <abstract-schema-name>PRODUCTS</abstract-schema-name>
+      
+      <cmp-field>
+        <field-name>productID</field-name>
+      </cmp-field>
+      <cmp-field>
+        <field-name>name</field-name>
+      </cmp-field>
+      <cmp-field>
+        <field-name>description</field-name>
+      </cmp-field>
+      <cmp-field>
+        <field-name>basePrice</field-name>
+      </cmp-field>
+      
+      <primkey-field>productID</primkey-field>
+      
+      <query>
+        <query-method>
+          <method-name>findByName</method-name>
+          <method-params>
+            <method-param>java.lang.String</method-param>
+          </method-params>
+        </query-method>
+        <ejb-ql>SELECT DISTINCT OBJECT(p) FROM PRODUCTS p WHERE p.name = ?1
+        </ejb-ql>
+      </query>
+
+      <query>
+        <query-method>
+          <method-name>findByDescription</method-name>
+          <method-params>
+            <method-param>java.lang.String</method-param>
+          </method-params>
+        </query-method>
+        <ejb-ql>SELECT DISTINCT OBJECT(p) FROM PRODUCTS p WHERE p.description = ?1
+        </ejb-ql>
+      </query>
+
+      <query>
+        <query-method>
+          <method-name>findByBasePrice</method-name>
+          <method-params>
+            <method-param>double</method-param>
+          </method-params>
+        </query-method>
+        <ejb-ql>SELECT DISTINCT OBJECT(p) FROM PRODUCTS p WHERE p.basePrice = ?1</ejb-ql>
+      </query>
+
+      <query>
+        <query-method>
+          <method-name>findExpensiveProducts</method-name>
+          <method-params>
+            <method-param>double</method-param>
+          </method-params>
+        </query-method>
+        <ejb-ql><![CDATA[SELECT DISTINCT OBJECT(p) FROM PRODUCTS p WHERE p.basePrice > ?1]]></ejb-ql>
+      </query>
+
+      <query>
+        <query-method>
+          <method-name>findCheapProducts</method-name>
+          <method-params>
+            <method-param>double</method-param>
+          </method-params>
+        </query-method>
+        <ejb-ql><![CDATA[SELECT DISTINCT OBJECT(p) FROM PRODUCTS p WHERE p.basePrice < ?1]]></ejb-ql>
+      </query>
+
+      <query>
+        <query-method>
+          <method-name>findAllProducts</method-name>
+          <method-params>
+          </method-params>
+        </query-method>
+        <ejb-ql>SELECT DISTINCT OBJECT(p) FROM PRODUCTS p WHERE p.productID IS NOT NULL</ejb-ql>
+      </query>
+
+    </entity>
+  </enterprise-beans>
+  
+  <assembly-descriptor>
+    <container-transaction>
+      <method>
+        <ejb-name>Product</ejb-name>
+        <method-intf>Remote</method-intf>
+        <method-name>*</method-name>
+      </method>
+      <method>
+        <ejb-name>Product</ejb-name>
+        <method-intf>Home</method-intf>
+        <method-name>*</method-name>
+      </method>
+      <trans-attribute>Required</trans-attribute>
+    </container-transaction>
+  </assembly-descriptor>
+
+</ejb-jar>

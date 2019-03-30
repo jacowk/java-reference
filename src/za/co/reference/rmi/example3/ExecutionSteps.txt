@@ -1,0 +1,48 @@
+http://www.roseindia.net/tutorials/rmi/RMI-Example-3.shtml
+
+Steps for execution at Server machine:
+
+javac RemoteInterface.java
+
+javac RemoteInterface1.java
+
+javac ServerImplements.java
+
+javac ServerImplements2.java
+
+rmic ServerImplements
+
+rmic ServerImplements2
+
+javac Servet2.java
+
+start rmiregistry
+
+java server2
+
+
+
+Steps for execution at Client machine:
+
+javac RemoteInterface.java
+
+javac RemoteInterface1.java
+
+javac ServerImplements.java
+
+javac ServerImplements2.java
+
+rmic ServerImplements
+
+rmic ServerImplements2
+
+javac Server.java
+
+start rmiregistry
+
+start java server
+
+javac Client.java
+
+java Client
+

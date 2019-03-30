@@ -1,0 +1,27 @@
+JAXP: Java API for XML Processing
+
+This API provides a common interface for creating and using the standard SAX, DOM, and XSLT APIs in Java, independent to vendor's implementation .
+
+JAXB: Java Architecture for XML Binding
+
+This standard defines a mechanism for writing out Java objects as XML (marshalling) and for creating Java objects from such structures (unmarshalling).
+
+JDOM: Java DOM
+
+An alternative to DOM, that creates a tree of objects from an XML structure. The resulting tree is much easier to use, and it can be created from an XML structure without a compilation step.
+
+DOM4J
+
+Although it is not on the JCP standards track, DOM4J is an open-source, object-oriented alternative to DOM that is in many ways ahead of JDOM in terms of implemented features. It is an excellent alternative for Java developers who need to manipulate XML-based data. 
+
+JAXM: Java API for XML Messaging
+
+The JAXM API defines a mechanism for exchanging asynchronous XML-based messages between applications. ("Asynchronous" means "send it - forget it".)
+
+JAX-RPC: Java API for XML-based Remote Process Communications
+
+The JAX-RPC API defines a mechanism for exchanging synchronous XML-based messages between applications. ("Synchronous" means "send a message and wait for the reply".)
+
+JAXR: Java API for XML Registries
+
+The JAXR API provides a mechanism for publishing available services in an external registry, and for consulting the registry to find those services.

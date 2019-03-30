@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration>
+	<appender name="STDOUT" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.SimpleLayout"/>
+	</appender>
+	
+	<logger name="com">
+		<level value="INFO"/>
+	</logger>
+	
+	<logger name="com.foo">
+		<level value="DEBUG"/>
+	</logger>
+	
+	<logger name="com.foo.bar">
+		<level value="ERROR"/>
+	</logger>
+	
+	<root>
+		<level value="OFF"/>
+		<appender-ref ref="STDOUT"/>
+	</root>
+</log4j:configuration>
