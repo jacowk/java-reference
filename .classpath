@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="src/test"/>
+	<classpathentry kind="src" path="src/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/checkstyle"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/hibernate"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/activationframework"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/ant"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/asm"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/commons"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/javamail"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/jaxp"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/jboss"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/jdom"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/junit"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/log4j"/>
